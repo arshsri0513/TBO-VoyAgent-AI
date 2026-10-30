@@ -8,8 +8,8 @@ app = FastAPI(title="VoyAgent AI", description="TBO.com VoyageHack 4.0")
 HTML_PAGE = ""
 current_dir = os.path.dirname(os.path.abspath(__file__))
 candidate_paths = [
-    os.path.join(current_dir, "..", "index.html"),
     os.path.join(current_dir, "index.html"),
+    os.path.join(current_dir, "..", "index.html"),
     os.path.abspath("index.html")
 ]
 
@@ -33,4 +33,4 @@ async def catch_all(request: Request, full_path: str = ""):
         return JSONResponse({"status": "ok", "app": "VoyAgent AI"})
     if HTML_PAGE:
         return HTMLResponse(content=HTML_PAGE, status_code=200)
-    return HTMLResponse("<h1>VoyAgent AI — TBO.com VoyageHack 4.0</h1>", status_code=200)
+    return HTMLResponse("<h1>VoyAgent AI - TBO.com VoyageHack 4.0</h1>", status_code=200)

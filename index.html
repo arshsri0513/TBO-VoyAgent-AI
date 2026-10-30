@@ -104,7 +104,7 @@
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 space-y-5">
 
     <!-- ========================================== -->
-    <!-- SOURCE TO DESTINATION FLIGHT SEARCH ENGINE -->
+    <!-- SOURCE TO DESTINATION FLIGHT SEARCH ENGINE (MANUAL INPUT WITH AUTOCOMPLETE) -->
     <!-- ========================================== -->
     <section class="glass-panel rounded-2xl p-4 lg:p-5 shadow-xl border border-cardBorder space-y-3">
       <div class="flex flex-wrap items-center justify-between gap-3 border-b border-cardBorder/60 pb-2.5">
@@ -112,8 +112,8 @@
           <div class="w-7 h-7 rounded-lg bg-accentCyan/15 text-accentCyan flex items-center justify-center text-xs font-bold">
             <i class="fa-solid fa-plane"></i>
           </div>
-          <span class="text-sm font-bold text-white">Source to Destination Flight Search</span>
-          <span class="text-[10px] px-2 py-0.5 rounded bg-accentMint/10 text-accentMint border border-accentMint/30 font-semibold">Live GDS & NDC Feed</span>
+          <span class="text-sm font-bold text-white">Source to Destination Flight & Package Search</span>
+          <span class="text-[10px] px-2 py-0.5 rounded bg-accentMint/10 text-accentMint border border-accentMint/30 font-semibold">Live GDS & Bedbank Engine</span>
         </div>
 
         <div class="flex items-center gap-3 text-xs">
@@ -131,21 +131,17 @@
         </div>
       </div>
 
-      <!-- Search Inputs Grid -->
+      <!-- Search Inputs Grid: Manual Typing Enabled with Datalist -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 text-xs items-center">
         
-        <!-- Source (From) -->
+        <!-- Source (From) - Type Any City -->
         <div class="lg:col-span-3 space-y-1">
           <label class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-            <i class="fa-solid fa-plane-departure text-accentCyan"></i> From (Source)
+            <i class="fa-solid fa-plane-departure text-accentCyan"></i> From (Source) — Type any city
           </label>
-          <select id="flightSource" onchange="executeFlightSearch()" class="w-full px-3 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
-            <option value="BOM" selected>Mumbai, India (BOM) — Chhatrapati Shivaji</option>
-            <option value="DEL">Delhi, India (DEL) — Indira Gandhi Intl</option>
-            <option value="BLR">Bengaluru, India (BLR) — Kempegowda Intl</option>
-            <option value="DXB">Dubai, UAE (DXB) — Dubai Intl</option>
-            <option value="LHR">London, UK (LHR) — Heathrow Airport</option>
-          </select>
+          <div class="relative">
+            <input type="text" id="flightSourceInput" list="popularCities" value="Mumbai (BOM)" class="w-full px-3.5 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan placeholder-slate-500" placeholder="Type city e.g. Patna, Mumbai, Delhi..." oninput="executeFlightSearch()" onchange="executeFlightSearch()" onkeydown="if(event.key==='Enter') executeFlightSearch()">
+          </div>
         </div>
 
         <!-- Swap Icon -->
@@ -155,19 +151,41 @@
           </button>
         </div>
 
-        <!-- Destination (To) -->
+        <!-- Destination (To) - Type Any City -->
         <div class="lg:col-span-3 space-y-1">
           <label class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-            <i class="fa-solid fa-plane-arrival text-accentMint"></i> To (Destination)
+            <i class="fa-solid fa-plane-arrival text-accentMint"></i> To (Destination) — Type any city
           </label>
-          <select id="flightDest" onchange="executeFlightSearch()" class="w-full px-3 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
-            <option value="DXB" selected>Dubai, UAE (DXB) — Dubai Intl</option>
-            <option value="MLE">Maldives (MLE) — Velana Intl</option>
-            <option value="SIN">Singapore (SIN) — Changi Airport</option>
-            <option value="LHR">London, UK (LHR) — Heathrow Airport</option>
-            <option value="BOM">Mumbai, India (BOM) — Chhatrapati Shivaji</option>
-          </select>
+          <div class="relative">
+            <input type="text" id="flightDestInput" list="popularCities" value="Dubai (DXB)" class="w-full px-3.5 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan placeholder-slate-500" placeholder="Type city e.g. Dubai, London, Goa..." oninput="executeFlightSearch()" onchange="executeFlightSearch()" onkeydown="if(event.key==='Enter') executeFlightSearch()">
+          </div>
         </div>
+
+                <!-- Autocomplete Suggestions Datalist -->
+        <datalist id="popularCities">
+          <option value="Patna (PAT)">
+          <option value="Mumbai (BOM)">
+          <option value="Delhi (DEL)">
+          <option value="Goa (GOI)">
+          <option value="Bengaluru (BLR)">
+          <option value="Kolkata (CCU)">
+          <option value="Jaipur (JAI)">
+          <option value="Hyderabad (HYD)">
+          <option value="Chennai (MAA)">
+          <option value="Varanasi (VNS)">
+          <option value="Lucknow (LKO)">
+          <option value="Pune (PNQ)">
+          <option value="Ahmedabad (AMD)">
+          <option value="Dubai (DXB)">
+          <option value="London (LHR)">
+          <option value="Maldives (MLE)">
+          <option value="Singapore (SIN)">
+          <option value="Paris (CDG)">
+          <option value="New York (JFK)">
+          <option value="Tokyo (NRT)">
+          <option value="Bangkok (BKK)">
+          <option value="Bali (DPS)">
+        </datalist>
 
         <!-- Departure Date -->
         <div class="lg:col-span-2 space-y-1">
@@ -195,10 +213,10 @@
 
       </div>
 
-      <!-- Real-time Search Feedback Badge (Replaces alert) -->
+      <!-- Real-time Search Feedback Banner -->
       <div id="searchNotice" class="hidden py-1.5 px-3 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-[11px] text-accentCyan flex items-center justify-between">
-        <span id="searchNoticeText">✓ Query executed: BOM → DXB (5 Nights). Live rates and inventory locked.</span>
-        <span class="text-[10px] text-slate-400">GDS response: 184ms</span>
+        <span id="searchNoticeText">✓ Query executed: Live rates and inventory locked.</span>
+        <span class="text-[10px] text-slate-400">GDS response: 142ms</span>
       </div>
     </section>
 
@@ -225,17 +243,17 @@
 
             <!-- Quick Preset Chips -->
             <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button onclick="quickRoute('BOM', 'DXB', '2026-11-15', '2026-11-20')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-                🌴 Dubai Family (5N)
+              <button onclick="typeInChat('patna to bombay')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                ✈️ Patna to Bombay
               </button>
-              <button onclick="quickRoute('DEL', 'MLE', '2026-12-01', '2026-12-06')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-                🏝️ Maldives Luxury (5N)
+              <button onclick="typeInChat('Delhi to Goa for 4 days')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                🏖️ Delhi to Goa
               </button>
-              <button onclick="quickRoute('DEL', 'LHR', '2026-11-22', '2026-11-28')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-                💼 London Executive (6N)
+              <button onclick="typeInChat('Mumbai to Dubai family holiday 5 days')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                🌴 Mumbai to Dubai
               </button>
-              <button onclick="quickRoute('BLR', 'SIN', '2027-01-10', '2027-01-15')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-                🦁 Singapore Tour (5N)
+              <button onclick="typeInChat('Delhi to London corporate trip')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                💼 Delhi to London
               </button>
             </div>
 
@@ -246,7 +264,7 @@
                   <i class="fa-solid fa-robot text-xs"></i>
                 </div>
                 <div class="p-3 rounded-2xl rounded-tl-sm bg-panelDark border border-cardBorder text-slate-200 leading-relaxed max-w-[92%]">
-                  Hello Arsh! Change the source, destination, or dates above to update this package in real time. The flight schedule, hotel rates, and competitor price comparison on the right will recalculate automatically!
+                  Hello Arsh! Type <strong>any route or destination in natural language</strong> (e.g. <em>"patna to bombay"</em>, <em>"Delhi to Goa for 4 days"</em>, or <em>"Bangalore to Paris"</em>). I will parse the origin, destination, and dates, query live GDS rates, and update the entire studio and right-hand comparison automatically!
                 </div>
               </div>
             </div>
@@ -254,7 +272,7 @@
             <!-- Chat Input -->
             <div class="border-t border-cardBorder/60 pt-2.5 space-y-1.5">
               <div class="relative">
-                <textarea id="agentInput" rows="2" class="w-full rounded-xl bg-cardBg border border-cardBorder focus:border-accentCyan outline-none px-3 py-2 text-xs text-white placeholder-slate-500 resize-none leading-relaxed" placeholder="Type customized package inquiry..."></textarea>
+                <textarea id="agentInput" rows="2" class="w-full rounded-xl bg-cardBg border border-cardBorder focus:border-accentCyan outline-none px-3 py-2 text-xs text-white placeholder-slate-500 resize-none leading-relaxed" placeholder="Type any route e.g. 'patna to bombay', 'delhi to goa for 4 days'..." onkeydown="if(event.key==='Enter' && !event.shiftKey){ event.preventDefault(); runCopilot(); }"></textarea>
               </div>
               <div class="flex justify-between items-center">
                 <span class="text-[10px] text-slate-400"><i class="fa-solid fa-lock text-[9px] text-accentMint"></i> Zero-PII Tokenized</span>
@@ -386,7 +404,7 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- RIGHT COLUMN: LIVE RATE COMPARISON CHARTS -->
+        <!-- RIGHT COLUMN: LIVE RATE COMPARISON CHARTS (DYNAMIC LOCATION SYNC) -->
         <!-- ========================================== -->
         <div class="lg:col-span-6 space-y-4">
           
@@ -508,6 +526,7 @@
                     <th class="p-2.5 text-accentCyan">TBO VoyAgent</th>
                     <th class="p-2.5">Goibibo</th>
                     <th class="p-2.5">IndiGo 6E</th>
+                    <th class="p-2.5">Agoda Global</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-cardBorder/60 bg-panelDark/50 text-[10px]">
@@ -516,28 +535,33 @@
                     <td class="p-2.5 text-accentMint font-semibold" id="tableRowFlight">Emirates 30kg Incl.</td>
                     <td class="p-2.5">Retail LCC / Extra</td>
                     <td class="p-2.5">15kg Luggage Cap</td>
+                    <td class="p-2.5">Unbundled Ticket</td>
                   </tr>
                   <tr>
                     <td class="p-2.5 font-bold text-white">Hotel Package</td>
                     <td class="p-2.5 text-accentMint font-semibold">5★ Breakfast Free</td>
                     <td class="p-2.5">Room only (+fees)</td>
                     <td class="p-2.5">External Referral</td>
+                    <td class="p-2.5">Non-Refundable</td>
                   </tr>
                   <tr>
                     <td class="p-2.5 font-bold text-white">Convenience Fee</td>
                     <td class="p-2.5 text-accentMint font-bold">$0.00 Zero Surcharge</td>
                     <td class="p-2.5 text-rose-400">+$48.00 Fee</td>
                     <td class="p-2.5 text-rose-400">+$25.00 Fee</td>
+                    <td class="p-2.5 text-rose-400">+3.5% FX Fee</td>
                   </tr>
                   <tr class="bg-cardBg font-bold">
                     <td class="p-2.5 text-white">Final Price</td>
                     <td class="p-2.5 text-accentMint text-xs font-black" id="tablePriceTbo">$2,910.88</td>
                     <td class="p-2.5 text-slate-300" id="tablePriceGoi">$3,290.00</td>
                     <td class="p-2.5 text-slate-300" id="tablePriceIndigo">$3,180.00</td>
+                    <td class="p-2.5 text-slate-300" id="tablePriceAgoda">$3,346.00</td>
                   </tr>
                   <tr class="bg-accentCyan/5 font-bold">
                     <td class="p-2.5 text-accentCyan">Agency Profit</td>
                     <td class="p-2.5 text-accentCyan text-xs" id="tableMarginTbo">+$311.88 (12%)</td>
+                    <td class="p-2.5 text-slate-500">$0.00</td>
                     <td class="p-2.5 text-slate-500">$0.00</td>
                     <td class="p-2.5 text-slate-500">$0.00</td>
                   </tr>
@@ -712,8 +736,8 @@
         <div>
           <label class="text-[11px] font-bold text-slate-400">Select Airline Carrier</label>
           <select id="checkinAirline" class="w-full mt-1 px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white outline-none focus:border-accentCyan">
-            <option value="Emirates">Emirates Airlines (EK)</option>
             <option value="IndiGo">IndiGo Airlines (6E)</option>
+            <option value="Emirates">Emirates Airlines (EK)</option>
             <option value="Air India">Air India (AI)</option>
             <option value="FlyDubai">FlyDubai (FZ)</option>
           </select>
@@ -832,161 +856,198 @@
   </footer>
 
   <!-- ========================================== -->
-  <!-- DYNAMIC DESTINATIONS & PRICING ENGINE JS -->
+  <!-- ========================================== -->
+  <!-- UNIVERSAL CITY, NLP PARSER & PRICING ENGINE -->
   <!-- ========================================== -->
   <script>
-    // Comprehensive Route & Destination Database
-    const destinationDB = {
-      DXB: {
-        city: "Dubai",
-        country: "UAE",
-        airport: "Dubai Intl",
-        terminal: "Terminal 3",
-        airline: "Emirates Airlines",
-        badge: "EK",
-        badgeBg: "bg-red-600/20 text-red-400",
-        flightNo: "EK 501",
-        flightFare: 420,
-        deptTime: "10:00 AM",
-        arrTime: "12:15 PM",
-        duration: "3h 15m",
-        hotelName: "Amwaj Rotana — Jumeirah Beach Residence",
-        hotelStars: "5-Star Luxury",
-        hotelRate: 220,
-        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
-        hotelDesc: "Family Sea Front Room • Balcony & Beachfront",
-        activitiesCost: 369,
-        tboFlightTitle: "Emirates Direct (Meals & 30kg)",
-        tboHotelTitle: "Amwaj Rotana 5★ (Breakfast Free)",
-        goiFlightTitle: "Flight: $465/pax + seat fee",
-        goiHotelTitle: "Hotel: $260/night (Room-only)",
-        indigoFlightTitle: "IndiGo 6E: 15kg limit ($390)",
-        agodaFlightTitle: "Flight: Dynamic FX conversion"
+    // Comprehensive City, Airport & Travel Catalog
+    const cityDirectory = {
+      patna: {
+        code: "PAT", name: "Patna", country: "India", airport: "Jay Prakash Narayan Airport", terminal: "Terminal 1",
+        hotelName: "Hotel Maurya / Lemon Tree Premier Patna", hotelRate: 95, hotelStars: "4-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Club Executive Room \u2022 City View \u2022 Free Breakfast & WiFi",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 634", flightFare: 85,
+        deptTime: "07:15 AM", arrTime: "09:30 AM", duration: "2h 15m", activitiesCost: 60
       },
-      MLE: {
-        city: "Maldives",
-        country: "Maldives",
-        airport: "Velana Intl",
-        terminal: "Main Island",
-        airline: "IndiGo / Maldivian Air",
-        badge: "6E",
-        badgeBg: "bg-blue-600/20 text-blue-400",
-        flightNo: "6E 1795",
-        flightFare: 340,
-        deptTime: "09:30 AM",
-        arrTime: "12:15 PM",
-        duration: "2h 45m",
-        hotelName: "Sheraton Maldives Full Moon Resort",
-        hotelStars: "5-Star Premium",
-        hotelRate: 460,
-        hotelImg: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=400&q=80",
-        hotelDesc: "Overwater Lagoon Bungalow • Speedboat Transfer Included",
-        activitiesCost: 450,
-        tboFlightTitle: "Direct Flight + Speedboat Transfer",
-        tboHotelTitle: "Overwater Villa (All Meals Free)",
-        goiFlightTitle: "Flight booked separately",
-        goiHotelTitle: "Villa: $580/night + local tax",
-        indigoFlightTitle: "IndiGo direct to Male",
-        agodaFlightTitle: "OTA unbundled flight ticket"
-      },
-      LHR: {
-        city: "London",
-        country: "UK",
-        airport: "Heathrow Airport",
-        terminal: "Terminal 2",
-        airline: "Air India / British Airways",
-        badge: "AI",
-        badgeBg: "bg-orange-600/20 text-orange-400",
-        flightNo: "AI 161",
-        flightFare: 680,
-        deptTime: "02:15 AM",
-        arrTime: "07:30 AM",
-        duration: "8h 45m",
-        hotelName: "The Strand Palace Hotel Covent Garden",
-        hotelStars: "4-Star Central",
-        hotelRate: 240,
-        hotelImg: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=400&q=80",
-        hotelDesc: "Executive King Room • Central London",
-        activitiesCost: 320,
-        tboFlightTitle: "Air India Direct (2x23kg bags)",
-        tboHotelTitle: "The Strand Palace 4★ (Central)",
-        goiFlightTitle: "British Airways + Seat fees",
-        goiHotelTitle: "London Hotel: $290/night",
-        indigoFlightTitle: "Connecting Flight (14h+)",
-        agodaFlightTitle: "Non-refundable London rate"
-      },
-      SIN: {
-        city: "Singapore",
-        country: "Singapore",
-        airport: "Changi Airport",
-        terminal: "Terminal 3",
-        airline: "Singapore Airlines",
-        badge: "SQ",
-        badgeBg: "bg-amber-600/20 text-amber-400",
-        flightNo: "SQ 503",
-        flightFare: 380,
-        deptTime: "11:15 AM",
-        arrTime: "07:15 PM",
-        duration: "4h 30m",
-        hotelName: "Marina Bay Sands / Pan Pacific",
-        hotelStars: "5-Star Icon",
-        hotelRate: 310,
-        hotelImg: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=400&q=80",
-        hotelDesc: "Deluxe City View Room • Infinity Pool Access",
-        activitiesCost: 310,
-        tboFlightTitle: "Singapore Airlines Direct",
-        tboHotelTitle: "Marina Bay 5★ Free Breakfast",
-        goiFlightTitle: "Retail SQ / Scoot ticket",
-        goiHotelTitle: "Room-only (VAT not included)",
-        indigoFlightTitle: "IndiGo 6E Direct to SIN",
-        agodaFlightTitle: "Foreign exchange mark-up"
-      },
-      BOM: {
-        city: "Mumbai",
-        country: "India",
-        airport: "Chhatrapati Shivaji",
-        terminal: "Terminal 2",
-        airline: "Vistara / Air India",
-        badge: "UK",
-        badgeBg: "bg-purple-600/20 text-purple-400",
-        flightNo: "UK 945",
-        flightFare: 110,
-        deptTime: "08:00 AM",
-        arrTime: "10:15 AM",
-        duration: "2h 15m",
-        hotelName: "The Taj Mahal Palace Mumbai",
-        hotelStars: "5-Star Heritage",
-        hotelRate: 260,
+      bombay: {
+        code: "BOM", name: "Mumbai (Bombay)", country: "India", airport: "Chhatrapati Shivaji Maharaj Intl", terminal: "Terminal 2",
+        hotelName: "The Taj Mahal Palace & Tower Mumbai", hotelRate: 210, hotelStars: "5-Star Heritage Luxury",
         hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
-        hotelDesc: "Sea Facing Luxury Room • Gateway of India",
-        activitiesCost: 150,
-        tboFlightTitle: "Vistara Premium Economy",
-        tboHotelTitle: "Taj Palace 5★ Breakfast Free",
-        goiFlightTitle: "Retail Air ticket + fee",
-        goiHotelTitle: "Taj Room Only",
-        indigoFlightTitle: "IndiGo 6E Domestic Flight",
-        agodaFlightTitle: "Agoda standard rate"
+        hotelDesc: "Sea Facing Luxury Room \u2022 Gateway of India \u2022 Breakfast Free",
+        airline: "IndiGo / Air India", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 538", flightFare: 95,
+        deptTime: "10:15 AM", arrTime: "12:25 PM", duration: "2h 10m", activitiesCost: 120
+      },
+      mumbai: {
+        code: "BOM", name: "Mumbai (Bombay)", country: "India", airport: "Chhatrapati Shivaji Maharaj Intl", terminal: "Terminal 2",
+        hotelName: "The Taj Mahal Palace & Tower Mumbai", hotelRate: 210, hotelStars: "5-Star Heritage Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Sea Facing Luxury Room \u2022 Gateway of India \u2022 Breakfast Free",
+        airline: "IndiGo / Air India", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 538", flightFare: 95,
+        deptTime: "10:15 AM", arrTime: "12:25 PM", duration: "2h 10m", activitiesCost: 120
+      },
+      delhi: {
+        code: "DEL", name: "Delhi", country: "India", airport: "Indira Gandhi Intl", terminal: "Terminal 3",
+        hotelName: "The Leela Palace New Delhi", hotelRate: 195, hotelStars: "5-Star Icon",
+        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Royal Premier Room \u2022 Diplomatic Enclave \u2022 Free Breakfast",
+        airline: "Vistara / Air India", badge: "UK", badgeBg: "bg-purple-600/20 text-purple-400", flightNo: "UK 945", flightFare: 90,
+        deptTime: "08:00 AM", arrTime: "10:15 AM", duration: "2h 15m", activitiesCost: 110
+      },
+      goa: {
+        code: "GOI", name: "Goa", country: "India", airport: "Mopa / Dabolim Intl", terminal: "Terminal 1",
+        hotelName: "Taj Exotica Resort & Spa Goa", hotelRate: 230, hotelStars: "5-Star Beachfront",
+        hotelImg: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Villa Garden View \u2022 Private Beach Access \u2022 Free Breakfast",
+        airline: "IndiGo / Akasa Air", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 318", flightFare: 95,
+        deptTime: "11:30 AM", arrTime: "12:50 PM", duration: "1h 20m", activitiesCost: 140
+      },
+      bengaluru: {
+        code: "BLR", name: "Bengaluru", country: "India", airport: "Kempegowda Intl", terminal: "Terminal 2",
+        hotelName: "The Oberoi Bengaluru", hotelRate: 180, hotelStars: "5-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Deluxe Balcony Room \u2022 MG Road",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 403", flightFare: 90,
+        deptTime: "09:00 AM", arrTime: "10:45 AM", duration: "1h 45m", activitiesCost: 100
+      },
+      bangalore: {
+        code: "BLR", name: "Bengaluru", country: "India", airport: "Kempegowda Intl", terminal: "Terminal 2",
+        hotelName: "The Oberoi Bengaluru", hotelRate: 180, hotelStars: "5-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Deluxe Balcony Room \u2022 MG Road",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 403", flightFare: 90,
+        deptTime: "09:00 AM", arrTime: "10:45 AM", duration: "1h 45m", activitiesCost: 100
+      },
+      kolkata: {
+        code: "CCU", name: "Kolkata", country: "India", airport: "Netaji Subhash Chandra Bose Intl", terminal: "Terminal 2",
+        hotelName: "ITC Sonar Luxury Collection Kolkata", hotelRate: 140, hotelStars: "5-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Executive Garden Room \u2022 Free Breakfast",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 823", flightFare: 85,
+        deptTime: "08:15 AM", arrTime: "10:45 AM", duration: "2h 30m", activitiesCost: 80
+      },
+      calcutta: {
+        code: "CCU", name: "Kolkata", country: "India", airport: "Netaji Subhash Chandra Bose Intl", terminal: "Terminal 2",
+        hotelName: "ITC Sonar Luxury Collection Kolkata", hotelRate: 140, hotelStars: "5-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Executive Garden Room \u2022 Free Breakfast",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 823", flightFare: 85,
+        deptTime: "08:15 AM", arrTime: "10:45 AM", duration: "2h 30m", activitiesCost: 80
+      },
+      jaipur: {
+        code: "JAI", name: "Jaipur", country: "India", airport: "Jaipur Intl Airport", terminal: "Terminal 2",
+        hotelName: "Rambagh Palace / ITC Rajputana", hotelRate: 175, hotelStars: "5-Star Heritage Palace",
+        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Palace Garden Room \u2022 Heritage Tour \u2022 Free Breakfast",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 215", flightFare: 75,
+        deptTime: "11:00 AM", arrTime: "12:30 PM", duration: "1h 30m", activitiesCost: 110
+      },
+      hyderabad: {
+        code: "HYD", name: "Hyderabad", country: "India", airport: "Rajiv Gandhi Intl", terminal: "Terminal 1",
+        hotelName: "Taj Falaknuma Palace Hyderabad", hotelRate: 165, hotelStars: "5-Star Palace",
+        hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Palace Chamber \u2022 Royal High Tea \u2022 Free Breakfast",
+        airline: "IndiGo Airlines", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 891", flightFare: 85,
+        deptTime: "09:00 AM", arrTime: "10:40 AM", duration: "1h 40m", activitiesCost: 95
+      },
+      dubai: {
+        code: "DXB", name: "Dubai", country: "UAE", airport: "Dubai Intl", terminal: "Terminal 3",
+        hotelName: "Amwaj Rotana \u2014 Jumeirah Beach Residence", hotelRate: 220, hotelStars: "5-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Family Sea Front Room \u2022 Free Breakfast & Cancellation",
+        airline: "Emirates Airlines", badge: "EK", badgeBg: "bg-red-600/20 text-red-400", flightNo: "EK 501", flightFare: 420,
+        deptTime: "10:00 AM", arrTime: "12:15 PM", duration: "3h 15m", activitiesCost: 369
+      },
+      london: {
+        code: "LHR", name: "London", country: "UK", airport: "Heathrow Airport", terminal: "Terminal 2",
+        hotelName: "The Strand Palace Hotel Covent Garden", hotelRate: 240, hotelStars: "4-Star Central",
+        hotelImg: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Executive Double Room \u2022 Central London",
+        airline: "Air India / British Airways", badge: "AI", badgeBg: "bg-orange-600/20 text-orange-400", flightNo: "AI 161", flightFare: 680,
+        deptTime: "02:15 AM", arrTime: "07:30 AM", duration: "8h 45m", activitiesCost: 320
+      },
+      maldives: {
+        code: "MLE", name: "Maldives", country: "Maldives", airport: "Velana Intl", terminal: "Main Island",
+        hotelName: "Sheraton Maldives Full Moon Resort", hotelRate: 460, hotelStars: "5-Star Resort",
+        hotelImg: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Overwater Lagoon Bungalow \u2022 Speedboat Included",
+        airline: "IndiGo / Maldivian Air", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 1795", flightFare: 340,
+        deptTime: "09:30 AM", arrTime: "12:15 PM", duration: "2h 45m", activitiesCost: 450
+      },
+      male: {
+        code: "MLE", name: "Maldives", country: "Maldives", airport: "Velana Intl", terminal: "Main Island",
+        hotelName: "Sheraton Maldives Full Moon Resort", hotelRate: 460, hotelStars: "5-Star Resort",
+        hotelImg: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Overwater Lagoon Bungalow \u2022 Speedboat Included",
+        airline: "IndiGo / Maldivian Air", badge: "6E", badgeBg: "bg-blue-600/20 text-blue-400", flightNo: "6E 1795", flightFare: 340,
+        deptTime: "09:30 AM", arrTime: "12:15 PM", duration: "2h 45m", activitiesCost: 450
+      },
+      singapore: {
+        code: "SIN", name: "Singapore", country: "Singapore", airport: "Changi Airport", terminal: "Terminal 3",
+        hotelName: "Marina Bay Sands / Pan Pacific", hotelRate: 310, hotelStars: "5-Star Icon",
+        hotelImg: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Deluxe City View Room \u2022 Infinity Pool Access",
+        airline: "Singapore Airlines", badge: "SQ", badgeBg: "bg-amber-600/20 text-amber-400", flightNo: "SQ 503", flightFare: 380,
+        deptTime: "11:15 AM", arrTime: "07:15 PM", duration: "4h 30m", activitiesCost: 310
+      },
+      paris: {
+        code: "CDG", name: "Paris", country: "France", airport: "Charles de Gaulle", terminal: "Terminal 2E",
+        hotelName: "Pullman Paris Tour Eiffel", hotelRate: 280, hotelStars: "4-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Deluxe Balcony Eiffel View Room \u2022 Free Breakfast",
+        airline: "Air France", badge: "AF", badgeBg: "bg-blue-800/20 text-blue-300", flightNo: "AF 217", flightFare: 650,
+        deptTime: "01:30 AM", arrTime: "07:45 AM", duration: "9h 15m", activitiesCost: 290
       }
     };
 
-    const airportCities = {
-      BOM: { name: "Mumbai", code: "BOM", terminal: "Terminal 2" },
-      DEL: { name: "Delhi", code: "DEL", terminal: "Terminal 3" },
-      BLR: { name: "Bengaluru", code: "BLR", terminal: "Terminal 2" },
-      DXB: { name: "Dubai", code: "DXB", terminal: "Terminal 3" },
-      LHR: { name: "London", code: "LHR", terminal: "Terminal 2" },
-      MLE: { name: "Maldives", code: "MLE", terminal: "Main Island" },
-      SIN: { name: "Singapore", code: "SIN", terminal: "Terminal 3" }
-    };
+    // Helper: Normalize City String and Return Structured Info
+    function resolveCity(raw) {
+      if (!raw) return cityDirectory.mumbai;
+      const clean = raw.toLowerCase().replace(/[^a-z0-9]/g, ' ').trim();
+      
+      // Match keywords in cityDirectory
+      for (let key in cityDirectory) {
+        if (clean === key || clean.includes(key) || (clean.length > 3 && key.includes(clean))) {
+          return cityDirectory[key];
+        }
+      }
+
+      // Dynamic Fallback for ANY unknown city in the world
+      const capName = raw.split(' ')[0].replace(/[^a-zA-Z]/g, '');
+      const formattedName = capName.charAt(0).toUpperCase() + capName.slice(1).toLowerCase() || "Custom City";
+      const code = (formattedName.slice(0, 3)).toUpperCase();
+
+      return {
+        code: code,
+        name: formattedName,
+        country: "Global",
+        airport: `${formattedName} International Airport`,
+        terminal: "Terminal 1",
+        hotelName: `Grand Luxury Suites & Resort ${formattedName}`,
+        hotelRate: 140,
+        hotelStars: "5-Star Luxury",
+        hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Deluxe Premium Room \u2022 Free Breakfast Included",
+        airline: "IndiGo / TBO Partner GDS",
+        badge: code.slice(0, 2),
+        badgeBg: "bg-cyan-600/20 text-cyan-300",
+        flightNo: `6E ${Math.floor(Math.random()*400)+200}`,
+        flightFare: 85,
+        deptTime: "09:00 AM",
+        arrTime: "11:45 AM",
+        duration: "2h 45m",
+        activitiesCost: 90
+      };
+    }
 
     let currentCalculatedNet = 2599.00;
 
     // Execute Flight & Location Search
     function executeFlightSearch() {
-      const srcCode = document.getElementById('flightSource').value;
-      const dstCode = document.getElementById('flightDest').value;
-      const dDateStr = document.getElementById('flightDepartDate').value;
-      const rDateStr = document.getElementById('flightReturnDate').value;
+      const srcRaw = document.getElementById('flightSourceInput') ? document.getElementById('flightSourceInput').value : 'Mumbai (BOM)';
+      const dstRaw = document.getElementById('flightDestInput') ? document.getElementById('flightDestInput').value : 'Dubai (DXB)';
+      const dDateStr = document.getElementById('flightDepartDate') ? document.getElementById('flightDepartDate').value : '2026-11-15';
+      const rDateStr = document.getElementById('flightReturnDate') ? document.getElementById('flightReturnDate').value : '2026-11-20';
 
       // 1. Calculate Nights
       const dDate = new Date(dDateStr);
@@ -994,43 +1055,43 @@
       let nights = Math.round((rDate - dDate) / (1000 * 60 * 60 * 24));
       if (isNaN(nights) || nights < 1) nights = 1;
 
-      // 2. Lookup Source & Destination Data
-      const srcInfo = airportCities[srcCode] || { name: srcCode, code: srcCode, terminal: "T1" };
-      let dstData = destinationDB[dstCode];
-      if (!dstData || srcCode === dstCode) {
-        dstData = destinationDB['DXB']; // fallback to Dubai
-      }
+      // 2. Resolve Source & Destination
+      const src = resolveCity(srcRaw);
+      const dst = resolveCity(dstRaw);
 
       // 3. Update Flight Card DOM
-      document.getElementById('flightBadge').className = `w-6 h-6 rounded-md flex items-center justify-center font-bold text-[10px] ${dstData.badgeBg}`;
-      document.getElementById('flightBadge').innerText = dstData.badge;
-      document.getElementById('flightName').innerText = `${dstData.airline} • Direct GDS`;
-      document.getElementById('flightNo').innerText = `Flight ${dstData.flightNo}`;
-      document.getElementById('flightPriceDisplay').innerText = `$${dstData.flightFare} / pax`;
+      if (document.getElementById('flightBadge')) {
+        document.getElementById('flightBadge').className = `w-6 h-6 rounded-md flex items-center justify-center font-bold text-[10px] ${dst.badgeBg}`;
+        document.getElementById('flightBadge').innerText = dst.badge;
+      }
+      if (document.getElementById('flightName')) document.getElementById('flightName').innerText = `${dst.airline} \u2022 Direct GDS`;
+      if (document.getElementById('flightNo')) document.getElementById('flightNo').innerText = `Flight ${dst.flightNo}`;
+      if (document.getElementById('flightPriceDisplay')) document.getElementById('flightPriceDisplay').innerText = `$${dst.flightFare} / pax`;
 
-      document.getElementById('flightDeptCity').innerText = `${srcInfo.code} • ${srcInfo.name}`;
-      document.getElementById('flightDeptTerminal').innerText = srcInfo.terminal;
-      document.getElementById('flightArrCity').innerText = `${dstCode} • ${dstData.city}`;
-      document.getElementById('flightArrTerminal').innerText = dstData.terminal;
-      document.getElementById('flightDuration').innerText = `${dstData.duration} • Non-stop`;
-      document.getElementById('flightDeptTime').innerText = dstData.deptTime;
-      document.getElementById('flightArrTime').innerText = dstData.arrTime;
+      if (document.getElementById('flightDeptCity')) document.getElementById('flightDeptCity').innerText = `${src.code} \u2022 ${src.name}`;
+      if (document.getElementById('flightDeptTerminal')) document.getElementById('flightDeptTerminal').innerText = src.terminal;
+      if (document.getElementById('flightArrCity')) document.getElementById('flightArrCity').innerText = `${dst.code} \u2022 ${dst.name}`;
+      if (document.getElementById('flightArrTerminal')) document.getElementById('flightArrTerminal').innerText = dst.terminal;
+      if (document.getElementById('flightDuration')) document.getElementById('flightDuration').innerText = `${dst.duration} \u2022 Non-stop`;
+      if (document.getElementById('flightDeptTime')) document.getElementById('flightDeptTime').innerText = dst.deptTime;
+      if (document.getElementById('flightArrTime')) document.getElementById('flightArrTime').innerText = dst.arrTime;
 
       // 4. Update Hotel Card DOM
-      document.getElementById('hotelImg').src = dstData.hotelImg;
-      document.getElementById('hotelName').innerText = dstData.hotelName;
-      document.getElementById('hotelStars').innerText = dstData.hotelStars;
-      document.getElementById('hotelPrice').innerText = `$${dstData.hotelRate} / night`;
-      document.getElementById('hotelDesc').innerText = `${dstData.hotelDesc} • ${nights} Nights`;
+      if (document.getElementById('hotelImg')) document.getElementById('hotelImg').src = dst.hotelImg;
+      if (document.getElementById('hotelName')) document.getElementById('hotelName').innerText = dst.hotelName;
+      if (document.getElementById('hotelStars')) document.getElementById('hotelStars').innerText = dst.hotelStars;
+      if (document.getElementById('hotelPrice')) document.getElementById('hotelPrice').innerText = `$${dst.hotelRate} / night`;
+      if (document.getElementById('hotelDesc')) document.getElementById('hotelDesc').innerText = `${dst.hotelDesc} \u2022 ${nights} Nights`;
 
       // 5. Dynamic Net Calculation
-      const totalFlightCost = dstData.flightFare * 2; // 2 pax
-      const totalHotelCost = dstData.hotelRate * nights;
-      const totalActivities = dstData.activitiesCost;
+      const totalFlightCost = dst.flightFare * 2; // 2 pax
+      const totalHotelCost = dst.hotelRate * nights;
+      const totalActivities = dst.activitiesCost;
       currentCalculatedNet = totalFlightCost + totalHotelCost + totalActivities;
 
       // Apply margin slider
-      const sliderVal = document.getElementById('marginSlider').value;
+      const sliderEl = document.getElementById('marginSlider');
+      const sliderVal = sliderEl ? sliderEl.value : 12;
       updateMargin(sliderVal);
 
       // 6. Update Right-side Rate Comparison Panel
@@ -1040,49 +1101,147 @@
       const agodaTotal = Math.round(tboTotal * 1.15);
       const savings = (goiTotal - tboTotal).toFixed(2);
 
-      document.getElementById('cmpRouteLabel').innerText = `${srcCode} ⇄ ${dstCode} • ${nights} Nights Rate Benchmark`;
-      document.getElementById('cmpSavingsHeader').innerText = `-$${savings} Cheaper`;
-      document.getElementById('cmpPriceTbo').innerText = `$${tboTotal.toFixed(2)}`;
-      document.getElementById('cmpTboBadge').innerText = `✓ Saves $${savings} vs Goibibo`;
+      if (document.getElementById('cmpRouteLabel')) document.getElementById('cmpRouteLabel').innerText = `${src.code} \u21c4 ${dst.code} \u2022 ${nights} Nights Rate Benchmark`;
+      if (document.getElementById('cmpSavingsHeader')) document.getElementById('cmpSavingsHeader').innerText = `-$${savings} Cheaper`;
+      if (document.getElementById('cmpPriceTbo')) document.getElementById('cmpPriceTbo').innerText = `$${tboTotal.toFixed(2)}`;
+      if (document.getElementById('cmpTboBadge')) document.getElementById('cmpTboBadge').innerText = `\u2713 Saves $${savings} vs Goibibo`;
 
-      document.getElementById('cmpPriceGoi').innerText = `$${goiTotal}.00`;
-      document.getElementById('cmpGoiDiff').innerText = `+$${(goiTotal - tboTotal).toFixed(2)} more expensive`;
+      if (document.getElementById('cmpPriceGoi')) document.getElementById('cmpPriceGoi').innerText = `$${goiTotal}.00`;
+      if (document.getElementById('cmpGoiDiff')) document.getElementById('cmpGoiDiff').innerText = `+$${(goiTotal - tboTotal).toFixed(2)} more expensive`;
 
-      document.getElementById('cmpPriceIndigo').innerText = `$${indigoTotal}.00`;
-      document.getElementById('cmpIndigoDiff').innerText = `+$${(indigoTotal - tboTotal).toFixed(2)} higher total`;
+      if (document.getElementById('cmpPriceIndigo')) document.getElementById('cmpPriceIndigo').innerText = `$${indigoTotal}.00`;
+      if (document.getElementById('cmpIndigoDiff')) document.getElementById('cmpIndigoDiff').innerText = `+$${(indigoTotal - tboTotal).toFixed(2)} higher total`;
 
-      document.getElementById('cmpPriceAgoda').innerText = `$${agodaTotal}.00`;
-      document.getElementById('cmpAgodaDiff').innerText = `+$${(agodaTotal - tboTotal).toFixed(2)} more expensive`;
+      if (document.getElementById('cmpPriceAgoda')) document.getElementById('cmpPriceAgoda').innerText = `$${agodaTotal}.00`;
+      if (document.getElementById('cmpAgodaDiff')) document.getElementById('cmpAgodaDiff').innerText = `+$${(agodaTotal - tboTotal).toFixed(2)} more expensive`;
 
-      document.getElementById('tablePriceTbo').innerText = `$${tboTotal.toFixed(2)}`;
-      document.getElementById('tablePriceGoi').innerText = `$${goiTotal}.00`;
-      document.getElementById('tablePriceIndigo').innerText = `$${indigoTotal}.00`;
-      document.getElementById('tableRowFlight').innerText = `${dstData.airline} 30kg Incl.`;
+      if (document.getElementById('tablePriceTbo')) document.getElementById('tablePriceTbo').innerText = `$${tboTotal.toFixed(2)}`;
+      if (document.getElementById('tablePriceGoi')) document.getElementById('tablePriceGoi').innerText = `$${goiTotal}.00`;
+      if (document.getElementById('tablePriceIndigo')) document.getElementById('tablePriceIndigo').innerText = `$${indigoTotal}.00`;
+      if (document.getElementById('tablePriceAgoda')) document.getElementById('tablePriceAgoda').innerText = `$${agodaTotal}.00`;
+      if (document.getElementById('tableRowFlight')) document.getElementById('tableRowFlight').innerText = `${dst.airline} 30kg Incl.`;
 
-      document.getElementById('cmpTboFlight').innerText = dstData.tboFlightTitle;
-      document.getElementById('cmpTboHotel').innerText = dstData.tboHotelTitle;
-      document.getElementById('cmpGoiFlight').innerText = dstData.goiFlightTitle;
-      document.getElementById('cmpGoiHotel').innerText = dstData.goiHotelTitle;
-      document.getElementById('cmpIndigoFlight').innerText = dstData.indigoFlightTitle;
-      document.getElementById('cmpAgodaFlight').innerText = dstData.agodaFlightTitle;
+      if (document.getElementById('cmpTboFlight')) document.getElementById('cmpTboFlight').innerText = `${dst.airline} Direct (${dst.flightNo})`;
+      if (document.getElementById('cmpTboHotel')) document.getElementById('cmpTboHotel').innerText = `${dst.hotelName} (Breakfast Free)`;
+      if (document.getElementById('cmpGoiFlight')) document.getElementById('cmpGoiFlight').innerText = `Retail OTA Flight: +$45 fees`;
+      if (document.getElementById('cmpGoiHotel')) document.getElementById('cmpGoiHotel').innerText = `${dst.name} Hotel: Room-only (+VAT)`;
+      if (document.getElementById('cmpIndigoFlight')) document.getElementById('cmpIndigoFlight').innerText = `${dst.airline} / LCC Direct (${dst.code})`;
+      if (document.getElementById('cmpAgodaFlight')) document.getElementById('cmpAgodaFlight').innerText = `Dynamic FX conversion (+3.5%)`;
 
-      // 7. Display Non-intrusive Search Banner (No Alert!)
+      // 7. Non-intrusive Search Banner
       const notice = document.getElementById('searchNotice');
       const noticeText = document.getElementById('searchNoticeText');
-      noticeText.innerHTML = `✓ <strong>Live GDS Updated:</strong> ${srcInfo.name} (${srcCode}) → ${dstData.city} (${dstCode}) for <strong>${nights} Nights</strong> (${dDateStr} to ${rDateStr}). Real-time prices synchronized!`;
-      notice.classList.remove('hidden');
-
-      // Auto-hide notice after 4 seconds
-      setTimeout(() => { notice.classList.add('hidden'); }, 5000);
+      if (notice && noticeText) {
+        noticeText.innerHTML = `\u2713 <strong>Live GDS Synchronized:</strong> ${src.name} (${src.code}) \u2192 ${dst.name} (${dst.code}) for <strong>${nights} Nights</strong> (${dDateStr} to ${rDateStr}). Live rates locked!`;
+        notice.classList.remove('hidden');
+        setTimeout(() => { notice.classList.add('hidden'); }, 4000);
+      }
     }
 
-    // Quick preset route launcher
-    function quickRoute(src, dst, dDate, rDate) {
-      document.getElementById('flightSource').value = src;
-      document.getElementById('flightDest').value = dst;
-      document.getElementById('flightDepartDate').value = dDate;
-      document.getElementById('flightReturnDate').value = rDate;
+    // Natural Language Copilot Chat Processor
+    function runCopilot() {
+      const input = document.getElementById('agentInput');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chat = document.getElementById('chatStream');
+      const userDiv = document.createElement('div');
+      userDiv.className = 'flex gap-2 items-start justify-end';
+      userDiv.innerHTML = `<div class="p-2.5 rounded-2xl rounded-tr-sm bg-accentCyan text-black font-medium leading-relaxed max-w-[85%]">${text}</div>`;
+      chat.appendChild(userDiv);
+      chat.scrollTop = chat.scrollHeight;
+
+      input.value = '';
+
+      // Intelligent NLP Route & Date Extraction
+      const lower = text.toLowerCase();
+      let matchedSrc = null;
+      let matchedDst = null;
+
+      // 1. Detect "to" pattern: e.g. "patna to bombay", "delhi to goa", "from kolkata to dubai"
+      if (lower.includes(" to ")) {
+        const parts = lower.split(/\s+to\s+/i);
+        let srcPart = parts[0].replace(/^(from|flights?\s+from|trip\s+from|travel\s+from|book\s+flights?\s+from|book|plan|show)\s+/i, '').trim();
+        let dstPart = parts[1].replace(/\s+(for\s+\d+\s*(days?|nights?)|for|under|budget|in|with|trip|holiday|package).*/i, '').trim();
+        matchedSrc = srcPart;
+        matchedDst = dstPart;
+      } else {
+        // Keyword scan across catalog
+        const found = [];
+        for (let k in cityDirectory) {
+          if (lower.includes(k)) found.push(k);
+        }
+        if (found.length >= 2) {
+          matchedSrc = found[0];
+          matchedDst = found[1];
+        } else if (found.length === 1) {
+          matchedDst = found[0];
+          matchedSrc = "mumbai";
+        }
+      }
+
+      // Days detection (e.g. "4 days", "3 nights")
+      const dayMatch = lower.match(/(\d+)\s*(days?|nights?)/);
+      if (dayMatch) {
+        const days = parseInt(dayMatch[1]);
+        const d = new Date();
+        const r = new Date();
+        r.setDate(d.getDate() + days);
+        const depEl = document.getElementById('flightDepartDate');
+        const retEl = document.getElementById('flightReturnDate');
+        if (depEl) depEl.value = d.toISOString().split('T')[0];
+        if (retEl) retEl.value = r.toISOString().split('T')[0];
+      }
+
+      if (matchedSrc && matchedDst) {
+        const srcObj = resolveCity(matchedSrc);
+        const dstObj = resolveCity(matchedDst);
+        const sInput = document.getElementById('flightSourceInput');
+        const dInput = document.getElementById('flightDestInput');
+        if (sInput) sInput.value = `${srcObj.name} (${srcObj.code})`;
+        if (dInput) dInput.value = `${dstObj.name} (${dstObj.code})`;
+      } else if (matchedDst) {
+        const dstObj = resolveCity(matchedDst);
+        const dInput = document.getElementById('flightDestInput');
+        if (dInput) dInput.value = `${dstObj.name} (${dstObj.code})`;
+      }
+
+      // Execute dynamic update across all UI components
       executeFlightSearch();
+
+      const resolvedDst = resolveCity(matchedDst || (document.getElementById('flightDestInput') ? document.getElementById('flightDestInput').value : 'Dubai'));
+      const resolvedSrc = resolveCity(matchedSrc || (document.getElementById('flightSourceInput') ? document.getElementById('flightSourceInput').value : 'Mumbai'));
+
+      setTimeout(() => {
+        const grossTotal = document.getElementById('calcGrossTotal') ? document.getElementById('calcGrossTotal').innerText : '$2,910.88';
+        const marginLabel = document.getElementById('calcMarginLabel') ? document.getElementById('calcMarginLabel').innerText : '+12% Markup';
+        const agentDiv = document.createElement('div');
+        agentDiv.className = 'flex gap-2 items-start animate-fade-in';
+        agentDiv.innerHTML = `
+          <div class="w-6 h-6 rounded-lg bg-accentCyan/20 text-accentCyan flex items-center justify-center font-bold shrink-0 mt-0.5"><i class="fa-solid fa-robot text-xs"></i></div>
+          <div class="p-3 rounded-2xl rounded-tl-sm bg-panelDark border border-cardBorder text-slate-200 leading-relaxed max-w-[92%] space-y-1.5 text-xs">
+            <p class="font-bold text-white"><i class="fa-solid fa-circle-check text-accentMint mr-1"></i> Parsed Route: <span class="text-accentCyan">${resolvedSrc.name} (${resolvedSrc.code})</span> &rarr; <span class="text-accentMint">${resolvedDst.name} (${resolvedDst.code})</span></p>
+            <p>Queried live GDS flights on <strong>${resolvedDst.airline}</strong> (${resolvedDst.flightNo}) at <strong>$${resolvedDst.flightFare}/pax</strong>. Locked 5★ stay at <strong>${resolvedDst.hotelName}</strong>.</p>
+            <div class="p-2 rounded-lg bg-cardBg text-[11px] space-y-0.5 font-mono border border-cardBorder/60">
+              <div>&bull; Wholesale Net: <span class="text-white">$${currentCalculatedNet.toFixed(2)}</span></div>
+              <div>&bull; Client Quoted: <span class="text-accentMint font-bold">${grossTotal}</span></div>
+              <div>&bull; Agency Profit: <span class="text-accentCyan font-semibold">${marginLabel}</span></div>
+            </div>
+            <p class="text-[10px] text-accentMint font-bold"><i class="fa-solid fa-chart-line mr-1"></i> Live rate comparison updated on the right panel.</p>
+          </div>
+        `;
+        chat.appendChild(agentDiv);
+        chat.scrollTop = chat.scrollHeight;
+      }, 350);
+    }
+
+    function typeInChat(msg) {
+      const input = document.getElementById('agentInput');
+      if (input) {
+        input.value = msg;
+        runCopilot();
+      }
     }
 
     // Margin Slider Update
@@ -1091,27 +1250,31 @@
       const margin = (net * (val / 100.0));
       const total = net + margin;
 
-      document.getElementById('calcMarginLabel').innerText = `${val}% Markup (+$${margin.toFixed(2)})`;
-      document.getElementById('calcGrossTotal').innerText = `$${total.toFixed(2)}`;
-      document.getElementById('calcNetCost').innerText = `$${net.toFixed(2)}`;
-      document.getElementById('cmpTboMargin').innerText = `Includes +$${margin.toFixed(2)} Agency Profit`;
-      document.getElementById('tableMarginTbo').innerText = `+$${margin.toFixed(2)} (${val}%)`;
+      if (document.getElementById('calcMarginLabel')) document.getElementById('calcMarginLabel').innerText = `${val}% Markup (+$${margin.toFixed(2)})`;
+      if (document.getElementById('calcGrossTotal')) document.getElementById('calcGrossTotal').innerText = `$${total.toFixed(2)}`;
+      if (document.getElementById('calcNetCost')) document.getElementById('calcNetCost').innerText = `$${net.toFixed(2)}`;
+      if (document.getElementById('cmpTboMargin')) document.getElementById('cmpTboMargin').innerText = `Includes +$${margin.toFixed(2)} Agency Profit`;
+      if (document.getElementById('tableMarginTbo')) document.getElementById('tableMarginTbo').innerText = `+$${margin.toFixed(2)} (${val}%)`;
     }
 
     // Airport Swap
     function swapAirports() {
-      const src = document.getElementById('flightSource');
-      const dst = document.getElementById('flightDest');
-      const temp = src.value;
-      src.value = dst.value;
-      dst.value = temp;
-      executeFlightSearch();
+      const srcInput = document.getElementById('flightSourceInput');
+      const dstInput = document.getElementById('flightDestInput');
+      if (srcInput && dstInput) {
+        const temp = srcInput.value;
+        srcInput.value = dstInput.value;
+        dstInput.value = temp;
+        executeFlightSearch();
+      }
     }
 
     function toggleReturnDate(show) {
       const container = document.getElementById('returnDateContainer');
-      if (show) container.classList.remove('hidden');
-      else container.classList.add('hidden');
+      if (container) {
+        if (show) container.classList.remove('hidden');
+        else container.classList.add('hidden');
+      }
     }
 
     // Tab Switcher
@@ -1131,82 +1294,100 @@
 
     // Web Check-in Modal
     function openCheckInModal() {
-      document.getElementById('checkinStep1').classList.remove('hidden');
-      document.getElementById('checkinStep2').classList.add('hidden');
-      document.getElementById('checkInModal').classList.remove('hidden');
+      const step1 = document.getElementById('checkinStep1');
+      const step2 = document.getElementById('checkinStep2');
+      const modal = document.getElementById('checkInModal');
+      if (step1) step1.classList.remove('hidden');
+      if (step2) step2.classList.add('hidden');
+      if (modal) modal.classList.remove('hidden');
     }
 
-    function openCheckInWithData(pnr, name, airline) {
-      document.getElementById('checkinPnr').value = pnr;
-      document.getElementById('checkinLastName').value = name;
-      document.getElementById('checkinAirline').value = airline;
+    function openCheckInWithData(pnr, lastName, airline) {
+      const pnrEl = document.getElementById('checkinPnr');
+      const nameEl = document.getElementById('checkinLastName');
+      const airEl = document.getElementById('checkinAirline');
+      if (pnrEl) pnrEl.value = pnr;
+      if (nameEl) nameEl.value = lastName;
+      if (airEl) airEl.value = airline;
       openCheckInModal();
     }
 
     function closeCheckInModal() {
-      document.getElementById('checkInModal').classList.add('hidden');
+      const modal = document.getElementById('checkInModal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function processCheckIn() {
-      const airline = document.getElementById('checkinAirline').value;
-      const pnr = document.getElementById('checkinPnr').value;
-      const name = document.getElementById('checkinLastName').value;
-      const src = document.getElementById('flightSource').value;
-      const dst = document.getElementById('flightDest').value;
+      const airline = document.getElementById('checkinAirline') ? document.getElementById('checkinAirline').value : 'IndiGo';
+      const pnr = document.getElementById('checkinPnr') ? document.getElementById('checkinPnr').value : 'TBO982';
+      const name = document.getElementById('checkinLastName') ? document.getElementById('checkinLastName').value : 'Srivastava';
+      const srcInput = document.getElementById('flightSourceInput');
+      const dstInput = document.getElementById('flightDestInput');
+      const src = srcInput ? srcInput.value.split(' ')[0] : 'Mumbai';
+      const dst = dstInput ? dstInput.value.split(' ')[0] : 'Dubai';
 
-      document.getElementById('passFlightNo').innerText = `${airline} • ${src} → ${dst} (PNR: ${pnr})`;
-      document.getElementById('passPassengerName').innerText = `${name} (Adult)`;
+      if (document.getElementById('passFlightNo')) document.getElementById('passFlightNo').innerText = `${airline} \u2022 ${src} \u2192 ${dst} (PNR: ${pnr})`;
+      if (document.getElementById('passPassengerName')) document.getElementById('passPassengerName').innerText = `${name} (Adult)`;
 
-      document.getElementById('checkinStep1').classList.add('hidden');
-      document.getElementById('checkinStep2').classList.remove('hidden');
+      const step1 = document.getElementById('checkinStep1');
+      const step2 = document.getElementById('checkinStep2');
+      if (step1) step1.classList.add('hidden');
+      if (step2) step2.classList.remove('hidden');
     }
 
     function resetCheckIn() {
-      document.getElementById('checkinStep1').classList.remove('hidden');
-      document.getElementById('checkinStep2').classList.add('hidden');
+      const step1 = document.getElementById('checkinStep1');
+      const step2 = document.getElementById('checkinStep2');
+      if (step1) step1.classList.remove('hidden');
+      if (step2) step2.classList.add('hidden');
     }
 
-    function selectSeat(btn, seatName) {
-      document.querySelectorAll('.seat-btn').forEach(b => {
-        b.classList.remove('bg-accentCyan', 'text-black', 'border-accentCyan');
-        b.classList.add('bg-panelDark', 'border-cardBorder', 'text-slate-300');
+    let selectedSeat = '14B';
+    function selectSeat(seatNo) {
+      selectedSeat = seatNo;
+      document.querySelectorAll('.seat-btn').forEach(btn => {
+        btn.classList.remove('bg-accentCyan', 'text-black', 'border-accentCyan');
+        btn.classList.add('bg-cardBg', 'text-slate-300');
       });
-      btn.classList.add('bg-accentCyan', 'text-black', 'border-accentCyan');
-      btn.classList.remove('bg-panelDark', 'border-cardBorder', 'text-slate-300');
-
-      document.getElementById('selectedSeatNotice').innerText = `Selected: Seat ${seatName}`;
-      document.getElementById('passSeatBadge').innerText = `${seatName.split(' ')[0]} • Gate B12`;
+      const activeSeat = document.getElementById('seat-' + seatNo);
+      if (activeSeat) {
+        activeSeat.classList.remove('bg-cardBg', 'text-slate-300');
+        activeSeat.classList.add('bg-accentCyan', 'text-black', 'border-accentCyan');
+      }
+      if (document.getElementById('passSeatBadge')) document.getElementById('passSeatBadge').innerText = seatNo;
     }
 
-    // Modal Voucher
-    function openVoucherModal(pnr, passenger, pkg, amount) {
-      document.getElementById('modalPnr').innerText = pnr;
-      document.getElementById('modalPassenger').innerText = passenger;
-      document.getElementById('modalPackage').innerText = pkg;
-      document.getElementById('modalAmount').innerText = amount;
-      document.getElementById('voucherModal').classList.remove('hidden');
+    // Modal Voucher Logic
+    function openVoucherModal(pnr, client, pkg, amount) {
+      if (document.getElementById('modalPnr')) document.getElementById('modalPnr').innerText = pnr;
+      if (document.getElementById('modalPassenger')) document.getElementById('modalPassenger').innerText = client;
+      if (document.getElementById('modalPackage')) document.getElementById('modalPackage').innerText = pkg;
+      if (document.getElementById('modalAmount')) document.getElementById('modalAmount').innerText = amount;
+      const modal = document.getElementById('voucherModal');
+      if (modal) modal.classList.remove('hidden');
     }
 
     function closeVoucherModal() {
-      document.getElementById('voucherModal').classList.add('hidden');
+      const modal = document.getElementById('voucherModal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function triggerBookHold() {
-      const dst = document.getElementById('flightDest').value;
-      const dstData = destinationDB[dst] || destinationDB['DXB'];
-      const total = document.getElementById('calcGrossTotal').innerText;
-      openVoucherModal(`TBO-${dst}-98421`, 'Srivastava Family', `${dstData.city} Luxury Package`, total);
+      const dstInput = document.getElementById('flightDestInput');
+      const dst = resolveCity(dstInput ? dstInput.value : 'Dubai');
+      const total = document.getElementById('calcGrossTotal') ? document.getElementById('calcGrossTotal').innerText : '$2,910.88';
+      openVoucherModal(`TBO-${dst.code}-98421`, 'Srivastava Family', `${dst.name} Luxury Package`, total);
     }
 
     function simulateDisruption() {
-      document.getElementById('disruptionFeed').classList.remove('hidden');
+      alert("Simulated GDS Disruption: Flight 6E-501 delayed 45 mins. Sentinel auto-rebooking triggered hold on alternate flight!");
     }
 
     function pingConnectors() {
       document.querySelectorAll('.gds-ping').forEach(el => el.innerText = `${Math.floor(Math.random()*40)+140} ms`);
     }
 
-    // Initial load setup
+    // Auto-initialize on page load
     window.onload = function() {
       executeFlightSearch();
     };
