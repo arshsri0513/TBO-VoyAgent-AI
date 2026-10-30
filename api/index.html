@@ -81,19 +81,89 @@
           <span>Web Check-in</span>
         </button>
 
-        <div class="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-panelDark border border-cardBorder text-xs">
-          <span class="w-2 h-2 rounded-full bg-accentMint pulse-dot"></span>
-          <span class="text-slate-400 font-medium">Agency Credit:</span>
-          <span class="font-bold text-accentMint tracking-wide" id="globalCredit">$48,250.00 USD</span>
-        </div>
-
-        <div class="flex items-center gap-2.5 pl-1">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 flex items-center justify-center text-xs font-bold text-white shadow">
-            AS
+        <!-- Account Wallet Button -->
+        <button onclick="openWalletModal()" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-panelDark border border-cardBorder hover:border-accentMint/50 text-xs transition cursor-pointer group shadow-sm">
+          <div class="w-6 h-6 rounded-lg bg-accentMint/15 text-accentMint flex items-center justify-center text-xs">
+            <i class="fa-solid fa-wallet"></i>
           </div>
-          <div class="hidden lg:block text-left text-xs">
-            <div class="font-bold text-slate-200">Arsh Srivastava</div>
-            <div class="text-[10px] text-accentCyan">TBO Diamond Partner</div>
+          <div class="text-left">
+            <div class="text-[9px] uppercase tracking-wider text-slate-400 font-bold group-hover:text-accentMint transition">Account Wallet</div>
+            <div class="font-bold text-accentMint tracking-wide text-xs" id="globalCredit">$48,250.00 USD</div>
+          </div>
+          <i class="fa-solid fa-chevron-down text-[9px] text-slate-500 ml-0.5 group-hover:text-accentMint transition"></i>
+        </button>
+
+        <!-- Top Right Profile & Login Section with Dropdown -->
+        <div class="relative" id="profileDropdownContainer">
+          <button id="profileDropdownBtn" onclick="toggleProfileDropdown(event)" class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-panelDark border border-cardBorder hover:border-accentCyan/50 transition cursor-pointer text-left group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-accentCyan border border-white/20 flex items-center justify-center text-xs font-bold text-black shadow font-mono" id="navAvatarInitials">
+              AS
+            </div>
+            <div class="hidden lg:block text-left text-xs">
+              <div class="font-bold text-slate-200 group-hover:text-accentCyan transition flex items-center gap-1.5">
+                <span id="navUserName">Arsh Srivastava</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-accentMint"></span>
+              </div>
+              <div class="text-[10px] text-accentCyan font-medium" id="navUserRole">
+                TBO Diamond Partner
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 group-hover:text-accentCyan transition ml-0.5"></i>
+          </button>
+
+          <!-- Profile & Login Dropdown Menu -->
+          <div id="profileDropdownMenu" class="hidden absolute right-0 mt-2 w-72 rounded-2xl bg-[#091124] border border-cardBorder shadow-2xl z-50 p-3 space-y-2.5 backdrop-blur-xl">
+            <!-- User Brief -->
+            <div class="flex items-center gap-3 p-2.5 rounded-xl bg-cardBg border border-cardBorder/60">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-accentCyan text-black font-extrabold flex items-center justify-center text-sm shadow" id="menuAvatarInitials">
+                AS
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="font-bold text-white text-xs truncate" id="menuUserName">Arsh Srivastava</div>
+                <div class="text-[10px] text-slate-400 truncate" id="menuUserEmail">arsh@travelcopilot.ai</div>
+                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] bg-accentCyan/15 text-accentCyan font-semibold mt-1" id="menuUserBadge">
+                  <i class="fa-solid fa-gem text-[8px]"></i> TBO Diamond Partner
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 gap-2 text-center text-[10px]">
+              <div class="p-2 rounded-lg bg-panelDark border border-cardBorder/40">
+                <div class="text-slate-400">Agency ID</div>
+                <div class="font-mono font-bold text-accentCyan text-[11px]" id="menuAgencyId">TBO-IND-8842</div>
+              </div>
+              <div class="p-2 rounded-lg bg-panelDark border border-cardBorder/40">
+                <div class="text-slate-400">KYC Status</div>
+                <div class="font-bold text-accentMint text-[11px] flex items-center justify-center gap-1">
+                  <i class="fa-solid fa-circle-check text-[9px]"></i> Verified
+                </div>
+              </div>
+            </div>
+
+            <!-- Menu Actions -->
+            <div class="space-y-1 text-xs border-t border-cardBorder/60 pt-2">
+              <button onclick="openProfileModal(); toggleProfileDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-200 hover:bg-cardBg hover:text-white transition text-left">
+                <i class="fa-regular fa-id-badge text-accentCyan text-sm w-4 text-center"></i>
+                <span>Agency Profile & KYC</span>
+              </button>
+              <button onclick="openWalletModal(); toggleProfileDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-200 hover:bg-cardBg hover:text-white transition text-left">
+                <i class="fa-solid fa-wallet text-accentMint text-sm w-4 text-center"></i>
+                <span>Account Wallet & Ledger</span>
+              </button>
+              <button onclick="openLoginModal(); toggleProfileDropdown();" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-slate-200 hover:bg-cardBg hover:text-white transition text-left">
+                <i class="fa-solid fa-right-to-bracket text-blue-400 text-sm w-4 text-center"></i>
+                <span>Switch Account / Sign In</span>
+              </button>
+            </div>
+
+            <!-- Sign Out -->
+            <div class="border-t border-cardBorder/60 pt-1.5">
+              <button onclick="handleSignOut(); toggleProfileDropdown();" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-rose-400 hover:bg-rose-500/10 transition text-xs font-semibold">
+                <span class="flex items-center gap-2"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out</span>
+                <span class="text-[10px] text-slate-500 font-mono">v2.4.0</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -842,7 +912,262 @@
     </div>
   </div>
 
-  <!-- Corporate Footer -->
+    <!-- ========================================== -->
+  <!-- MODAL: ACCOUNT WALLET & CREDIT FACILITY      -->
+  <!-- ========================================== -->
+  <div id="walletModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel max-w-xl w-full rounded-2xl p-6 border border-accentMint/40 space-y-4 shadow-2xl animate-fade-in">
+      <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-accentMint/15 text-accentMint flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+          <div>
+            <span class="font-bold text-sm text-white">Agency Account Wallet & Credit Facility</span>
+            <div class="text-[10px] text-slate-400">Enterprise B2A Multi-Currency Settlement</div>
+          </div>
+        </div>
+        <button onclick="closeWalletModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <!-- Wallet Balance Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+        <div class="p-3 rounded-xl bg-cardBg border border-accentMint/30 space-y-1">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Available Balance</div>
+          <div class="text-base font-extrabold text-accentMint" id="modalWalletBalance">$48,250.00</div>
+          <div class="text-[9px] text-slate-400 font-mono">Instant Settlement Ready</div>
+        </div>
+        <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Credit Facility</div>
+          <div class="text-base font-extrabold text-accentCyan">$100,000.00</div>
+          <div class="text-[9px] text-slate-400">Tier 1 Approved Limit</div>
+        </div>
+        <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
+          <div class="text-[10px] uppercase font-bold text-slate-400">Active PNR Holds</div>
+          <div class="text-base font-extrabold text-amber-400" id="modalEscrow">$2,910.88</div>
+          <div class="text-[9px] text-slate-400">Escrow Reserved</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-2 pt-1 text-xs">
+        <button onclick="addWalletFunds(5000)" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-accentMint to-emerald-600 text-black font-extrabold flex items-center gap-1.5 shadow-md hover:opacity-90 transition">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Add +$5,000 Funds</span>
+        </button>
+        <button onclick="addWalletFunds(10000)" class="px-3.5 py-2 rounded-xl bg-panelDark border border-accentMint/40 hover:border-accentMint text-accentMint font-bold flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-building-columns text-xs"></i>
+          <span>Add +$10,000 Wire Deposit</span>
+        </button>
+        <button onclick="alert('Monthly Tax Invoice & Statement (PDF) generated.')" class="px-3.5 py-2 rounded-xl bg-cardBg border border-cardBorder hover:border-white text-slate-300 font-medium flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-file-invoice-dollar text-xs"></i>
+          <span>Download Statement</span>
+        </button>
+      </div>
+
+      <!-- Recent Transactions Ledger -->
+      <div class="space-y-2 pt-2 border-t border-cardBorder">
+        <div class="text-[11px] font-bold text-slate-300 flex justify-between items-center">
+          <span>Recent Ledger Transactions</span>
+          <span class="text-[10px] text-accentCyan font-mono">Real-time Core Ledger</span>
+        </div>
+        <div class="space-y-1.5 max-h-36 overflow-y-auto custom-scroll pr-1 text-[11px]">
+          <div class="flex items-center justify-between p-2 rounded-lg bg-panelDark border border-cardBorder/60">
+            <div>
+              <div class="font-semibold text-white">PNR Hold Hold #TBO-DXB-98421</div>
+              <div class="text-[9px] text-slate-400">31 Oct 2026 • GDS Hold Lock</div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold text-rose-400 font-mono">-$2,599.00</div>
+              <div class="text-[9px] text-amber-400">Escrow Hold</div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-panelDark border border-cardBorder/60">
+            <div>
+              <div class="font-semibold text-white">Direct Bank Wire Deposit</div>
+              <div class="text-[9px] text-slate-400">30 Oct 2026 • Ref: TBO-WIRE-99214</div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold text-accentMint font-mono">+$25,000.00</div>
+              <div class="text-[9px] text-accentMint">Settled</div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-lg bg-panelDark border border-cardBorder/60">
+            <div>
+              <div class="font-semibold text-white">Quarterly Performance Bonus Payout</div>
+              <div class="text-[9px] text-slate-400">28 Oct 2026 • 12% Preferred Volume Incentive</div>
+            </div>
+            <div class="text-right">
+              <div class="font-bold text-accentCyan font-mono">+$1,840.00</div>
+              <div class="text-[9px] text-accentMint">Credited</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-cardBorder text-xs">
+        <button onclick="closeWalletModal()" class="px-4 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: AGENCY PROFILE & KYC                -->
+  <!-- ========================================== -->
+  <div id="profileModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel max-w-lg w-full rounded-2xl p-6 border border-accentCyan/40 space-y-4 shadow-2xl animate-fade-in">
+      <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-accentCyan/15 text-accentCyan flex items-center justify-center text-sm font-bold">
+            <i class="fa-regular fa-id-badge"></i>
+          </div>
+          <div>
+            <span class="font-bold text-sm text-white">Agency Profile & Verification Status</span>
+            <div class="text-[10px] text-slate-400">TBO Verified Enterprise Partner</div>
+          </div>
+        </div>
+        <button onclick="closeProfileModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <!-- Profile Form Fields -->
+      <div class="space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[11px] font-bold text-slate-400">Managing Agent Name</label>
+            <input type="text" id="editAgentName" value="Arsh Srivastava" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-slate-400">Partner Tier</label>
+            <input type="text" id="editAgentRole" value="TBO Diamond Partner" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-accentCyan font-bold outline-none" readonly>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[11px] font-bold text-slate-400">Agency Name</label>
+            <input type="text" value="Srivastava Global Travel Copilot Ltd." class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-200 outline-none">
+          </div>
+          <div>
+            <label class="text-[11px] font-bold text-slate-400">Agency Code / CID</label>
+            <input type="text" value="TBO-IND-8842" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-400 font-mono outline-none" readonly>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[11px] font-bold text-slate-400">Official Contact Email</label>
+          <input type="email" id="editAgentEmail" value="arsh@travelcopilot.ai" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white outline-none focus:border-accentCyan">
+        </div>
+
+        <div class="p-3 rounded-xl bg-panelDark border border-cardBorder/60 space-y-1">
+          <div class="text-[11px] font-bold text-slate-300">Compliance & Security</div>
+          <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+            <div>• IATA Reg: <span class="text-white">14-3 9821 4</span></div>
+            <div>• 2FA Security: <span class="text-accentMint font-bold">Enabled (Biometric)</span></div>
+            <div>• Credit Settlement: <span class="text-white">Net-15 Days</span></div>
+            <div>• Data Privacy: <span class="text-accentMint font-bold">Zero-PII Tokenized</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-cardBorder text-xs">
+        <button onclick="closeProfileModal()" class="px-4 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold">Cancel</button>
+        <button onclick="saveProfileChanges()" class="px-4 py-2 rounded-xl bg-accentCyan text-black font-extrabold flex items-center gap-1.5 shadow-md">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Save Changes</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: AGENT LOGIN & SWITCH ACCOUNT        -->
+  <!-- ========================================== -->
+  <div id="loginModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="glass-panel max-w-md w-full rounded-2xl p-6 border border-cardBorder space-y-4 shadow-2xl animate-fade-in">
+      <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-accentCyan to-blue-600 flex items-center justify-center text-black font-black text-sm">
+            <i class="fa-solid fa-plane"></i>
+          </div>
+          <div>
+            <div class="font-extrabold text-sm text-white">tbo.<span class="text-accentCyan">copilot</span> Sign In</div>
+            <div class="text-[10px] text-slate-400">Enterprise B2A Travel Partner Authentication</div>
+          </div>
+        </div>
+        <button onclick="closeLoginModal()" class="text-slate-400 hover:text-white text-xl">&times;</button>
+      </div>
+
+      <!-- Login Form -->
+      <form onsubmit="event.preventDefault(); processLoginForm();" class="space-y-3 text-xs">
+        <div>
+          <label class="text-[11px] font-bold text-slate-400">Agency ID or Email</label>
+          <div class="relative mt-1">
+            <i class="fa-solid fa-user absolute left-3 top-3 text-slate-500 text-xs"></i>
+            <input type="text" id="loginUsername" value="arsh@travelcopilot.ai" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
+          </div>
+        </div>
+
+        <div>
+          <div class="flex justify-between items-center">
+            <label class="text-[11px] font-bold text-slate-400">Password</label>
+            <a href="javascript:void(0)" onclick="alert('Password reset link sent to registered enterprise administrator.')" class="text-[10px] text-accentCyan hover:underline">Forgot?</a>
+          </div>
+          <div class="relative mt-1">
+            <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-500 text-xs"></i>
+            <input type="password" id="loginPassword" value="DemoPassword123" class="w-full pl-9 pr-9 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-3 text-slate-500 hover:text-slate-300">
+              <i class="fa-regular fa-eye text-xs" id="pwdToggleIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px]">
+          <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+            <input type="checkbox" checked class="accent-accentCyan rounded">
+            <span>Remember Agency Device</span>
+          </label>
+          <span class="text-accentMint text-[10px] flex items-center gap-1 font-semibold">
+            <i class="fa-solid fa-shield-halved"></i> 256-Bit SSL
+          </span>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center justify-center gap-1.5 shadow-md shadow-cyan-500/20">
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span>Sign In to Copilot B2A</span>
+        </button>
+      </form>
+
+      <!-- Quick Switch Demo Profiles -->
+      <div class="border-t border-cardBorder/60 pt-3 space-y-2">
+        <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Quick Demo Switch (1-Click Login):</div>
+        <div class="space-y-1.5 text-xs">
+          <button type="button" onclick="selectDemoUser('Arsh Srivastava', 'TBO Diamond Partner', 'AS', 'arsh@travelcopilot.ai', '$48,250.00 USD')" class="w-full flex items-center justify-between p-2 rounded-xl bg-cardBg border border-cardBorder hover:border-accentCyan transition text-left">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-accentCyan text-black font-black flex items-center justify-center text-[10px]">AS</div>
+              <div>
+                <div class="font-bold text-white text-[11px]">Arsh Srivastava</div>
+                <div class="text-[9px] text-accentCyan">TBO Diamond Partner</div>
+              </div>
+            </div>
+            <span class="text-[10px] text-accentMint font-semibold">Default</span>
+          </button>
+
+          <button type="button" onclick="selectDemoUser('Priya Sharma', 'Senior Corporate Desk', 'PS', 'priya.s@voyage.tbo.com', '$32,180.00 USD')" class="w-full flex items-center justify-between p-2 rounded-xl bg-cardBg border border-cardBorder hover:border-accentCyan transition text-left">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white font-black flex items-center justify-center text-[10px]">PS</div>
+              <div>
+                <div class="font-bold text-white text-[11px]">Priya Sharma</div>
+                <div class="text-[9px] text-slate-400">Senior Corporate Desk</div>
+              </div>
+            </div>
+            <span class="text-[10px] text-slate-400">Switch &rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Corporate Footer -->
   <footer class="border-t border-cardBorder/60 bg-[#060B18] px-6 py-6 text-xs text-slate-400">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
       <div class="flex items-center gap-2">
@@ -1385,6 +1710,153 @@
 
     function pingConnectors() {
       document.querySelectorAll('.gds-ping').forEach(el => el.innerText = `${Math.floor(Math.random()*40)+140} ms`);
+    }
+
+    // ==========================================
+    // ACCOUNT WALLET & PROFILE / LOGIN LOGIC
+    // ==========================================
+    function toggleProfileDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('profileDropdownMenu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    // Close profile dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const container = document.getElementById('profileDropdownContainer');
+      const menu = document.getElementById('profileDropdownMenu');
+      if (container && menu && !container.contains(e.target)) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    // Wallet Modal Functions
+    function openWalletModal() {
+      const modal = document.getElementById('walletModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeWalletModal() {
+      const modal = document.getElementById('walletModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    let currentWalletVal = 48250.00;
+    function addWalletFunds(amt) {
+      currentWalletVal += amt;
+      const formatted = '$' + currentWalletVal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      const headerCredit = document.getElementById('globalCredit');
+      const modalBal = document.getElementById('modalWalletBalance');
+      if (headerCredit) headerCredit.innerText = formatted + ' USD';
+      if (modalBal) modalBal.innerText = formatted;
+
+      const notice = document.getElementById('searchNotice');
+      const noticeText = document.getElementById('searchNoticeText');
+      if (notice && noticeText) {
+        noticeText.innerHTML = `✓ <strong>Account Wallet Credited:</strong> Added +$${amt.toLocaleString()} USD via instant wire. New balance: <strong>${formatted} USD</strong>.`;
+        notice.classList.remove('hidden');
+        setTimeout(() => { notice.classList.add('hidden'); }, 4500);
+      }
+    }
+
+    // Profile Modal Functions
+    function openProfileModal() {
+      const modal = document.getElementById('profileModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeProfileModal() {
+      const modal = document.getElementById('profileModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function saveProfileChanges() {
+      const nameInput = document.getElementById('editAgentName');
+      const emailInput = document.getElementById('editAgentEmail');
+      const name = nameInput ? nameInput.value : 'Arsh Srivastava';
+      const email = emailInput ? emailInput.value : 'arsh@travelcopilot.ai';
+      const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'AS';
+
+      if (document.getElementById('navUserName')) document.getElementById('navUserName').innerText = name;
+      if (document.getElementById('menuUserName')) document.getElementById('menuUserName').innerText = name;
+      if (document.getElementById('menuUserEmail')) document.getElementById('menuUserEmail').innerText = email;
+      if (document.getElementById('navAvatarInitials')) document.getElementById('navAvatarInitials').innerText = initials;
+      if (document.getElementById('menuAvatarInitials')) document.getElementById('menuAvatarInitials').innerText = initials;
+
+      closeProfileModal();
+
+      const notice = document.getElementById('searchNotice');
+      const noticeText = document.getElementById('searchNoticeText');
+      if (notice && noticeText) {
+        noticeText.innerHTML = `✓ <strong>Profile Saved:</strong> Agency credentials updated for <strong>${name}</strong> (${email}).`;
+        notice.classList.remove('hidden');
+        setTimeout(() => { notice.classList.add('hidden'); }, 4000);
+      }
+    }
+
+    // Login Modal & Switch User Functions
+    function openLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('loginModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function togglePasswordVisibility() {
+      const pwd = document.getElementById('loginPassword');
+      const icon = document.getElementById('pwdToggleIcon');
+      if (pwd) {
+        if (pwd.type === 'password') {
+          pwd.type = 'text';
+          if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+        } else {
+          pwd.type = 'password';
+          if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+        }
+      }
+    }
+
+    function processLoginForm() {
+      const user = document.getElementById('loginUsername') ? document.getElementById('loginUsername').value : 'Arsh Srivastava';
+      const name = user.includes('@') ? user.split('@')[0].replace('.', ' ') : user;
+      const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+      const initials = formattedName.slice(0, 2).toUpperCase();
+
+      selectDemoUser(formattedName, 'TBO Verified Partner', initials, user, '$48,250.00 USD');
+    }
+
+    function selectDemoUser(name, role, initials, email, walletBalance) {
+      if (document.getElementById('navUserName')) document.getElementById('navUserName').innerText = name;
+      if (document.getElementById('navUserRole')) document.getElementById('navUserRole').innerText = role;
+      if (document.getElementById('navAvatarInitials')) document.getElementById('navAvatarInitials').innerText = initials;
+      if (document.getElementById('menuAvatarInitials')) document.getElementById('menuAvatarInitials').innerText = initials;
+      if (document.getElementById('menuUserName')) document.getElementById('menuUserName').innerText = name;
+      if (document.getElementById('menuUserEmail')) document.getElementById('menuUserEmail').innerText = email;
+      if (document.getElementById('menuUserBadge')) {
+        document.getElementById('menuUserBadge').innerHTML = `<i class="fa-solid fa-gem text-[8px]"></i> ${role}`;
+      }
+      if (document.getElementById('globalCredit')) document.getElementById('globalCredit').innerText = walletBalance;
+      if (document.getElementById('modalWalletBalance')) document.getElementById('modalWalletBalance').innerText = walletBalance.replace(' USD', '');
+
+      closeLoginModal();
+
+      const notice = document.getElementById('searchNotice');
+      const noticeText = document.getElementById('searchNoticeText');
+      if (notice && noticeText) {
+        noticeText.innerHTML = `✓ <strong>Partner Session Active:</strong> Signed in as <strong>${name}</strong> (${role}). Account Wallet verified.`;
+        notice.classList.remove('hidden');
+        setTimeout(() => { notice.classList.add('hidden'); }, 4000);
+      }
+    }
+
+    function handleSignOut() {
+      if (document.getElementById('navUserName')) document.getElementById('navUserName').innerText = 'Sign In';
+      if (document.getElementById('navUserRole')) document.getElementById('navUserRole').innerText = 'Partner Login';
+      if (document.getElementById('navAvatarInitials')) document.getElementById('navAvatarInitials').innerText = '?';
+      openLoginModal();
     }
 
     // Auto-initialize on page load
