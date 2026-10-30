@@ -32,6 +32,7 @@
     .glass-panel { background: rgba(16, 28, 61, 0.85); backdrop-filter: blur(12px); border: 1px solid #233876; }
     .pulse-dot { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+    .nav-btn.active { background-color: rgba(0, 212, 255, 0.12); color: #00D4FF; border-color: rgba(0, 212, 255, 0.35); font-weight: 700; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col bg-[#080E21] text-slate-100 antialiased selection:bg-accentCyan selection:text-black">
@@ -55,11 +56,21 @@
           </div>
         </div>
 
-        <nav class="hidden md:flex items-center gap-1 pl-6 border-l border-cardBorder/60 text-xs font-semibold text-slate-300">
-          <span class="px-3 py-1.5 rounded-lg bg-accentCyan/10 text-accentCyan font-bold">Studio</span>
-          <span class="px-3 py-1.5 rounded-lg hover:text-white transition cursor-pointer">Live Bookings</span>
-          <span class="px-3 py-1.5 rounded-lg hover:text-white transition cursor-pointer">Supplier GDS</span>
-          <span class="px-3 py-1.5 rounded-lg hover:text-white transition cursor-pointer">Rate Caching</span>
+        <!-- Working Navigation Tabs -->
+        <nav class="flex items-center gap-1.5 pl-4 sm:pl-6 border-l border-cardBorder/60 text-xs font-semibold text-slate-300">
+          <button id="tab-studio" onclick="switchTab('studio')" class="nav-btn active px-3.5 py-1.5 rounded-lg border border-transparent transition flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-[11px]"></i> Studio
+          </button>
+          <button id="tab-bookings" onclick="switchTab('bookings')" class="nav-btn px-3.5 py-1.5 rounded-lg border border-transparent transition hover:text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-ticket text-[11px]"></i> Live Bookings
+            <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-accentMint/20 text-accentMint font-bold">4</span>
+          </button>
+          <button id="tab-gds" onclick="switchTab('gds')" class="nav-btn px-3.5 py-1.5 rounded-lg border border-transparent transition hover:text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-network-wired text-[11px]"></i> Supplier GDS
+          </button>
+          <button id="tab-caching" onclick="switchTab('caching')" class="nav-btn px-3.5 py-1.5 rounded-lg border border-transparent transition hover:text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-database text-[11px]"></i> Rate Caching
+          </button>
         </nav>
       </div>
 
@@ -69,7 +80,7 @@
         <div class="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-panelDark border border-cardBorder text-xs">
           <span class="w-2 h-2 rounded-full bg-accentMint pulse-dot"></span>
           <span class="text-slate-400 font-medium">Agency Credit:</span>
-          <span class="font-bold text-accentMint tracking-wide">$48,250.00 USD</span>
+          <span class="font-bold text-accentMint tracking-wide" id="globalCredit">$48,250.00 USD</span>
         </div>
 
         <!-- Agent Profile -->
@@ -86,299 +97,651 @@
     </div>
   </header>
 
-  <!-- Main Studio Workspace -->
+  <!-- Main View Container -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-6 space-y-6">
 
-    <!-- Top Live Status & Metrics Bar -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4">
-      <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-sm font-bold">
-          <i class="fa-solid fa-bolt"></i>
-        </div>
-        <div>
-          <div class="text-base font-extrabold text-white">2.4s Avg</div>
-          <div class="text-[11px] text-slate-400">Quote Generation</div>
-        </div>
-      </div>
-
-      <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-accentMint/10 text-accentMint flex items-center justify-center text-sm font-bold">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <div>
-          <div class="text-base font-extrabold text-accentMint">+32.4%</div>
-          <div class="text-[11px] text-slate-400">Conversion Lift</div>
-        </div>
-      </div>
-
-      <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-accentAmber/10 text-accentAmber flex items-center justify-center text-sm font-bold">
-          <i class="fa-solid fa-database"></i>
-        </div>
-        <div>
-          <div class="text-base font-extrabold text-accentAmber">-42% GDS</div>
-          <div class="text-[11px] text-slate-400">Look-to-Book Cost</div>
-        </div>
-      </div>
-
-      <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm font-bold">
-          <i class="fa-solid fa-shield-halved"></i>
-        </div>
-        <div>
-          <div class="text-base font-extrabold text-white">72% Auto</div>
-          <div class="text-[11px] text-slate-400">Support Deflection</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Core 2-Column Split Interface: Left AI Copilot | Right Booking Canvas -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <!-- ========================================== -->
+    <!-- TAB 1: STUDIO (AI Copilot & Canvas) -->
+    <!-- ========================================== -->
+    <div id="view-studio" class="space-y-6">
       
-      <!-- LEFT COLUMN: Autonomous Agent Copilot (5 cols) -->
-      <div class="lg:col-span-5 glass-panel rounded-2xl p-5 space-y-4 flex flex-col h-[740px]">
-        
-        <!-- Copilot Header -->
-        <div class="flex items-center justify-between border-b border-cardBorder/60 pb-3">
-          <div class="flex items-center gap-2.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-accentMint pulse-dot"></span>
-            <span class="font-bold text-sm text-slate-100">Autonomous Agent Copilot</span>
+      <!-- Top Live Status & Metrics Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-4">
+        <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-accentCyan/10 text-accentCyan flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-bolt"></i>
           </div>
-          <span class="text-[11px] text-slate-400 font-mono">Model: LangGraph Router</span>
-        </div>
-
-        <!-- Quick Prompt Chips -->
-        <div class="flex flex-wrap gap-1.5 text-[11px]">
-          <button onclick="setPrompt('Family holiday to Dubai, 2 adults + 1 child (age 7), Nov 15-20, budget $3,200. Direct flights from Mumbai, hotel near JBR, Burj Khalifa & Desert Safari.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-            🌴 Dubai Family Package
-          </button>
-          <button onclick="setPrompt('4-day honeymoon to Maldives, private water villa, speed boat transfer included, budget $4,500.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-            🏝️ Maldives Luxury
-          </button>
-          <button onclick="setPrompt('3-day corporate business trip to London for 1 pax, direct flight from Delhi, Central London 4-star hotel.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-            💼 London Executive
-          </button>
-        </div>
-
-        <!-- Chat Stream Window -->
-        <div id="chatStream" class="flex-1 overflow-y-auto custom-scroll space-y-3 pr-1 text-xs">
-          
-          <!-- Agent Greeting -->
-          <div class="flex gap-2.5 items-start">
-            <div class="w-7 h-7 rounded-lg bg-accentCyan/20 text-accentCyan flex items-center justify-center font-bold shrink-0 mt-0.5">
-              <i class="fa-solid fa-robot text-xs"></i>
-            </div>
-            <div class="p-3.5 rounded-2xl rounded-tl-sm bg-panelDark border border-cardBorder text-slate-200 leading-relaxed max-w-[90%]">
-              Hello Arsh! I am your <strong>TBO VoyAgent Copilot</strong>. Describe any customer travel requirement in plain English. I will parse dates, search live GDS flights, check hotel bedbanks, apply your agency margin, and assemble a live bookable itinerary instantly.
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Agent Live Status Tracker -->
-        <div id="statusTracker" class="hidden px-3 py-2 rounded-xl bg-cardBg/90 border border-cardBorder text-[11px] text-accentCyan flex items-center gap-2">
-          <i class="fa-solid fa-spinner fa-spin"></i>
-          <span id="statusMessage">Querying GDS & Hotelbed connectors...</span>
-        </div>
-
-        <!-- Chat Input Form -->
-        <div class="border-t border-cardBorder/60 pt-3 space-y-2">
-          <div class="relative">
-            <textarea id="agentInput" rows="2" class="w-full rounded-xl bg-cardBg border border-cardBorder focus:border-accentCyan outline-none px-3.5 py-2.5 text-xs text-white placeholder-slate-500 resize-none leading-relaxed" placeholder="Type customer travel request or select a preset above..."></textarea>
-          </div>
-          <div class="flex items-center justify-between gap-2">
-            <span class="text-[11px] text-slate-400"><i class="fa-solid fa-lock text-[10px] text-accentMint"></i> Zero-PII Tokenized Guardrail</span>
-            <button id="sendBtn" onclick="runCopilot()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center gap-1.5 shadow-md shadow-cyan-500/20">
-              <span>Assemble Itinerary</span>
-              <i class="fa-solid fa-arrow-right text-xs"></i>
-            </button>
+          <div>
+            <div class="text-base font-extrabold text-white">2.4s Avg</div>
+            <div class="text-[11px] text-slate-400">Quote Generation</div>
           </div>
         </div>
 
+        <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-accentMint/10 text-accentMint flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div>
+            <div class="text-base font-extrabold text-accentMint">+32.4%</div>
+            <div class="text-[11px] text-slate-400">Conversion Lift</div>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-accentAmber/10 text-accentAmber flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <div>
+            <div class="text-base font-extrabold text-accentAmber">-42% GDS</div>
+            <div class="text-[11px] text-slate-400">Look-to-Book Cost</div>
+          </div>
+        </div>
+
+        <div class="glass-panel rounded-xl p-3.5 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <div class="text-base font-extrabold text-white">72% Auto</div>
+            <div class="text-[11px] text-slate-400">Support Deflection</div>
+          </div>
+        </div>
       </div>
 
-      <!-- RIGHT COLUMN: Interactive Dynamic Travel Canvas (7 cols) -->
-      <div class="lg:col-span-7 space-y-5">
+      <!-- Core 2-Column Split Interface -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         
-        <!-- Live Itinerary Banner & Margin Controller -->
-        <div class="glass-panel rounded-2xl p-5 space-y-4">
-          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-cardBorder/60 pb-3">
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 class="text-base font-bold text-white" id="itineraryTitle">5-Day Luxury Family Experience • Dubai, UAE</h2>
-                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-accentMint/10 text-accentMint border border-accentMint/30">Live Validated Hold</span>
-              </div>
-              <p class="text-xs text-slate-400 mt-0.5" id="itinerarySubtitle">Nov 15 - Nov 20, 2026 • 2 Adults, 1 Child (Age 7) • Direct Flights Included</p>
-            </div>
-            
-            <button onclick="triggerBookHold()" class="px-4 py-2 rounded-xl bg-accentMint text-black font-extrabold text-xs hover:bg-emerald-400 transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
-              <i class="fa-solid fa-ticket"></i>
-              <span>One-Click PNR Hold</span>
-            </button>
-          </div>
-
-          <!-- Dynamic Agency Margin Calculator -->
-          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
-            <div>
-              <div class="text-[10px] uppercase font-bold text-slate-400">Net Supplier Cost</div>
-              <div class="text-lg font-black text-white" id="calcNetCost">$2,599.00</div>
-              <div class="text-[10px] text-slate-400">GDS + Bedbank Total</div>
-            </div>
-
-            <!-- Margin Slider -->
-            <div class="sm:col-span-2 space-y-1.5 px-2">
-              <div class="flex justify-between items-center text-xs">
-                <span class="font-bold text-slate-300">Agency Profit Margin:</span>
-                <span class="font-extrabold text-accentCyan text-sm" id="calcMarginLabel">12% Markup (+$311.88)</span>
-              </div>
-              <input type="range" id="marginSlider" min="5" max="25" value="12" oninput="updateMargin(this.value)" class="w-full accent-accentCyan cursor-pointer">
-              <div class="flex justify-between text-[10px] text-slate-500">
-                <span>5% (Competitive)</span>
-                <span>12% (Recommended)</span>
-                <span>25% (High Tier)</span>
-              </div>
-            </div>
-
-            <div>
-              <div class="text-[10px] uppercase font-bold text-accentMint">Client Quote Price</div>
-              <div class="text-xl font-black text-accentMint" id="calcGrossTotal">$2,910.88</div>
-              <div class="text-[10px] text-emerald-400 font-medium">Headroom: +$289.12 under budget</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Curated Product Bundles: Flight, Hotel & Experiences -->
-        <div class="space-y-3">
+        <!-- LEFT COLUMN: Autonomous Agent Copilot -->
+        <div class="lg:col-span-5 glass-panel rounded-2xl p-5 space-y-4 flex flex-col h-[740px]">
           
-          <!-- 1. Flight Card -->
-          <div class="glass-panel rounded-xl p-4 transition hover:border-accentCyan/60 border border-cardBorder">
-            <div class="flex items-center justify-between border-b border-cardBorder/40 pb-2.5 mb-3 text-xs">
-              <div class="flex items-center gap-2">
-                <span class="w-6 h-6 rounded-md bg-red-600/20 text-red-400 flex items-center justify-center font-bold text-[10px]">EK</span>
-                <span class="font-bold text-slate-100">Emirates Airlines • Direct GDS</span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-cardBg text-slate-400">Flight EK 501</span>
-              </div>
-              <span class="font-bold text-accentMint text-xs">$420 / pax</span>
+          <div class="flex items-center justify-between border-b border-cardBorder/60 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-accentMint pulse-dot"></span>
+              <span class="font-bold text-sm text-slate-100">Autonomous Agent Copilot</span>
             </div>
+            <span class="text-[11px] text-slate-400 font-mono">Model: LangGraph Router</span>
+          </div>
 
-            <div class="grid grid-cols-3 items-center text-center py-1">
-              <div class="text-left">
-                <div class="text-base font-extrabold text-white">10:00 AM</div>
-                <div class="text-xs font-semibold text-slate-300">BOM • Mumbai</div>
-                <div class="text-[10px] text-slate-400">Terminal 2</div>
+          <!-- Quick Prompt Chips -->
+          <div class="flex flex-wrap gap-1.5 text-[11px]">
+            <button onclick="setPrompt('Family holiday to Dubai, 2 adults + 1 child (age 7), Nov 15-20, budget $3,200. Direct flights from Mumbai, hotel near JBR, Burj Khalifa & Desert Safari.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+              🌴 Dubai Family Package
+            </button>
+            <button onclick="setPrompt('4-day honeymoon to Maldives, private water villa, speed boat transfer included, budget $4,500.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+              🏝️ Maldives Luxury
+            </button>
+            <button onclick="setPrompt('3-day corporate business trip to London for 1 pax, direct flight from Delhi, Central London 4-star hotel.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+              💼 London Executive
+            </button>
+          </div>
+
+          <!-- Chat Stream Window -->
+          <div id="chatStream" class="flex-1 overflow-y-auto custom-scroll space-y-3 pr-1 text-xs">
+            <div class="flex gap-2.5 items-start">
+              <div class="w-7 h-7 rounded-lg bg-accentCyan/20 text-accentCyan flex items-center justify-center font-bold shrink-0 mt-0.5">
+                <i class="fa-solid fa-robot text-xs"></i>
               </div>
-
-              <div class="space-y-1">
-                <div class="text-[11px] text-slate-400">3h 15m • Non-stop</div>
-                <div class="relative flex items-center justify-center">
-                  <div class="w-full h-[1px] bg-slate-600"></div>
-                  <i class="fa-solid fa-plane text-accentCyan text-xs absolute"></i>
-                </div>
-                <div class="text-[10px] text-accentMint font-medium">9 Seats Available</div>
-              </div>
-
-              <div class="text-right">
-                <div class="text-base font-extrabold text-white">12:15 PM</div>
-                <div class="text-xs font-semibold text-slate-300">DXB • Dubai</div>
-                <div class="text-[10px] text-slate-400">Terminal 3</div>
+              <div class="p-3.5 rounded-2xl rounded-tl-sm bg-panelDark border border-cardBorder text-slate-200 leading-relaxed max-w-[90%]">
+                Hello Arsh! I am your <strong>TBO VoyAgent Copilot</strong>. Describe any customer travel requirement in plain English. I will parse dates, search live GDS flights, check hotel bedbanks, apply your agency margin, and assemble a live bookable itinerary instantly.
               </div>
             </div>
           </div>
 
-          <!-- 2. Hotel Card with Image -->
-          <div class="glass-panel rounded-xl p-4 transition hover:border-accentCyan/60 border border-cardBorder flex flex-col sm:flex-row gap-4 items-center">
-            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80" alt="Hotel Palm Jumeirah" class="w-full sm:w-36 h-28 object-cover rounded-lg border border-cardBorder shrink-0">
-            <div class="flex-1 space-y-1.5 w-full">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1 text-accentAmber text-xs">
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span class="text-[11px] font-bold text-slate-300 ml-1">5-Star Luxury</span>
-                </div>
-                <span class="font-bold text-accentMint text-xs">$220 / night</span>
-              </div>
-              <h4 class="font-bold text-sm text-white">Amwaj Rotana — Jumeirah Beach Residence</h4>
-              <p class="text-xs text-slate-400">Family Sea Front Room • 4 Nights • Private Balcony & Sea View</p>
-              <div class="flex flex-wrap gap-1.5 pt-1 text-[10px]">
-                <span class="px-2 py-0.5 rounded bg-cardBg text-accentMint border border-accentMint/20"><i class="fa-solid fa-check"></i> Free Breakfast</span>
-                <span class="px-2 py-0.5 rounded bg-cardBg text-accentMint border border-accentMint/20"><i class="fa-solid fa-check"></i> Free Cancellation</span>
-                <span class="px-2 py-0.5 rounded bg-cardBg text-slate-300">Kids Club Access</span>
-              </div>
-            </div>
+          <!-- Agent Live Status Tracker -->
+          <div id="statusTracker" class="hidden px-3 py-2 rounded-xl bg-cardBg/90 border border-cardBorder text-[11px] text-accentCyan flex items-center gap-2">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span id="statusMessage">Querying GDS & Hotelbed connectors...</span>
           </div>
 
-          <!-- 3. Included Sightseeing & Transfers -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-            <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
-              <div class="text-accentCyan font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-building"></i> Burj Khalifa
-              </div>
-              <div class="text-[11px] text-slate-300 font-medium">Levels 124 & 125 Access</div>
-              <div class="text-[10px] text-slate-400">Day 2 • 10:00 AM Non-peak</div>
+          <!-- Chat Input Form -->
+          <div class="border-t border-cardBorder/60 pt-3 space-y-2">
+            <div class="relative">
+              <textarea id="agentInput" rows="2" class="w-full rounded-xl bg-cardBg border border-cardBorder focus:border-accentCyan outline-none px-3.5 py-2.5 text-xs text-white placeholder-slate-500 resize-none leading-relaxed" placeholder="Type customer travel request or select a preset above..."></textarea>
             </div>
-
-            <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
-              <div class="text-accentAmber font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-dune"></i> Desert Safari
-              </div>
-              <div class="text-[11px] text-slate-300 font-medium">4x4 Dune Buggy & BBQ</div>
-              <div class="text-[10px] text-slate-400">Day 3 • Kid-friendly buggy</div>
-            </div>
-
-            <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
-              <div class="text-accentMint font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-car-side"></i> Private SUV Transfer
-              </div>
-              <div class="text-[11px] text-slate-300 font-medium">DXB Airport ⇄ JBR Hotel</div>
-              <div class="text-[10px] text-slate-400">Chauffeured Luxury Pickup</div>
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] text-slate-400"><i class="fa-solid fa-lock text-[10px] text-accentMint"></i> Zero-PII Tokenized Guardrail</span>
+              <button id="sendBtn" onclick="runCopilot()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center gap-1.5 shadow-md shadow-cyan-500/20">
+                <span>Assemble Itinerary</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
             </div>
           </div>
 
         </div>
 
-        <!-- 4. Autonomous Disruption Sentinel Widget (Live Exception Recovery) -->
-        <div class="glass-panel rounded-2xl p-5 border border-accentAmber/40 space-y-3 bg-gradient-to-r from-panelDark via-cardBg to-panelDark">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-lg bg-accentAmber/20 text-accentAmber flex items-center justify-center text-sm font-bold">
-                <i class="fa-solid fa-bell"></i>
-              </span>
+        <!-- RIGHT COLUMN: Interactive Dynamic Travel Canvas -->
+        <div class="lg:col-span-7 space-y-5">
+          
+          <!-- Live Itinerary Banner & Margin Controller -->
+          <div class="glass-panel rounded-2xl p-5 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-cardBorder/60 pb-3">
               <div>
-                <h3 class="font-bold text-sm text-white">Autonomous Disruption Sentinel</h3>
-                <p class="text-[11px] text-slate-400">Real-time GDS flight webhook listener & automated supplier rescheduling</p>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-base font-bold text-white" id="itineraryTitle">5-Day Luxury Family Experience • Dubai, UAE</h2>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-accentMint/10 text-accentMint border border-accentMint/30">Live Validated Hold</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-0.5" id="itinerarySubtitle">Nov 15 - Nov 20, 2026 • 2 Adults, 1 Child (Age 7) • Direct Flights Included</p>
+              </div>
+              
+              <button onclick="triggerBookHold()" class="px-4 py-2 rounded-xl bg-accentMint text-black font-extrabold text-xs hover:bg-emerald-400 transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-ticket"></i>
+                <span>One-Click PNR Hold</span>
+              </button>
+            </div>
+
+            <!-- Dynamic Agency Margin Calculator -->
+            <div class="p-4 rounded-xl bg-cardBg border border-cardBorder grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+              <div>
+                <div class="text-[10px] uppercase font-bold text-slate-400">Net Supplier Cost</div>
+                <div class="text-lg font-black text-white" id="calcNetCost">$2,599.00</div>
+                <div class="text-[10px] text-slate-400">GDS + Bedbank Total</div>
+              </div>
+
+              <!-- Margin Slider -->
+              <div class="sm:col-span-2 space-y-1.5 px-2">
+                <div class="flex justify-between items-center text-xs">
+                  <span class="font-bold text-slate-300">Agency Profit Margin:</span>
+                  <span class="font-extrabold text-accentCyan text-sm" id="calcMarginLabel">12% Markup (+$311.88)</span>
+                </div>
+                <input type="range" id="marginSlider" min="5" max="25" value="12" oninput="updateMargin(this.value)" class="w-full accent-accentCyan cursor-pointer">
+                <div class="flex justify-between text-[10px] text-slate-500">
+                  <span>5% (Competitive)</span>
+                  <span>12% (Recommended)</span>
+                  <span>25% (High Tier)</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-[10px] uppercase font-bold text-accentMint">Client Quote Price</div>
+                <div class="text-xl font-black text-accentMint" id="calcGrossTotal">$2,910.88</div>
+                <div class="text-[10px] text-emerald-400 font-medium">Headroom: +$289.12 under budget</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Curated Product Bundles: Flight, Hotel & Experiences -->
+          <div class="space-y-3">
+            
+            <!-- 1. Flight Card -->
+            <div class="glass-panel rounded-xl p-4 transition hover:border-accentCyan/60 border border-cardBorder">
+              <div class="flex items-center justify-between border-b border-cardBorder/40 pb-2.5 mb-3 text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-md bg-red-600/20 text-red-400 flex items-center justify-center font-bold text-[10px]">EK</span>
+                  <span class="font-bold text-slate-100">Emirates Airlines • Direct GDS</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-cardBg text-slate-400">Flight EK 501</span>
+                </div>
+                <span class="font-bold text-accentMint text-xs">$420 / pax</span>
+              </div>
+
+              <div class="grid grid-cols-3 items-center text-center py-1">
+                <div class="text-left">
+                  <div class="text-base font-extrabold text-white">10:00 AM</div>
+                  <div class="text-xs font-semibold text-slate-300">BOM • Mumbai</div>
+                  <div class="text-[10px] text-slate-400">Terminal 2</div>
+                </div>
+
+                <div class="space-y-1">
+                  <div class="text-[11px] text-slate-400">3h 15m • Non-stop</div>
+                  <div class="relative flex items-center justify-center">
+                    <div class="w-full h-[1px] bg-slate-600"></div>
+                    <i class="fa-solid fa-plane text-accentCyan text-xs absolute"></i>
+                  </div>
+                  <div class="text-[10px] text-accentMint font-medium">9 Seats Available</div>
+                </div>
+
+                <div class="text-right">
+                  <div class="text-base font-extrabold text-white">12:15 PM</div>
+                  <div class="text-xs font-semibold text-slate-300">DXB • Dubai</div>
+                  <div class="text-[10px] text-slate-400">Terminal 3</div>
+                </div>
               </div>
             </div>
 
-            <button onclick="simulateDisruption()" class="px-3.5 py-1.5 rounded-xl bg-accentAmber/20 hover:bg-accentAmber/30 border border-accentAmber/50 text-accentAmber font-bold text-xs transition flex items-center gap-1.5">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <span>Simulate Flight Delay (+4.5h)</span>
-            </button>
+            <!-- 2. Hotel Card with Image -->
+            <div class="glass-panel rounded-xl p-4 transition hover:border-accentCyan/60 border border-cardBorder flex flex-col sm:flex-row gap-4 items-center">
+              <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80" alt="Hotel Palm Jumeirah" class="w-full sm:w-36 h-28 object-cover rounded-lg border border-cardBorder shrink-0">
+              <div class="flex-1 space-y-1.5 w-full">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-1 text-accentAmber text-xs">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <span class="text-[11px] font-bold text-slate-300 ml-1">5-Star Luxury</span>
+                  </div>
+                  <span class="font-bold text-accentMint text-xs">$220 / night</span>
+                </div>
+                <h4 class="font-bold text-sm text-white">Amwaj Rotana — Jumeirah Beach Residence</h4>
+                <p class="text-xs text-slate-400">Family Sea Front Room • 4 Nights • Private Balcony & Sea View</p>
+                <div class="flex flex-wrap gap-1.5 pt-1 text-[10px]">
+                  <span class="px-2 py-0.5 rounded bg-cardBg text-accentMint border border-accentMint/20"><i class="fa-solid fa-check"></i> Free Breakfast</span>
+                  <span class="px-2 py-0.5 rounded bg-cardBg text-accentMint border border-accentMint/20"><i class="fa-solid fa-check"></i> Free Cancellation</span>
+                  <span class="px-2 py-0.5 rounded bg-cardBg text-slate-300">Kids Club Access</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Included Sightseeing & Transfers -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
+                <div class="text-accentCyan font-bold flex items-center gap-1.5">
+                  <i class="fa-solid fa-building"></i> Burj Khalifa
+                </div>
+                <div class="text-[11px] text-slate-300 font-medium">Levels 124 & 125 Access</div>
+                <div class="text-[10px] text-slate-400">Day 2 • 10:00 AM Non-peak</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
+                <div class="text-accentAmber font-bold flex items-center gap-1.5">
+                  <i class="fa-solid fa-dune"></i> Desert Safari
+                </div>
+                <div class="text-[11px] text-slate-300 font-medium">4x4 Dune Buggy & BBQ</div>
+                <div class="text-[10px] text-slate-400">Day 3 • Kid-friendly buggy</div>
+              </div>
+
+              <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-1">
+                <div class="text-accentMint font-bold flex items-center gap-1.5">
+                  <i class="fa-solid fa-car-side"></i> Private SUV Transfer
+                </div>
+                <div class="text-[11px] text-slate-300 font-medium">DXB Airport ⇄ JBR Hotel</div>
+                <div class="text-[10px] text-slate-400">Chauffeured Luxury Pickup</div>
+              </div>
+            </div>
+
           </div>
 
-          <!-- Recovery Log Alert (Dynamic) -->
-          <div id="disruptionFeed" class="hidden p-3.5 rounded-xl bg-[#091124] border border-accentAmber/30 space-y-2 text-xs">
-            <div class="font-bold text-accentAmber flex items-center gap-2">
-              <i class="fa-solid fa-circle-exclamation"></i> Ingested GDS Webhook: EK 501 delayed from 10:00 AM to 02:30 PM (Air Traffic Delay)
+          <!-- 4. Autonomous Disruption Sentinel Widget -->
+          <div class="glass-panel rounded-2xl p-5 border border-accentAmber/40 space-y-3 bg-gradient-to-r from-panelDark via-cardBg to-panelDark">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-accentAmber/20 text-accentAmber flex items-center justify-center text-sm font-bold">
+                  <i class="fa-solid fa-bell"></i>
+                </span>
+                <div>
+                  <h3 class="font-bold text-sm text-white">Autonomous Disruption Sentinel</h3>
+                  <p class="text-[11px] text-slate-400">Real-time GDS flight webhook listener & automated supplier rescheduling</p>
+                </div>
+              </div>
+
+              <button onclick="simulateDisruption()" class="px-3.5 py-1.5 rounded-xl bg-accentAmber/20 hover:bg-accentAmber/30 border border-accentAmber/50 text-accentAmber font-bold text-xs transition flex items-center gap-1.5">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Simulate Flight Delay (+4.5h)</span>
+              </button>
             </div>
-            <div class="space-y-1 pl-4 text-slate-300 text-[11px]">
-              <div>• <strong class="text-white">Auto-Action 1:</strong> Private SUV airport pickup rescheduled to 05:30 PM (Supplier fee waived).</div>
-              <div>• <strong class="text-white">Auto-Action 2:</strong> Hotel front desk notified of late 07:00 PM check-in (Room hold confirmed).</div>
-              <div>• <strong class="text-white">Auto-Action 3:</strong> Revised itinerary voucher dispatched to passenger WhatsApp with zero human agent manual effort.</div>
-            </div>
-            <div class="text-[10px] text-accentMint font-bold pt-1">
-              ✓ 100% Automated Disruption Resolution • Cost: $0.00 • Support Ticket Deflected
+
+            <div id="disruptionFeed" class="hidden p-3.5 rounded-xl bg-[#091124] border border-accentAmber/30 space-y-2 text-xs">
+              <div class="font-bold text-accentAmber flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation"></i> Ingested GDS Webhook: EK 501 delayed from 10:00 AM to 02:30 PM (Air Traffic Delay)
+              </div>
+              <div class="space-y-1 pl-4 text-slate-300 text-[11px]">
+                <div>• <strong class="text-white">Auto-Action 1:</strong> Private SUV airport pickup rescheduled to 05:30 PM (Supplier fee waived).</div>
+                <div>• <strong class="text-white">Auto-Action 2:</strong> Hotel front desk notified of late 07:00 PM check-in (Room hold confirmed).</div>
+                <div>• <strong class="text-white">Auto-Action 3:</strong> Revised itinerary voucher dispatched to passenger WhatsApp with zero human agent manual effort.</div>
+              </div>
+              <div class="text-[10px] text-accentMint font-bold pt-1">
+                ✓ 100% Automated Disruption Resolution • Cost: $0.00 • Support Ticket Deflected
+              </div>
             </div>
           </div>
+
         </div>
 
       </div>
 
     </div>
 
-    <!-- Official Architectural Whitepaper & Video Walkthrough Section -->
+    <!-- ========================================== -->
+    <!-- TAB 2: LIVE BOOKINGS (Agency Ledger & PNR) -->
+    <!-- ========================================== -->
+    <div id="view-bookings" class="hidden space-y-6">
+      <div class="glass-panel rounded-2xl p-6 space-y-5">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cardBorder/60 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-ticket text-accentCyan"></i> Agency Bookings & PNR Ledger
+            </h2>
+            <p class="text-xs text-slate-400">Real-time GDS ticketed PNRs, bedbank room allocations, and active client holds</p>
+          </div>
+
+          <div class="flex items-center gap-2 text-xs">
+            <span class="px-3 py-1.5 rounded-lg bg-cardBg border border-cardBorder text-slate-300 font-mono">Total GMV: <strong class="text-accentMint">$184,200.00</strong></span>
+            <button onclick="alert('Exporting active bookings to CSV/Excel...')" class="px-3.5 py-1.5 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-accentCyan font-bold hover:bg-accentCyan/20 transition">
+              <i class="fa-solid fa-file-csv"></i> Export
+            </button>
+          </div>
+        </div>
+
+        <!-- Bookings Filter Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
+          <input type="text" placeholder="Search PNR or Traveler Name..." class="px-3.5 py-2 rounded-xl bg-cardBg border border-cardBorder text-white focus:border-accentCyan outline-none">
+          <select class="px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 focus:border-accentCyan outline-none">
+            <option>All Statuses (Active & Ticketed)</option>
+            <option>HELD (Pending Payment)</option>
+            <option>CONFIRMED / TICKETED</option>
+            <option>DISRUPTION RESOLVED</option>
+          </select>
+          <select class="px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 focus:border-accentCyan outline-none">
+            <option>All Destinations</option>
+            <option>Dubai, UAE</option>
+            <option>Maldives</option>
+            <option>London, UK</option>
+          </select>
+          <button class="px-4 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-filter"></i> Apply Filters
+          </button>
+        </div>
+
+        <!-- Bookings Data Table -->
+        <div class="overflow-x-auto rounded-xl border border-cardBorder">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-[#091124] text-slate-400 uppercase text-[10px] font-bold tracking-wider border-b border-cardBorder">
+              <tr>
+                <th class="p-3.5">PNR / Ref</th>
+                <th class="p-3.5">Lead Traveler</th>
+                <th class="p-3.5">Destination & Product</th>
+                <th class="p-3.5">Travel Dates</th>
+                <th class="p-3.5">Gross Amount</th>
+                <th class="p-3.5">Status</th>
+                <th class="p-3.5 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-cardBorder/60 bg-panelDark/50">
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-accentCyan">TBO-DXB-98421</td>
+                <td class="p-3.5 font-bold text-white">Srivastava Family (2A1C)</td>
+                <td class="p-3.5">Emirates Flight + Amwaj Rotana JBR + Safari</td>
+                <td class="p-3.5 text-slate-400">Nov 15 - 20, 2026</td>
+                <td class="p-3.5 font-bold text-accentMint">$2,910.88</td>
+                <td class="p-3.5">
+                  <span class="px-2 py-0.5 rounded-full bg-accentAmber/10 border border-accentAmber/30 text-accentAmber text-[10px] font-bold">
+                    HELD (21h left)
+                  </span>
+                </td>
+                <td class="p-3.5 text-right space-x-2">
+                  <button onclick="openVoucherModal('TBO-DXB-98421', 'Srivastava Family', 'Dubai 5-Day Luxury', '$2,910.88')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">
+                    View Voucher
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-accentCyan">TBO-MLE-44120</td>
+                <td class="p-3.5 font-bold text-white">Rohit & Priya Mehta</td>
+                <td class="p-3.5">Sheraton Maldives Water Villa + Speedboat</td>
+                <td class="p-3.5 text-slate-400">Dec 01 - 06, 2026</td>
+                <td class="p-3.5 font-bold text-accentMint">$4,350.00</td>
+                <td class="p-3.5">
+                  <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint text-[10px] font-bold">
+                    CONFIRMED
+                  </span>
+                </td>
+                <td class="p-3.5 text-right space-x-2">
+                  <button onclick="openVoucherModal('TBO-MLE-44120', 'Rohit Mehta', 'Maldives Water Villa', '$4,350.00')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">
+                    View Voucher
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-accentCyan">TBO-LON-10982</td>
+                <td class="p-3.5 font-bold text-white">Vikram Malhotra</td>
+                <td class="p-3.5">Air India Direct + The Strand Palace London</td>
+                <td class="p-3.5 text-slate-400">Nov 22 - 25, 2026</td>
+                <td class="p-3.5 font-bold text-accentMint">$1,890.00</td>
+                <td class="p-3.5">
+                  <span class="px-2 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-[10px] font-bold">
+                    AUTO-RESOLVED
+                  </span>
+                </td>
+                <td class="p-3.5 text-right space-x-2">
+                  <button onclick="openVoucherModal('TBO-LON-10982', 'Vikram Malhotra', 'London Executive', '$1,890.00')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">
+                    View Voucher
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-accentCyan">TBO-SIN-77312</td>
+                <td class="p-3.5 font-bold text-white">Ananya Sen</td>
+                <td class="p-3.5">Singapore Airlines + Marina Bay Sands</td>
+                <td class="p-3.5 text-slate-400">Jan 10 - 15, 2027</td>
+                <td class="p-3.5 font-bold text-accentMint">$3,120.00</td>
+                <td class="p-3.5">
+                  <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint text-[10px] font-bold">
+                    TICKETED
+                  </span>
+                </td>
+                <td class="p-3.5 text-right space-x-2">
+                  <button onclick="openVoucherModal('TBO-SIN-77312', 'Ananya Sen', 'Singapore Sands Tour', '$3,120.00')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">
+                    View Voucher
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: SUPPLIER GDS (Connector Health & APIs) -->
+    <!-- ========================================== -->
+    <div id="view-gds" class="hidden space-y-6">
+      <div class="glass-panel rounded-2xl p-6 space-y-5">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cardBorder/60 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-network-wired text-accentCyan"></i> Multi-Supplier GDS & Bedbank Connectors
+            </h2>
+            <p class="text-xs text-slate-400">Real-time gateway connectivity status, protocol latency, and circuit breaker health</p>
+          </div>
+
+          <button onclick="pingConnectors()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center gap-2 shadow-md shadow-cyan-500/20">
+            <i class="fa-solid fa-rotate"></i>
+            <span id="pingBtnText">Ping All Connectors</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          
+          <!-- Connector 1 -->
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-white text-sm">Amadeus GDS (Flights)</span>
+              <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint font-bold text-[10px]">OPERATIONAL</span>
+            </div>
+            <div class="space-y-1 text-slate-400 text-[11px]">
+              <div>• Protocol: <strong class="text-slate-200">NDC 21.3 / SOAP 1.2</strong></div>
+              <div>• Response Latency: <strong class="text-accentMint gds-ping" data-base="184">184 ms</strong></div>
+              <div>• Availability Cache: <strong class="text-slate-200">Active (Redis Cluster)</strong></div>
+              <div>• SLA Target: <strong class="text-slate-200">99.98%</strong></div>
+            </div>
+          </div>
+
+          <!-- Connector 2 -->
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-white text-sm">Sabre GDS (Flights)</span>
+              <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint font-bold text-[10px]">OPERATIONAL</span>
+            </div>
+            <div class="space-y-1 text-slate-400 text-[11px]">
+              <div>• Protocol: <strong class="text-slate-200">REST JSON / Sabre Bargain Max</strong></div>
+              <div>• Response Latency: <strong class="text-accentMint gds-ping" data-base="210">210 ms</strong></div>
+              <div>• Availability Cache: <strong class="text-slate-200">Active</strong></div>
+              <div>• SLA Target: <strong class="text-slate-200">99.94%</strong></div>
+            </div>
+          </div>
+
+          <!-- Connector 3 -->
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-white text-sm">Hotelbeds Hub (Hotels)</span>
+              <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint font-bold text-[10px]">OPERATIONAL</span>
+            </div>
+            <div class="space-y-1 text-slate-400 text-[11px]">
+              <div>• Protocol: <strong class="text-slate-200">APItude REST v3</strong></div>
+              <div>• Response Latency: <strong class="text-accentMint gds-ping" data-base="142">142 ms</strong></div>
+              <div>• Inventory Base: <strong class="text-slate-200">42,000 Direct Contracted</strong></div>
+              <div>• SLA Target: <strong class="text-slate-200">99.99%</strong></div>
+            </div>
+          </div>
+
+          <!-- Connector 4 -->
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-white text-sm">WebBeds (Hotels Hub)</span>
+              <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint font-bold text-[10px]">OPERATIONAL</span>
+            </div>
+            <div class="space-y-1 text-slate-400 text-[11px]">
+              <div>• Protocol: <strong class="text-slate-200">DOTW XML / JSON Gateway</strong></div>
+              <div>• Response Latency: <strong class="text-accentMint gds-ping" data-base="165">165 ms</strong></div>
+              <div>• Rate De-duplication: <strong class="text-slate-200">Semantic Matching Engine</strong></div>
+              <div>• SLA Target: <strong class="text-slate-200">99.95%</strong></div>
+            </div>
+          </div>
+
+          <!-- Connector 5 -->
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-white text-sm">TBO Sightseeing Gateway</span>
+              <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint font-bold text-[10px]">OPERATIONAL</span>
+            </div>
+            <div class="space-y-1 text-slate-400 text-[11px]">
+              <div>• Protocol: <strong class="text-slate-200">TBO Native Experiences API</strong></div>
+              <div>• Response Latency: <strong class="text-accentMint gds-ping" data-base="98">98 ms</strong></div>
+              <div>• Dynamic Inclusions: <strong class="text-slate-200">Active (Transfers + Tickets)</strong></div>
+              <div>• SLA Target: <strong class="text-slate-200">99.99%</strong></div>
+            </div>
+          </div>
+
+          <!-- Connector 6 -->
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder space-y-2.5">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-white text-sm">Travelport GDS (Backup)</span>
+              <span class="px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 font-bold text-[10px]">CIRCUIT SAFE</span>
+            </div>
+            <div class="space-y-1 text-slate-400 text-[11px]">
+              <div>• Protocol: <strong class="text-slate-200">Universal API (Air v50)</strong></div>
+              <div>• Failover Threshold: <strong class="text-slate-200">> 3.0s latency trigger</strong></div>
+              <div>• Mode: <strong class="text-slate-200">Automatic Failover Route</strong></div>
+              <div>• SLA Target: <strong class="text-slate-200">Standby Ready</strong></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: RATE CACHING (Look-to-Book Analytics) -->
+    <!-- ========================================== -->
+    <div id="view-caching" class="hidden space-y-6">
+      <div class="glass-panel rounded-2xl p-6 space-y-5">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cardBorder/60 pb-4">
+          <div>
+            <h2 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-database text-accentCyan"></i> Look-to-Book Redis Smart Caching Analytics
+            </h2>
+            <p class="text-xs text-slate-400">Intelligent predictive caching preventing GDS look-to-book penalty surcharges</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="purgeCache()" class="px-3.5 py-1.5 rounded-lg bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold text-xs transition">
+              <i class="fa-solid fa-broom"></i> Flush Stale Keys
+            </button>
+            <button onclick="preFetchRoutes()" class="px-3.5 py-1.5 rounded-lg bg-accentMint/20 border border-accentMint/40 text-accentMint font-bold text-xs hover:bg-accentMint/30 transition">
+              <i class="fa-solid fa-cloud-arrow-down"></i> Pre-Fetch Peak Routes
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Metric Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder">
+            <div class="text-[10px] uppercase font-bold text-slate-400">Cache Hit Ratio</div>
+            <div class="text-2xl font-black text-accentMint">88.4%</div>
+            <div class="text-[10px] text-emerald-400">Target > 80%</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder">
+            <div class="text-[10px] uppercase font-bold text-slate-400">Look-to-Book Ratio</div>
+            <div class="text-2xl font-black text-accentCyan">11.8 : 1</div>
+            <div class="text-[10px] text-cyan-300">Penalty Threshold: 25:1</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder">
+            <div class="text-[10px] uppercase font-bold text-slate-400">GDS Fee Savings</div>
+            <div class="text-2xl font-black text-accentAmber">+$18,420</div>
+            <div class="text-[10px] text-amber-300">Monthly Surcharge Saved</div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-cardBg border border-cardBorder">
+            <div class="text-[10px] uppercase font-bold text-slate-400">Cached Routes</div>
+            <div class="text-2xl font-black text-white" id="cachedKeyCount">14,290</div>
+            <div class="text-[10px] text-slate-400">TTL 15m Dynamic</div>
+          </div>
+        </div>
+
+        <!-- Active Cached Route Table -->
+        <div class="overflow-x-auto rounded-xl border border-cardBorder">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-[#091124] text-slate-400 uppercase text-[10px] font-bold tracking-wider border-b border-cardBorder">
+              <tr>
+                <th class="p-3.5">Route / Cache Key</th>
+                <th class="p-3.5">Category</th>
+                <th class="p-3.5">Cached Supplier Rate</th>
+                <th class="p-3.5">TTL Remaining</th>
+                <th class="p-3.5">Hits Count</th>
+                <th class="p-3.5 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="cacheTableBody" class="divide-y divide-cardBorder/60 bg-panelDark/50">
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-white">flight:BOM:DXB:2026-11-15</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px]">Flight GDS</span></td>
+                <td class="p-3.5 font-bold text-accentMint">$420.00 (Emirates)</td>
+                <td class="p-3.5 text-accentAmber font-mono">11m 42s</td>
+                <td class="p-3.5 font-bold">482 hits</td>
+                <td class="p-3.5 text-right"><button onclick="refreshKey(this)" class="text-accentCyan hover:underline">Re-validate</button></td>
+              </tr>
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-white">hotel:DXB:JBR:4N:Family</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px]">Bedbank</span></td>
+                <td class="p-3.5 font-bold text-accentMint">$220.00 / night (Amwaj Rotana)</td>
+                <td class="p-3.5 text-accentAmber font-mono">08m 15s</td>
+                <td class="p-3.5 font-bold">1,209 hits</td>
+                <td class="p-3.5 text-right"><button onclick="refreshKey(this)" class="text-accentCyan hover:underline">Re-validate</button></td>
+              </tr>
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-white">flight:DEL:LHR:2026-11-22</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px]">Flight GDS</span></td>
+                <td class="p-3.5 font-bold text-accentMint">$680.00 (Air India)</td>
+                <td class="p-3.5 text-accentAmber font-mono">14m 02s</td>
+                <td class="p-3.5 font-bold">294 hits</td>
+                <td class="p-3.5 text-right"><button onclick="refreshKey(this)" class="text-accentCyan hover:underline">Re-validate</button></td>
+              </tr>
+              <tr class="hover:bg-cardBg/60 transition">
+                <td class="p-3.5 font-mono font-bold text-white">activity:DXB:BurjKhalifa:124</td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px]">Sightseeing</span></td>
+                <td class="p-3.5 font-bold text-accentMint">$48.00 / pax</td>
+                <td class="p-3.5 text-accentAmber font-mono">06m 50s</td>
+                <td class="p-3.5 font-bold">811 hits</td>
+                <td class="p-3.5 text-right"><button onclick="refreshKey(this)" class="text-accentCyan hover:underline">Re-validate</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Official Architectural Whitepaper & Video Walkthrough Section (Always Accessible) -->
     <div class="glass-panel rounded-2xl p-6 space-y-4 border border-cardBorder">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cardBorder/60 pb-4">
         <div>
@@ -415,6 +778,56 @@
 
   </main>
 
+  <!-- Digital Voucher Modal -->
+  <div id="voucherModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="glass-panel max-w-lg w-full rounded-2xl p-6 border border-accentCyan/40 space-y-4 shadow-2xl animate-fade-in">
+      <div class="flex items-center justify-between border-b border-cardBorder pb-3">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-qrcode text-accentCyan text-lg"></i>
+          <span class="font-bold text-sm text-white">Digital Travel Confirmation Voucher</span>
+        </div>
+        <button onclick="closeVoucherModal()" class="text-slate-400 hover:text-white text-base">&times;</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="flex justify-between items-center p-3 rounded-xl bg-cardBg">
+          <div>
+            <div class="text-[10px] text-slate-400">PNR Reference</div>
+            <div class="text-base font-mono font-bold text-accentCyan" id="modalPnr">TBO-DXB-98421</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-slate-400">Status</div>
+            <div class="text-xs font-bold text-accentMint">CONFIRMED HOLD</div>
+          </div>
+        </div>
+
+        <div class="space-y-1 text-slate-300">
+          <div>• <strong>Primary Passenger:</strong> <span id="modalPassenger">Srivastava Family</span></div>
+          <div>• <strong>Package:</strong> <span id="modalPackage">Dubai 5-Day Luxury Family Package</span></div>
+          <div>• <strong>Total Billed:</strong> <span id="modalAmount" class="font-bold text-accentMint">$2,910.88</span></div>
+          <div>• <strong>Issuing Agency:</strong> Travel Elite Agency (Partner ID: TBO-9810)</div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-[#091124] border border-cardBorder flex items-center justify-between">
+          <div class="font-mono text-[10px] text-slate-400 space-y-0.5">
+            <div>BARCODE: 9812-7841-0923</div>
+            <div>VERIFICATION: SIGNED_SHA256_OK</div>
+          </div>
+          <i class="fa-solid fa-barcode text-3xl text-slate-400"></i>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 pt-2 border-t border-cardBorder text-xs">
+        <button onclick="closeVoucherModal()" class="px-4 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold">
+          Close
+        </button>
+        <button onclick="alert('Digital PDF voucher downloaded to agency folder.'); closeVoucherModal();" class="px-4 py-2 rounded-xl bg-accentCyan text-black font-extrabold flex items-center gap-1.5">
+          <i class="fa-solid fa-download"></i> Print / Download
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Clean Corporate Footer -->
   <footer class="border-t border-cardBorder/60 bg-[#060B18] px-6 py-6 text-xs text-slate-400">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -428,8 +841,80 @@
     </div>
   </footer>
 
-  <!-- Script for Interactive Copilot -->
+  <!-- Scripts for Tab Switching & Interactivity -->
   <script>
+    function switchTab(tabId) {
+      // 1. Update Navigation Buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('tab-' + tabId);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // 2. Hide all view panels
+      ['studio', 'bookings', 'gds', 'caching'].forEach(id => {
+        const el = document.getElementById('view-' + id);
+        if (el) el.classList.add('hidden');
+      });
+
+      // 3. Show active panel
+      const targetView = document.getElementById('view-' + tabId);
+      if (targetView) targetView.classList.remove('hidden');
+    }
+
+    // Modal Functions
+    function openVoucherModal(pnr, passenger, pkg, amount) {
+      document.getElementById('modalPnr').innerText = pnr;
+      document.getElementById('modalPassenger').innerText = passenger;
+      document.getElementById('modalPackage').innerText = pkg;
+      document.getElementById('modalAmount').innerText = amount;
+      document.getElementById('voucherModal').classList.remove('hidden');
+    }
+
+    function closeVoucherModal() {
+      document.getElementById('voucherModal').classList.add('hidden');
+    }
+
+    // Ping GDS Connectors Simulation
+    function pingConnectors() {
+      const btn = document.getElementById('pingBtnText');
+      btn.innerText = "Pinging Connectors...";
+      
+      const elements = document.querySelectorAll('.gds-ping');
+      elements.forEach(el => {
+        el.innerText = "...";
+      });
+
+      setTimeout(() => {
+        elements.forEach(el => {
+          const base = parseInt(el.getAttribute('data-base') || 150);
+          const jitter = Math.floor(Math.random() * 20) - 10;
+          el.innerText = `${base + jitter} ms`;
+        });
+        btn.innerText = "Pings Refreshed (100% OK)";
+        setTimeout(() => { btn.innerText = "Ping All Connectors"; }, 2000);
+      }, 800);
+    }
+
+    // Cache Operations Simulation
+    function purgeCache() {
+      alert("Flushed 142 expired route keys. Redis memory usage optimized.");
+    }
+
+    function preFetchRoutes() {
+      const countEl = document.getElementById('cachedKeyCount');
+      let current = parseInt(countEl.innerText.replace(',', ''));
+      countEl.innerText = (current + 250).toLocaleString();
+      alert("Pre-fetched 250 high-frequency winter flight routes into Redis Cache.");
+    }
+
+    function refreshKey(btn) {
+      btn.innerText = "Validating...";
+      setTimeout(() => {
+        btn.innerText = "Refreshed ✓";
+        setTimeout(() => { btn.innerText = "Re-validate"; }, 1500);
+      }, 500);
+    }
+
+    // Copilot Simulation
     function setPrompt(text) {
       document.getElementById('agentInput').value = text;
       runCopilot();
@@ -444,7 +929,6 @@
       const tracker = document.getElementById('statusTracker');
       const statusMsg = document.getElementById('statusMessage');
 
-      // Append User message
       const userDiv = document.createElement('div');
       userDiv.className = 'flex gap-2.5 items-start justify-end';
       userDiv.innerHTML = `
@@ -455,7 +939,6 @@
       chat.appendChild(userDiv);
       chat.scrollTop = chat.scrollHeight;
 
-      // Show Tracker
       tracker.classList.remove('hidden');
       statusMsg.innerText = "Parsing dates, passenger composition & budget constraints...";
 
@@ -470,7 +953,6 @@
       setTimeout(() => {
         tracker.classList.add('hidden');
 
-        // Agent Response
         const agentDiv = document.createElement('div');
         agentDiv.className = 'flex gap-2.5 items-start animate-fade-in';
         agentDiv.innerHTML = `
@@ -496,7 +978,6 @@
       const net = 2599.00;
       const margin = (net * (val / 100.0));
       const total = net + margin;
-      const savings = 3200.00 - total;
 
       document.getElementById('calcMarginLabel').innerText = `${val}% Markup (+$${margin.toFixed(2)})`;
       document.getElementById('calcGrossTotal').innerText = `$${total.toFixed(2)}`;
@@ -509,7 +990,7 @@
     }
 
     function triggerBookHold() {
-      alert("PNR GENERATED: TBO-DXB-98421\\n\\nInventory successfully held for 24 hours with TBO Flight Engine and Bedbank Hub. Digital vouchers ready in agency ledger.");
+      openVoucherModal('TBO-DXB-98421', 'Srivastava Family', 'Dubai 5-Day Luxury Family Package', '$2,910.88');
     }
   </script>
 </body>
