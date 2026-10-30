@@ -27,7 +27,7 @@ async def health():
     return {"status": "ok", "app": "VoyAgent AI", "track": "Virtual travel Agent / copilot"}
 
 # Catch-all route to serve the rich interactive UI on ALL paths (/, /api, /index, etc.)
-@app.api_route("/{full_path:path}", methods=["GET", "POST"])
+@app.api_route("/{full_path:path}", methods=["GET", "POST", "HEAD"])
 async def catch_all(request: Request, full_path: str = ""):
     if full_path == "api/health":
         return JSONResponse({"status": "ok", "app": "VoyAgent AI"})
