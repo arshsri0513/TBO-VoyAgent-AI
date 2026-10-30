@@ -1,12 +1,23 @@
 # VoyAgent AI — Autonomous Multi-Agent B2B Travel Copilot
 
+[![Live Web App](https://img.shields.io/badge/Live%20Production%20App-tbo--voyagent--ai.vercel.app-00E5FF?style=for-the-badge&logo=vercel)](https://tbo-voyagent-ai.vercel.app)
 [![Event](https://img.shields.io/badge/Competition-TBO.com%20VoyageHack%204.0-0A2540?style=for-the-badge&logo=compass)](https://unstop.com/competitions/crp-voyagehack-40-tbocom-1774031?rstatus=1)
 [![Track](https://img.shields.io/badge/Track-Virtual%20Travel%20Agent%20%2F%20Copilot-0077B6?style=for-the-badge)](https://unstop.com)
-[![License](https://img.shields.io/badge/License-MIT-06D6A0?style=for-the-badge)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-arshsri0513%2FTBO--VoyAgent--AI-181717?style=for-the-badge&logo=github)](https://github.com/arshsri0513/TBO-VoyAgent-AI)
 [![Python](https://img.shields.io/badge/Python-3.12-FFD166?style=for-the-badge&logo=python)](https://python.org)
 
 > **Official Submission for CRP - VoyageHack 4.0 by TBO.com**  
 > *Transforming natural traveller intent into live bookable multi-supplier itineraries with real-time price locks, margin optimization, and autonomous 24/7 post-booking disruption care.*
+
+---
+
+## 🌐 Live Web Application & Submission Links
+
+* **🚀 Production SaaS Copilot (Vercel):** [https://tbo-voyagent-ai.vercel.app](https://tbo-voyagent-ai.vercel.app)
+* **💻 GitHub Source Repository:** [https://github.com/arshsri0513/TBO-VoyAgent-AI](https://github.com/arshsri0513/TBO-VoyAgent-AI)
+* **📑 10-Slide Submission Presentation (PDF):** [`TBO_VoyAgent_AI_Submission.pdf`](TBO_VoyAgent_AI_Submission.pdf)
+* **📊 Editable Submission Deck (PPTX):** [`TBO_VoyAgent_AI_Submission.pptx`](TBO_VoyAgent_AI_Submission.pptx)
+* **🎥 90-Second Full HD Pitch Video (MP4):** [`TBO_VoyAgent_AI_Pitch_Video.mp4`](TBO_VoyAgent_AI_Pitch_Video.mp4)
 
 ---
 
@@ -19,7 +30,8 @@ Modern travel agents lose between **45 to 90 minutes per lead** toggling across 
 2. **Concurrent Multi-Supplier Bundler:** Concurrently queries Flights (GDS/NDC), Hotel bedbanks, and Sightseeing APIs, locking live inventory without price slippage.
 3. **Look-to-Book Smart Caching:** Predictive Redis caching slashes third-party supplier API query costs by **42%**.
 4. **Dynamic Margin Maximizer:** Algorithmically optimizes agency markups, ancillary cross-sells, and preferred supplier contracts.
-5. **Autonomous Disruption Sentinel:** Listens to airline schedule changes via webhooks and automatically reschedules ground transfers, updates hotel check-in desks, and alerts travellers on WhatsApp.
+5. **Multi-Platform Price Benchmark:** Evaluates wholesale B2B package cost in real-time against Goibibo, MakeMyTrip, IndiGo Direct, and Agoda to guarantee superior agency margins and competitive traveler savings.
+6. **Autonomous Disruption Sentinel:** Listens to airline schedule changes via webhooks and automatically reschedules ground transfers, updates hotel check-in desks, and alerts travellers on WhatsApp.
 
 ---
 
@@ -28,7 +40,7 @@ Modern travel agents lose between **45 to 90 minutes per lead** toggling across 
 ```mermaid
 flowchart TD
     subgraph Channels["Omnichannel Ingestion Layer"]
-        UI["B2B Agent Web Workspace"]
+        UI["B2B Agent Web Workspace (tbo-voyagent-ai.vercel.app)"]
         WA["Traveler WhatsApp Concierge"]
         VOICE["Speech-to-Intent Voice IVR"]
     end
@@ -90,7 +102,14 @@ flowchart TD
 
 ## 🚀 Quickstart & Live Demo
 
-### 1. Installation
+### 1. Try the Live Web Application
+Open [https://tbo-voyagent-ai.vercel.app](https://tbo-voyagent-ai.vercel.app) in any browser.
+* **Manual City Typing:** Type any origin (e.g. *Patna*, *Delhi*, *London*) and destination (*Mumbai/Bombay*, *Dubai*, *Goa*, *Maldives*).
+* **Copilot Natural Language:** Enter queries like `"patna to bombay"`, `"delhi to goa for 4 days"`, or click the quick preset chips.
+* **Live Competitor Benchmark:** Watch wholesale rates update against Goibibo, IndiGo Direct, and Agoda in real time.
+* **Interactive Web Check-in Assist:** Click "Web Check-in" to generate an airline boarding pass with seat selection.
+
+### 2. Local Python Prototype Execution
 ```bash
 # Clone the repository
 git clone https://github.com/arshsri0513/TBO-VoyAgent-AI.git
@@ -98,24 +117,19 @@ cd TBO-VoyAgent-AI
 
 # Install dependencies
 pip install -r requirements.txt
-```
 
-### 2. Run the Interactive Prototype Simulation
-```bash
+# Run interactive prototype simulation
 python main.py
 ```
 
-### Demo Output Highlights:
-* **Natural Intent Parsing:** Extracts destination, pax composition (2 Adults + 1 Child), budget constraints ($3,200), and amenity tags.
-* **Concurrent Supplier Curation:** Ranks Emirates direct flights, Amwaj Rotana JBR hotel, and child-friendly desert safari activities.
-* **Budget Verification:** Package price ($2,910.88) stays under budget while securing a 12% ($311.88) gross agency commission.
-* **Disruption Event:** Simulates a 5.0-hour flight reschedule webhook; automatically updates ground transfers and dispatches WhatsApp notices without human agent involvement.
-
 ---
 
-## 📂 Repository Structure
+## 📁 Repository Structure
 
 ```
+├── api/
+│   ├── index.html            # Production Vercel single-page application
+│   └── index.py              # Serverless FastAPI router
 ├── app/
 │   ├── __init__.py           # Package initializer
 │   ├── agent.py              # Supervisory Multi-Agent Orchestrator
@@ -127,11 +141,13 @@ python main.py
 │   ├── build_voyagehack_deck.py   # PPTX slide generator
 │   ├── render_slides_and_pdf.py   # Full HD slide renderer & PDF compiler
 │   └── generate_pitch_video.py    # 1080p MP4 pitch video synthesizer
+├── index.html                # Local development web app
 ├── main.py                   # Live simulation executable
 ├── TBO_VoyAgent_AI_Submission.pdf   # Official 10-Slide Deck (PDF)
 ├── TBO_VoyAgent_AI_Submission.pptx  # Official 10-Slide Deck (PPTX)
 ├── TBO_VoyAgent_AI_Pitch_Video.mp4  # Official 90s Full HD Pitch Video (MP4)
 ├── requirements.txt          # Python dependencies
+├── vercel.json               # Vercel deployment configuration
 └── README.md                 # Complete project documentation
 ```
 
@@ -149,6 +165,7 @@ python main.py
 ## 🏆 Hackathon Submission Deliverables
 
 * **Track Selected:** `Virtual travel Agent/travel agent copilot`
+* **Live Web App:** [https://tbo-voyagent-ai.vercel.app](https://tbo-voyagent-ai.vercel.app)
 * **Presentation Deck:** [`TBO_VoyAgent_AI_Submission.pdf`](TBO_VoyAgent_AI_Submission.pdf)
 * **Demo Video Pitch:** [`TBO_VoyAgent_AI_Pitch_Video.mp4`](TBO_VoyAgent_AI_Pitch_Video.mp4)
 * **Author:** Arsh Srivastava ([@arshsri0513](https://github.com/arshsri0513))
