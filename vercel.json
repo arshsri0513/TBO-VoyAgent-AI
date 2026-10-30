@@ -1,8 +1,6 @@
 {
   "version": 2,
-  "name": "tbo-voyagent-ai",
-  "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/(.*)", "destination": "/api/index.py" }
   ]
 }
