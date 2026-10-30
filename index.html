@@ -74,23 +74,19 @@
         </nav>
       </div>
 
-      <!-- Action Buttons, Web Check-in & Profile -->
+      <!-- Action Buttons & Profile -->
       <div class="flex items-center gap-3">
-        
-        <!-- Web Check-in Quick Launch Button -->
         <button onclick="openCheckInModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-accentCyan/20 to-blue-500/20 border border-accentCyan/40 hover:border-accentCyan text-accentCyan font-bold text-xs transition flex items-center gap-1.5 shadow-sm shadow-cyan-500/10">
           <i class="fa-solid fa-passport text-xs"></i>
           <span>Web Check-in</span>
         </button>
 
-        <!-- Live Agency Credit Balance -->
         <div class="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-panelDark border border-cardBorder text-xs">
           <span class="w-2 h-2 rounded-full bg-accentMint pulse-dot"></span>
           <span class="text-slate-400 font-medium">Agency Credit:</span>
           <span class="font-bold text-accentMint tracking-wide" id="globalCredit">$48,250.00 USD</span>
         </div>
 
-        <!-- Agent Profile -->
         <div class="flex items-center gap-2.5 pl-1">
           <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 flex items-center justify-center text-xs font-bold text-white shadow">
             AS
@@ -120,7 +116,6 @@
           <span class="text-[10px] px-2 py-0.5 rounded bg-accentMint/10 text-accentMint border border-accentMint/30 font-semibold">Live GDS & NDC Feed</span>
         </div>
 
-        <!-- Trip Type & Web Check-in shortcut -->
         <div class="flex items-center gap-3 text-xs">
           <div class="flex items-center gap-2 text-slate-300">
             <label class="flex items-center gap-1.5 cursor-pointer">
@@ -144,15 +139,13 @@
           <label class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
             <i class="fa-solid fa-plane-departure text-accentCyan"></i> From (Source)
           </label>
-          <div class="relative">
-            <select id="flightSource" class="w-full px-3.5 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
-              <option value="BOM" selected>Mumbai, India (BOM) — Chhatrapati Shivaji</option>
-              <option value="DEL">Delhi, India (DEL) — Indira Gandhi Intl</option>
-              <option value="BLR">Bengaluru, India (BLR) — Kempegowda Intl</option>
-              <option value="DXB">Dubai, UAE (DXB) — Dubai Intl</option>
-              <option value="LHR">London, UK (LHR) — Heathrow Airport</option>
-            </select>
-          </div>
+          <select id="flightSource" onchange="executeFlightSearch()" class="w-full px-3 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
+            <option value="BOM" selected>Mumbai, India (BOM) — Chhatrapati Shivaji</option>
+            <option value="DEL">Delhi, India (DEL) — Indira Gandhi Intl</option>
+            <option value="BLR">Bengaluru, India (BLR) — Kempegowda Intl</option>
+            <option value="DXB">Dubai, UAE (DXB) — Dubai Intl</option>
+            <option value="LHR">London, UK (LHR) — Heathrow Airport</option>
+          </select>
         </div>
 
         <!-- Swap Icon -->
@@ -167,40 +160,45 @@
           <label class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
             <i class="fa-solid fa-plane-arrival text-accentMint"></i> To (Destination)
           </label>
-          <div class="relative">
-            <select id="flightDest" class="w-full px-3.5 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
-              <option value="DXB" selected>Dubai, UAE (DXB) — Dubai Intl</option>
-              <option value="MLE">Maldives (MLE) — Velana Intl</option>
-              <option value="SIN">Singapore (SIN) — Changi Airport</option>
-              <option value="LHR">London, UK (LHR) — Heathrow Airport</option>
-              <option value="BOM">Mumbai, India (BOM) — Chhatrapati Shivaji</option>
-            </select>
-          </div>
+          <select id="flightDest" onchange="executeFlightSearch()" class="w-full px-3 py-2.5 rounded-xl bg-cardBg border border-cardBorder text-white font-semibold outline-none focus:border-accentCyan">
+            <option value="DXB" selected>Dubai, UAE (DXB) — Dubai Intl</option>
+            <option value="MLE">Maldives (MLE) — Velana Intl</option>
+            <option value="SIN">Singapore (SIN) — Changi Airport</option>
+            <option value="LHR">London, UK (LHR) — Heathrow Airport</option>
+            <option value="BOM">Mumbai, India (BOM) — Chhatrapati Shivaji</option>
+          </select>
         </div>
 
-        <!-- Dates -->
+        <!-- Departure Date -->
         <div class="lg:col-span-2 space-y-1">
           <label class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
             <i class="fa-regular fa-calendar"></i> Departure
           </label>
-          <input type="date" id="flightDepartDate" value="2026-11-15" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white outline-none focus:border-accentCyan">
+          <input type="date" id="flightDepartDate" value="2026-11-15" onchange="executeFlightSearch()" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white outline-none focus:border-accentCyan">
         </div>
 
+        <!-- Return Date -->
         <div id="returnDateContainer" class="lg:col-span-2 space-y-1">
           <label class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
             <i class="fa-regular fa-calendar"></i> Return Date
           </label>
-          <input type="date" id="flightReturnDate" value="2026-11-20" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white outline-none focus:border-accentCyan">
+          <input type="date" id="flightReturnDate" value="2026-11-20" onchange="executeFlightSearch()" class="w-full px-3 py-2 rounded-xl bg-cardBg border border-cardBorder text-white outline-none focus:border-accentCyan">
         </div>
 
         <!-- Search Action Button -->
         <div class="lg:col-span-1 pt-5">
-          <button onclick="executeFlightSearch()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center justify-center gap-1.5 shadow-md shadow-cyan-500/20">
+          <button onclick="executeFlightSearch()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center justify-center gap-1 shadow-md shadow-cyan-500/20">
             <i class="fa-solid fa-magnifying-glass"></i>
             <span>Search</span>
           </button>
         </div>
 
+      </div>
+
+      <!-- Real-time Search Feedback Badge (Replaces alert) -->
+      <div id="searchNotice" class="hidden py-1.5 px-3 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-[11px] text-accentCyan flex items-center justify-between">
+        <span id="searchNoticeText">✓ Query executed: BOM → DXB (5 Nights). Live rates and inventory locked.</span>
+        <span class="text-[10px] text-slate-400">GDS response: 184ms</span>
       </div>
     </section>
 
@@ -216,7 +214,7 @@
         <div class="lg:col-span-6 space-y-5">
           
           <!-- Autonomous Agent Copilot Box -->
-          <div class="glass-panel rounded-2xl p-5 space-y-3 flex flex-col h-[400px]">
+          <div class="glass-panel rounded-2xl p-5 space-y-3 flex flex-col h-[380px]">
             <div class="flex items-center justify-between border-b border-cardBorder/60 pb-2.5">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full bg-accentMint pulse-dot"></span>
@@ -227,11 +225,17 @@
 
             <!-- Quick Preset Chips -->
             <div class="flex flex-wrap gap-1.5 text-[11px]">
-              <button onclick="setPrompt('Family holiday to Dubai, 2 adults + 1 child (age 7), Nov 15-20, budget $3,200. Direct flights from Mumbai, hotel near JBR, Burj Khalifa & Desert Safari.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-                🌴 Dubai Family Package
+              <button onclick="quickRoute('BOM', 'DXB', '2026-11-15', '2026-11-20')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                🌴 Dubai Family (5N)
               </button>
-              <button onclick="setPrompt('4-day honeymoon to Maldives, private water villa, speed boat transfer included, budget $4,500.')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
-                🏝️ Maldives Luxury
+              <button onclick="quickRoute('DEL', 'MLE', '2026-12-01', '2026-12-06')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                🏝️ Maldives Luxury (5N)
+              </button>
+              <button onclick="quickRoute('DEL', 'LHR', '2026-11-22', '2026-11-28')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                💼 London Executive (6N)
+              </button>
+              <button onclick="quickRoute('BLR', 'SIN', '2027-01-10', '2027-01-15')" class="px-2.5 py-1 rounded-lg bg-cardBg hover:border-accentCyan border border-cardBorder transition text-slate-300">
+                🦁 Singapore Tour (5N)
               </button>
             </div>
 
@@ -242,7 +246,7 @@
                   <i class="fa-solid fa-robot text-xs"></i>
                 </div>
                 <div class="p-3 rounded-2xl rounded-tl-sm bg-panelDark border border-cardBorder text-slate-200 leading-relaxed max-w-[92%]">
-                  Hello Arsh! Search flights above or describe any custom client requirement. I'll query GDS connectors, lock live inventory, and compare wholesale rates instantly against retail apps on the right.
+                  Hello Arsh! Change the source, destination, or dates above to update this package in real time. The flight schedule, hotel rates, and competitor price comparison on the right will recalculate automatically!
                 </div>
               </div>
             </div>
@@ -255,14 +259,14 @@
               <div class="flex justify-between items-center">
                 <span class="text-[10px] text-slate-400"><i class="fa-solid fa-lock text-[9px] text-accentMint"></i> Zero-PII Tokenized</span>
                 <button onclick="runCopilot()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-extrabold text-xs hover:opacity-90 transition flex items-center gap-1 shadow-sm shadow-cyan-500/20">
-                  <span>Assemble Package</span>
+                  <span>Send</span>
                   <i class="fa-solid fa-arrow-right text-[10px]"></i>
                 </button>
               </div>
             </div>
           </div>
 
-          <!-- Assembled Flight & Hotel Cards -->
+          <!-- Dynamic Assembled Flight & Hotel Cards -->
           <div class="space-y-3">
             
             <!-- Flight Card -->
@@ -275,7 +279,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <button onclick="openCheckInModal()" class="text-[10px] text-accentCyan hover:underline font-bold">Web Check-in</button>
-                  <span class="font-bold text-accentMint text-xs" id="flightPrice">$420 / pax</span>
+                  <span class="font-bold text-accentMint text-xs" id="flightPriceDisplay">$420 / pax</span>
                 </div>
               </div>
 
@@ -283,7 +287,7 @@
                 <div class="text-left">
                   <div class="text-base font-extrabold text-white" id="flightDeptTime">10:00 AM</div>
                   <div class="text-xs font-semibold text-slate-300" id="flightDeptCity">BOM • Mumbai</div>
-                  <div class="text-[10px] text-slate-400">Terminal 2</div>
+                  <div class="text-[10px] text-slate-400" id="flightDeptTerminal">Terminal 2</div>
                 </div>
 
                 <div class="space-y-1">
@@ -292,13 +296,13 @@
                     <div class="w-full h-[1px] bg-slate-600"></div>
                     <i class="fa-solid fa-plane text-accentCyan text-xs absolute"></i>
                   </div>
-                  <div class="text-[10px] text-accentMint font-medium">9 Seats Available</div>
+                  <div class="text-[10px] text-accentMint font-medium" id="flightSeats">9 Seats Available</div>
                 </div>
 
                 <div class="text-right">
                   <div class="text-base font-extrabold text-white" id="flightArrTime">12:15 PM</div>
                   <div class="text-xs font-semibold text-slate-300" id="flightArrCity">DXB • Dubai</div>
-                  <div class="text-[10px] text-slate-400">Terminal 3</div>
+                  <div class="text-[10px] text-slate-400" id="flightArrTerminal">Terminal 3</div>
                 </div>
               </div>
             </div>
@@ -310,12 +314,12 @@
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-1 text-accentAmber text-[11px]">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    <span class="font-bold text-slate-300 ml-1">5-Star Luxury</span>
+                    <span class="font-bold text-slate-300 ml-1" id="hotelStars">5-Star Luxury</span>
                   </div>
                   <span class="font-bold text-accentMint" id="hotelPrice">$220 / night</span>
                 </div>
                 <h4 class="font-bold text-sm text-white" id="hotelName">Amwaj Rotana — Jumeirah Beach Residence</h4>
-                <p class="text-[11px] text-slate-400" id="hotelDesc">Family Sea Front Room • 4 Nights • Private Balcony & Sea View</p>
+                <p class="text-[11px] text-slate-400" id="hotelDesc">Family Sea Front Room • 5 Nights • Private Balcony & Sea View</p>
                 <div class="flex flex-wrap gap-1.5 pt-0.5 text-[10px]">
                   <span class="px-2 py-0.5 rounded bg-cardBg text-accentMint border border-accentMint/20"><i class="fa-solid fa-check"></i> Free Breakfast</span>
                   <span class="px-2 py-0.5 rounded bg-cardBg text-accentMint border border-accentMint/20"><i class="fa-solid fa-check"></i> Free Cancellation</span>
@@ -328,10 +332,10 @@
               <div class="flex justify-between items-center text-xs">
                 <div>
                   <span class="font-bold text-slate-300">Agency Profit Margin:</span>
-                  <span class="font-extrabold text-accentCyan text-sm ml-1" id="calcMarginLabel">12% Markup (+$311.88)</span>
+                  <span class="font-extrabold text-accentCyan text-sm ml-1" id="calcMarginLabel">12% Markup</span>
                 </div>
                 <div class="text-right">
-                  <span class="text-[10px] text-slate-400">Total Client Quote:</span>
+                  <span class="text-[10px] text-slate-400">Total Client Package Quote:</span>
                   <span class="font-black text-accentMint text-base ml-1" id="calcGrossTotal">$2,910.88</span>
                 </div>
               </div>
@@ -339,7 +343,7 @@
               <input type="range" id="marginSlider" min="5" max="25" value="12" oninput="updateMargin(this.value)" class="w-full accent-accentCyan cursor-pointer">
 
               <div class="flex items-center justify-between pt-1">
-                <span class="text-[11px] text-slate-400">Net Supplier: <strong class="text-white" id="calcNetCost">$2,599.00</strong></span>
+                <span class="text-[11px] text-slate-400">Net Supplier Total: <strong class="text-white" id="calcNetCost">$2,599.00</strong></span>
                 <button onclick="triggerBookHold()" class="px-4 py-2 rounded-xl bg-accentMint text-black font-extrabold text-xs hover:bg-emerald-400 transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
                   <i class="fa-solid fa-ticket"></i>
                   <span>One-Click PNR Hold</span>
@@ -366,12 +370,12 @@
               </div>
 
               <div id="disruptionFeed" class="hidden p-3 rounded-lg bg-[#091124] border border-accentAmber/30 space-y-1 text-xs">
-                <div class="font-bold text-accentAmber text-[11px]">
-                  <i class="fa-solid fa-circle-exclamation"></i> Airline Delay: EK 501 rescheduled to 02:30 PM
+                <div class="font-bold text-accentAmber text-[11px]" id="disruptionTitle">
+                  <i class="fa-solid fa-circle-exclamation"></i> Airline Delay: Flight rescheduled +4.5h
                 </div>
                 <div class="text-[10px] text-slate-300">
-                  • Auto-rescheduled private transfer to 05:30 PM (Fee waived).<br>
-                  • Hotel desk informed of late check-in.<br>
+                  • Auto-rescheduled private transfer to match new arrival.<br>
+                  • Hotel desk informed of late check-in to prevent room release.<br>
                   • Updated voucher pushed to passenger WhatsApp.
                 </div>
               </div>
@@ -382,7 +386,7 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- RIGHT COLUMN: RATE COMPARISON CHARTS & APPS -->
+        <!-- RIGHT COLUMN: LIVE RATE COMPARISON CHARTS -->
         <!-- ========================================== -->
         <div class="lg:col-span-6 space-y-4">
           
@@ -398,20 +402,12 @@
                   <h3 class="text-sm font-bold text-white">Live App Rate Comparison</h3>
                   <span class="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-accentMint/10 text-accentMint border border-accentMint/30">Live API</span>
                 </div>
-                <p class="text-[11px] text-slate-400 mt-0.5">TBO B2B Wholesale vs Goibibo, IndiGo Direct & Agoda</p>
+                <p class="text-[11px] text-slate-400 mt-0.5" id="cmpRouteLabel">BOM ⇄ DXB • 5 Nights Rate Benchmark</p>
               </div>
 
-              <!-- Route Switcher Mini Tabs -->
-              <div class="flex gap-1 text-[11px]">
-                <button id="cmp-btn-dubai" onclick="switchComparison('dubai')" class="cmp-tab active px-2.5 py-1 rounded-lg bg-accentCyan/15 text-accentCyan border border-accentCyan/40 font-bold">
-                  Dubai 5D
-                </button>
-                <button id="cmp-btn-flight" onclick="switchComparison('flight')" class="cmp-tab px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder text-slate-300">
-                  BOM⇄DXB Air
-                </button>
-                <button id="cmp-btn-maldives" onclick="switchComparison('maldives')" class="cmp-tab px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder text-slate-300">
-                  Maldives
-                </button>
+              <div class="text-right">
+                <span class="text-[10px] text-slate-400">Savings vs Retail:</span>
+                <span class="text-xs font-bold text-accentMint ml-1" id="cmpSavingsHeader">-$379.12 Cheaper</span>
               </div>
             </div>
 
@@ -433,10 +429,10 @@
                 </div>
                 <div class="text-[10px] text-slate-300 space-y-1 border-t border-cardBorder/40 pt-1.5">
                   <div class="text-accentMint"><i class="fa-solid fa-check"></i> <span id="cmpTboFlight">Emirates Direct (Meals & 30kg)</span></div>
-                  <div class="text-accentMint"><i class="fa-solid fa-check"></i> <span id="cmpTboHotel">Amwaj Rotana 5★ (Breakfast Free)</span></div>
+                  <div class="text-accentMint"><i class="fa-solid fa-check"></i> <span id="cmpTboHotel">5★ Luxury (Breakfast Free)</span></div>
                   <div class="text-accentMint font-bold"><i class="fa-solid fa-check"></i> <span>Convenience Fee: $0.00</span></div>
                 </div>
-                <div class="p-1.5 rounded bg-accentMint/10 border border-accentMint/20 text-center text-[10px] font-bold text-accentMint">
+                <div class="p-1.5 rounded bg-accentMint/10 border border-accentMint/20 text-center text-[10px] font-bold text-accentMint" id="cmpTboBadge">
                   ✓ Saves $379.12 vs Goibibo
                 </div>
               </div>
@@ -449,11 +445,11 @@
                 <div>
                   <div class="text-[9px] text-slate-400 uppercase font-bold">Retail OTA Price</div>
                   <div id="cmpPriceGoi" class="text-xl font-black text-slate-200">$3,290.00</div>
-                  <div class="text-[10px] text-rose-400 font-semibold">+$379.12 more expensive</div>
+                  <div class="text-[10px] text-rose-400 font-semibold" id="cmpGoiDiff">+$379.12 more expensive</div>
                 </div>
                 <div class="text-[10px] text-slate-400 space-y-1 border-t border-cardBorder/40 pt-1.5">
-                  <div>• <span id="cmpGoiFlight">Flight: $465/pax + seat fee</span></div>
-                  <div>• <span id="cmpGoiHotel">Hotel: $260/night (Room-only)</span></div>
+                  <div>• <span id="cmpGoiFlight">Flight: +$45 seat selection</span></div>
+                  <div>• <span id="cmpGoiHotel">Hotel: Room-only (Breakfast extra)</span></div>
                   <div class="text-rose-400">• Platform Fee: +$48.00</div>
                 </div>
                 <div class="p-1.5 rounded bg-panelDark border border-cardBorder text-center text-[10px] text-slate-400">
@@ -469,11 +465,11 @@
                 <div>
                   <div class="text-[9px] text-slate-400 uppercase font-bold">Airline Direct Unbundled</div>
                   <div id="cmpPriceIndigo" class="text-xl font-black text-slate-200">$3,180.00</div>
-                  <div class="text-[10px] text-amber-400 font-semibold">+$269.12 higher total</div>
+                  <div class="text-[10px] text-amber-400 font-semibold" id="cmpIndigoDiff">+$269.12 higher total</div>
                 </div>
                 <div class="text-[10px] text-slate-400 space-y-1 border-t border-cardBorder/40 pt-1.5">
                   <div>• <span id="cmpIndigoFlight">IndiGo Flight: 15kg max baggage</span></div>
-                  <div>• <span id="cmpIndigoHotel">Hotel: Booked separately ($270/n)</span></div>
+                  <div>• <span id="cmpIndigoHotel">Hotel: Booked separately</span></div>
                   <div class="text-rose-400">• Airport Transfer: Not included</div>
                 </div>
                 <div class="p-1.5 rounded bg-panelDark border border-cardBorder text-center text-[10px] text-slate-400">
@@ -489,7 +485,7 @@
                 <div>
                   <div class="text-[9px] text-slate-400 uppercase font-bold">Total Quoted Price</div>
                   <div id="cmpPriceAgoda" class="text-xl font-black text-slate-200">$3,340.00</div>
-                  <div class="text-[10px] text-rose-400 font-semibold">+$429.12 more expensive</div>
+                  <div class="text-[10px] text-rose-400 font-semibold" id="cmpAgodaDiff">+$429.12 more expensive</div>
                 </div>
                 <div class="text-[10px] text-slate-400 space-y-1 border-t border-cardBorder/40 pt-1.5">
                   <div>• <span id="cmpAgodaFlight">Flight: Dynamic FX markup</span></div>
@@ -517,7 +513,7 @@
                 <tbody class="divide-y divide-cardBorder/60 bg-panelDark/50 text-[10px]">
                   <tr>
                     <td class="p-2.5 font-bold text-white">Flight & Bags</td>
-                    <td class="p-2.5 text-accentMint font-semibold">Emirates 30kg Incl.</td>
+                    <td class="p-2.5 text-accentMint font-semibold" id="tableRowFlight">Emirates 30kg Incl.</td>
                     <td class="p-2.5">Retail LCC / Extra</td>
                     <td class="p-2.5">15kg Luggage Cap</td>
                   </tr>
@@ -562,7 +558,6 @@
     <!-- ========================================== -->
     <div id="view-bookings" class="hidden space-y-6">
       <div class="glass-panel rounded-2xl p-6 space-y-5">
-        
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-cardBorder/60 pb-4">
           <div>
             <h2 class="text-lg font-bold text-white flex items-center gap-2">
@@ -570,7 +565,6 @@
             </h2>
             <p class="text-xs text-slate-400">Real-time GDS ticketed PNRs, bedbank room allocations, and active client holds</p>
           </div>
-
           <div class="flex items-center gap-2 text-xs">
             <span class="px-3 py-1.5 rounded-lg bg-cardBg border border-cardBorder text-slate-300 font-mono">Total GMV: <strong class="text-accentMint">$184,200.00</strong></span>
             <button onclick="openCheckInModal()" class="px-3.5 py-1.5 rounded-lg bg-accentCyan/15 border border-accentCyan/30 text-accentCyan font-bold hover:bg-accentCyan/25 transition">
@@ -579,7 +573,6 @@
           </div>
         </div>
 
-        <!-- Bookings Data Table -->
         <div class="overflow-x-auto rounded-xl border border-cardBorder">
           <table class="w-full text-left text-xs text-slate-300">
             <thead class="bg-[#091124] text-slate-400 uppercase text-[10px] font-bold tracking-wider border-b border-cardBorder">
@@ -600,45 +593,27 @@
                 <td class="p-3.5">Emirates EK 501 + Amwaj Rotana JBR</td>
                 <td class="p-3.5 text-slate-400">Nov 15 - 20, 2026</td>
                 <td class="p-3.5 font-bold text-accentMint">$2,910.88</td>
-                <td class="p-3.5">
-                  <span class="px-2 py-0.5 rounded-full bg-accentAmber/10 border border-accentAmber/30 text-accentAmber text-[10px] font-bold">
-                    HELD (21h left)
-                  </span>
-                </td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-accentAmber/10 border border-accentAmber/30 text-accentAmber text-[10px] font-bold">HELD (21h left)</span></td>
                 <td class="p-3.5 text-right space-x-2">
-                  <button onclick="openCheckInWithData('TBO-DXB-98421', 'Srivastava', 'Emirates')" class="px-2.5 py-1 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-accentCyan hover:bg-accentCyan/20 transition">
-                    Web Check-in
-                  </button>
-                  <button onclick="openVoucherModal('TBO-DXB-98421', 'Srivastava Family', 'Dubai 5-Day Luxury', '$2,910.88')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">
-                    View Voucher
-                  </button>
+                  <button onclick="openCheckInWithData('TBO-DXB-98421', 'Srivastava', 'Emirates')" class="px-2.5 py-1 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-accentCyan hover:bg-accentCyan/20 transition">Web Check-in</button>
+                  <button onclick="openVoucherModal('TBO-DXB-98421', 'Srivastava Family', 'Dubai 5-Day Luxury', '$2,910.88')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">View Voucher</button>
                 </td>
               </tr>
-
               <tr class="hover:bg-cardBg/60 transition">
                 <td class="p-3.5 font-mono font-bold text-accentCyan">TBO-MLE-44120</td>
                 <td class="p-3.5 font-bold text-white">Rohit & Priya Mehta</td>
                 <td class="p-3.5">Sheraton Maldives Water Villa + Speedboat</td>
                 <td class="p-3.5 text-slate-400">Dec 01 - 06, 2026</td>
                 <td class="p-3.5 font-bold text-accentMint">$4,350.00</td>
-                <td class="p-3.5">
-                  <span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint text-[10px] font-bold">
-                    CONFIRMED
-                  </span>
-                </td>
+                <td class="p-3.5"><span class="px-2 py-0.5 rounded-full bg-accentMint/10 border border-accentMint/30 text-accentMint text-[10px] font-bold">CONFIRMED</span></td>
                 <td class="p-3.5 text-right space-x-2">
-                  <button onclick="openCheckInWithData('TBO-MLE-44120', 'Mehta', 'IndiGo')" class="px-2.5 py-1 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-accentCyan hover:bg-accentCyan/20 transition">
-                    Web Check-in
-                  </button>
-                  <button onclick="openVoucherModal('TBO-MLE-44120', 'Rohit Mehta', 'Maldives Water Villa', '$4,350.00')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">
-                    View Voucher
-                  </button>
+                  <button onclick="openCheckInWithData('TBO-MLE-44120', 'Mehta', 'IndiGo')" class="px-2.5 py-1 rounded-lg bg-accentCyan/10 border border-accentCyan/30 text-accentCyan hover:bg-accentCyan/20 transition">Web Check-in</button>
+                  <button onclick="openVoucherModal('TBO-MLE-44120', 'Rohit Mehta', 'Maldives Water Villa', '$4,350.00')" class="px-2.5 py-1 rounded-lg bg-cardBg border border-cardBorder hover:border-accentCyan text-white transition">View Voucher</button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-
       </div>
     </div>
 
@@ -722,7 +697,6 @@
   <!-- ========================================== -->
   <div id="checkInModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="glass-panel max-w-lg w-full rounded-2xl p-6 border border-accentCyan/40 space-y-4 shadow-2xl animate-fade-in">
-      
       <div class="flex items-center justify-between border-b border-cardBorder pb-3">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-passport text-accentCyan text-lg"></i>
@@ -734,7 +708,6 @@
         <button onclick="closeCheckInModal()" class="text-slate-400 hover:text-white text-base">&times;</button>
       </div>
 
-      <!-- Step 1: PNR & Airline Inputs -->
       <div id="checkinStep1" class="space-y-3 text-xs">
         <div>
           <label class="text-[11px] font-bold text-slate-400">Select Airline Carrier</label>
@@ -762,7 +735,6 @@
         </button>
       </div>
 
-      <!-- Step 2: Seat Picker & Boarding Pass (Hidden initially) -->
       <div id="checkinStep2" class="hidden space-y-3 text-xs">
         <div class="p-3 rounded-xl bg-cardBg border border-cardBorder space-y-2">
           <div class="flex justify-between items-center">
@@ -770,7 +742,6 @@
             <span class="text-accentMint text-[10px] font-bold">CHECK-IN OPEN</span>
           </div>
 
-          <!-- Interactive Seat Picker -->
           <div class="border-t border-cardBorder/60 pt-2 space-y-1.5">
             <div class="text-[11px] font-bold text-slate-300">Choose Seat Allocation:</div>
             <div class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-mono">
@@ -783,7 +754,6 @@
           </div>
         </div>
 
-        <!-- Generated Digital Boarding Pass -->
         <div class="p-3.5 rounded-xl bg-[#070D1C] border border-accentMint/40 space-y-2">
           <div class="flex justify-between items-center border-b border-cardBorder pb-2">
             <div>
@@ -802,15 +772,12 @@
         </div>
 
         <div class="flex gap-2 pt-1">
-          <button onclick="resetCheckIn()" class="w-1/3 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold text-xs">
-            Back
-          </button>
+          <button onclick="resetCheckIn()" class="w-1/3 py-2 rounded-xl bg-cardBg border border-cardBorder text-slate-300 hover:text-white font-bold text-xs">Back</button>
           <button onclick="alert('Boarding Pass (PDF) dispatched to traveler WhatsApp and downloaded.'); closeCheckInModal();" class="w-2/3 py-2 rounded-xl bg-accentMint text-black font-extrabold text-xs hover:bg-emerald-400 transition flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20">
             <i class="fa-solid fa-download"></i> Download Boarding Pass
           </button>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -864,8 +831,289 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- ========================================== -->
+  <!-- DYNAMIC DESTINATIONS & PRICING ENGINE JS -->
+  <!-- ========================================== -->
   <script>
+    // Comprehensive Route & Destination Database
+    const destinationDB = {
+      DXB: {
+        city: "Dubai",
+        country: "UAE",
+        airport: "Dubai Intl",
+        terminal: "Terminal 3",
+        airline: "Emirates Airlines",
+        badge: "EK",
+        badgeBg: "bg-red-600/20 text-red-400",
+        flightNo: "EK 501",
+        flightFare: 420,
+        deptTime: "10:00 AM",
+        arrTime: "12:15 PM",
+        duration: "3h 15m",
+        hotelName: "Amwaj Rotana — Jumeirah Beach Residence",
+        hotelStars: "5-Star Luxury",
+        hotelRate: 220,
+        hotelImg: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Family Sea Front Room • Balcony & Beachfront",
+        activitiesCost: 369,
+        tboFlightTitle: "Emirates Direct (Meals & 30kg)",
+        tboHotelTitle: "Amwaj Rotana 5★ (Breakfast Free)",
+        goiFlightTitle: "Flight: $465/pax + seat fee",
+        goiHotelTitle: "Hotel: $260/night (Room-only)",
+        indigoFlightTitle: "IndiGo 6E: 15kg limit ($390)",
+        agodaFlightTitle: "Flight: Dynamic FX conversion"
+      },
+      MLE: {
+        city: "Maldives",
+        country: "Maldives",
+        airport: "Velana Intl",
+        terminal: "Main Island",
+        airline: "IndiGo / Maldivian Air",
+        badge: "6E",
+        badgeBg: "bg-blue-600/20 text-blue-400",
+        flightNo: "6E 1795",
+        flightFare: 340,
+        deptTime: "09:30 AM",
+        arrTime: "12:15 PM",
+        duration: "2h 45m",
+        hotelName: "Sheraton Maldives Full Moon Resort",
+        hotelStars: "5-Star Premium",
+        hotelRate: 460,
+        hotelImg: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Overwater Lagoon Bungalow • Speedboat Transfer Included",
+        activitiesCost: 450,
+        tboFlightTitle: "Direct Flight + Speedboat Transfer",
+        tboHotelTitle: "Overwater Villa (All Meals Free)",
+        goiFlightTitle: "Flight booked separately",
+        goiHotelTitle: "Villa: $580/night + local tax",
+        indigoFlightTitle: "IndiGo direct to Male",
+        agodaFlightTitle: "OTA unbundled flight ticket"
+      },
+      LHR: {
+        city: "London",
+        country: "UK",
+        airport: "Heathrow Airport",
+        terminal: "Terminal 2",
+        airline: "Air India / British Airways",
+        badge: "AI",
+        badgeBg: "bg-orange-600/20 text-orange-400",
+        flightNo: "AI 161",
+        flightFare: 680,
+        deptTime: "02:15 AM",
+        arrTime: "07:30 AM",
+        duration: "8h 45m",
+        hotelName: "The Strand Palace Hotel Covent Garden",
+        hotelStars: "4-Star Central",
+        hotelRate: 240,
+        hotelImg: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Executive King Room • Central London",
+        activitiesCost: 320,
+        tboFlightTitle: "Air India Direct (2x23kg bags)",
+        tboHotelTitle: "The Strand Palace 4★ (Central)",
+        goiFlightTitle: "British Airways + Seat fees",
+        goiHotelTitle: "London Hotel: $290/night",
+        indigoFlightTitle: "Connecting Flight (14h+)",
+        agodaFlightTitle: "Non-refundable London rate"
+      },
+      SIN: {
+        city: "Singapore",
+        country: "Singapore",
+        airport: "Changi Airport",
+        terminal: "Terminal 3",
+        airline: "Singapore Airlines",
+        badge: "SQ",
+        badgeBg: "bg-amber-600/20 text-amber-400",
+        flightNo: "SQ 503",
+        flightFare: 380,
+        deptTime: "11:15 AM",
+        arrTime: "07:15 PM",
+        duration: "4h 30m",
+        hotelName: "Marina Bay Sands / Pan Pacific",
+        hotelStars: "5-Star Icon",
+        hotelRate: 310,
+        hotelImg: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Deluxe City View Room • Infinity Pool Access",
+        activitiesCost: 310,
+        tboFlightTitle: "Singapore Airlines Direct",
+        tboHotelTitle: "Marina Bay 5★ Free Breakfast",
+        goiFlightTitle: "Retail SQ / Scoot ticket",
+        goiHotelTitle: "Room-only (VAT not included)",
+        indigoFlightTitle: "IndiGo 6E Direct to SIN",
+        agodaFlightTitle: "Foreign exchange mark-up"
+      },
+      BOM: {
+        city: "Mumbai",
+        country: "India",
+        airport: "Chhatrapati Shivaji",
+        terminal: "Terminal 2",
+        airline: "Vistara / Air India",
+        badge: "UK",
+        badgeBg: "bg-purple-600/20 text-purple-400",
+        flightNo: "UK 945",
+        flightFare: 110,
+        deptTime: "08:00 AM",
+        arrTime: "10:15 AM",
+        duration: "2h 15m",
+        hotelName: "The Taj Mahal Palace Mumbai",
+        hotelStars: "5-Star Heritage",
+        hotelRate: 260,
+        hotelImg: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80",
+        hotelDesc: "Sea Facing Luxury Room • Gateway of India",
+        activitiesCost: 150,
+        tboFlightTitle: "Vistara Premium Economy",
+        tboHotelTitle: "Taj Palace 5★ Breakfast Free",
+        goiFlightTitle: "Retail Air ticket + fee",
+        goiHotelTitle: "Taj Room Only",
+        indigoFlightTitle: "IndiGo 6E Domestic Flight",
+        agodaFlightTitle: "Agoda standard rate"
+      }
+    };
+
+    const airportCities = {
+      BOM: { name: "Mumbai", code: "BOM", terminal: "Terminal 2" },
+      DEL: { name: "Delhi", code: "DEL", terminal: "Terminal 3" },
+      BLR: { name: "Bengaluru", code: "BLR", terminal: "Terminal 2" },
+      DXB: { name: "Dubai", code: "DXB", terminal: "Terminal 3" },
+      LHR: { name: "London", code: "LHR", terminal: "Terminal 2" },
+      MLE: { name: "Maldives", code: "MLE", terminal: "Main Island" },
+      SIN: { name: "Singapore", code: "SIN", terminal: "Terminal 3" }
+    };
+
+    let currentCalculatedNet = 2599.00;
+
+    // Execute Flight & Location Search
+    function executeFlightSearch() {
+      const srcCode = document.getElementById('flightSource').value;
+      const dstCode = document.getElementById('flightDest').value;
+      const dDateStr = document.getElementById('flightDepartDate').value;
+      const rDateStr = document.getElementById('flightReturnDate').value;
+
+      // 1. Calculate Nights
+      const dDate = new Date(dDateStr);
+      const rDate = new Date(rDateStr);
+      let nights = Math.round((rDate - dDate) / (1000 * 60 * 60 * 24));
+      if (isNaN(nights) || nights < 1) nights = 1;
+
+      // 2. Lookup Source & Destination Data
+      const srcInfo = airportCities[srcCode] || { name: srcCode, code: srcCode, terminal: "T1" };
+      let dstData = destinationDB[dstCode];
+      if (!dstData || srcCode === dstCode) {
+        dstData = destinationDB['DXB']; // fallback to Dubai
+      }
+
+      // 3. Update Flight Card DOM
+      document.getElementById('flightBadge').className = `w-6 h-6 rounded-md flex items-center justify-center font-bold text-[10px] ${dstData.badgeBg}`;
+      document.getElementById('flightBadge').innerText = dstData.badge;
+      document.getElementById('flightName').innerText = `${dstData.airline} • Direct GDS`;
+      document.getElementById('flightNo').innerText = `Flight ${dstData.flightNo}`;
+      document.getElementById('flightPriceDisplay').innerText = `$${dstData.flightFare} / pax`;
+
+      document.getElementById('flightDeptCity').innerText = `${srcInfo.code} • ${srcInfo.name}`;
+      document.getElementById('flightDeptTerminal').innerText = srcInfo.terminal;
+      document.getElementById('flightArrCity').innerText = `${dstCode} • ${dstData.city}`;
+      document.getElementById('flightArrTerminal').innerText = dstData.terminal;
+      document.getElementById('flightDuration').innerText = `${dstData.duration} • Non-stop`;
+      document.getElementById('flightDeptTime').innerText = dstData.deptTime;
+      document.getElementById('flightArrTime').innerText = dstData.arrTime;
+
+      // 4. Update Hotel Card DOM
+      document.getElementById('hotelImg').src = dstData.hotelImg;
+      document.getElementById('hotelName').innerText = dstData.hotelName;
+      document.getElementById('hotelStars').innerText = dstData.hotelStars;
+      document.getElementById('hotelPrice').innerText = `$${dstData.hotelRate} / night`;
+      document.getElementById('hotelDesc').innerText = `${dstData.hotelDesc} • ${nights} Nights`;
+
+      // 5. Dynamic Net Calculation
+      const totalFlightCost = dstData.flightFare * 2; // 2 pax
+      const totalHotelCost = dstData.hotelRate * nights;
+      const totalActivities = dstData.activitiesCost;
+      currentCalculatedNet = totalFlightCost + totalHotelCost + totalActivities;
+
+      // Apply margin slider
+      const sliderVal = document.getElementById('marginSlider').value;
+      updateMargin(sliderVal);
+
+      // 6. Update Right-side Rate Comparison Panel
+      const tboTotal = parseFloat(document.getElementById('calcGrossTotal').innerText.replace('$', ''));
+      const goiTotal = Math.round(tboTotal * 1.13 + 48);
+      const indigoTotal = Math.round(tboTotal * 1.09 + 25);
+      const agodaTotal = Math.round(tboTotal * 1.15);
+      const savings = (goiTotal - tboTotal).toFixed(2);
+
+      document.getElementById('cmpRouteLabel').innerText = `${srcCode} ⇄ ${dstCode} • ${nights} Nights Rate Benchmark`;
+      document.getElementById('cmpSavingsHeader').innerText = `-$${savings} Cheaper`;
+      document.getElementById('cmpPriceTbo').innerText = `$${tboTotal.toFixed(2)}`;
+      document.getElementById('cmpTboBadge').innerText = `✓ Saves $${savings} vs Goibibo`;
+
+      document.getElementById('cmpPriceGoi').innerText = `$${goiTotal}.00`;
+      document.getElementById('cmpGoiDiff').innerText = `+$${(goiTotal - tboTotal).toFixed(2)} more expensive`;
+
+      document.getElementById('cmpPriceIndigo').innerText = `$${indigoTotal}.00`;
+      document.getElementById('cmpIndigoDiff').innerText = `+$${(indigoTotal - tboTotal).toFixed(2)} higher total`;
+
+      document.getElementById('cmpPriceAgoda').innerText = `$${agodaTotal}.00`;
+      document.getElementById('cmpAgodaDiff').innerText = `+$${(agodaTotal - tboTotal).toFixed(2)} more expensive`;
+
+      document.getElementById('tablePriceTbo').innerText = `$${tboTotal.toFixed(2)}`;
+      document.getElementById('tablePriceGoi').innerText = `$${goiTotal}.00`;
+      document.getElementById('tablePriceIndigo').innerText = `$${indigoTotal}.00`;
+      document.getElementById('tableRowFlight').innerText = `${dstData.airline} 30kg Incl.`;
+
+      document.getElementById('cmpTboFlight').innerText = dstData.tboFlightTitle;
+      document.getElementById('cmpTboHotel').innerText = dstData.tboHotelTitle;
+      document.getElementById('cmpGoiFlight').innerText = dstData.goiFlightTitle;
+      document.getElementById('cmpGoiHotel').innerText = dstData.goiHotelTitle;
+      document.getElementById('cmpIndigoFlight').innerText = dstData.indigoFlightTitle;
+      document.getElementById('cmpAgodaFlight').innerText = dstData.agodaFlightTitle;
+
+      // 7. Display Non-intrusive Search Banner (No Alert!)
+      const notice = document.getElementById('searchNotice');
+      const noticeText = document.getElementById('searchNoticeText');
+      noticeText.innerHTML = `✓ <strong>Live GDS Updated:</strong> ${srcInfo.name} (${srcCode}) → ${dstData.city} (${dstCode}) for <strong>${nights} Nights</strong> (${dDateStr} to ${rDateStr}). Real-time prices synchronized!`;
+      notice.classList.remove('hidden');
+
+      // Auto-hide notice after 4 seconds
+      setTimeout(() => { notice.classList.add('hidden'); }, 5000);
+    }
+
+    // Quick preset route launcher
+    function quickRoute(src, dst, dDate, rDate) {
+      document.getElementById('flightSource').value = src;
+      document.getElementById('flightDest').value = dst;
+      document.getElementById('flightDepartDate').value = dDate;
+      document.getElementById('flightReturnDate').value = rDate;
+      executeFlightSearch();
+    }
+
+    // Margin Slider Update
+    function updateMargin(val) {
+      const net = currentCalculatedNet;
+      const margin = (net * (val / 100.0));
+      const total = net + margin;
+
+      document.getElementById('calcMarginLabel').innerText = `${val}% Markup (+$${margin.toFixed(2)})`;
+      document.getElementById('calcGrossTotal').innerText = `$${total.toFixed(2)}`;
+      document.getElementById('calcNetCost').innerText = `$${net.toFixed(2)}`;
+      document.getElementById('cmpTboMargin').innerText = `Includes +$${margin.toFixed(2)} Agency Profit`;
+      document.getElementById('tableMarginTbo').innerText = `+$${margin.toFixed(2)} (${val}%)`;
+    }
+
+    // Airport Swap
+    function swapAirports() {
+      const src = document.getElementById('flightSource');
+      const dst = document.getElementById('flightDest');
+      const temp = src.value;
+      src.value = dst.value;
+      dst.value = temp;
+      executeFlightSearch();
+    }
+
+    function toggleReturnDate(show) {
+      const container = document.getElementById('returnDateContainer');
+      if (show) container.classList.remove('hidden');
+      else container.classList.add('hidden');
+    }
+
     // Tab Switcher
     function switchTab(tabId) {
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -881,48 +1129,7 @@
       if (targetView) targetView.classList.remove('hidden');
     }
 
-    // Source to Destination Search
-    function toggleReturnDate(show) {
-      const container = document.getElementById('returnDateContainer');
-      if (show) container.classList.remove('hidden');
-      else container.classList.add('hidden');
-    }
-
-    function swapAirports() {
-      const src = document.getElementById('flightSource');
-      const dst = document.getElementById('flightDest');
-      const temp = src.value;
-      src.value = dst.value;
-      dst.value = temp;
-    }
-
-    function executeFlightSearch() {
-      const src = document.getElementById('flightSource').value;
-      const dst = document.getElementById('flightDest').value;
-      const dDate = document.getElementById('flightDepartDate').value;
-      
-      // Update flight card display
-      document.getElementById('flightDeptCity').innerText = `${src} • Origin`;
-      document.getElementById('flightArrCity').innerText = `${dst} • Dest`;
-
-      if (src === "DEL" && dst === "LHR") {
-        document.getElementById('flightBadge').innerText = "AI";
-        document.getElementById('flightName').innerText = "Air India • Direct Flight";
-        document.getElementById('flightNo').innerText = "Flight AI 161";
-        document.getElementById('flightPrice').innerText = "$680 / pax";
-        switchComparison('flight');
-      } else {
-        document.getElementById('flightBadge').innerText = "EK";
-        document.getElementById('flightName').innerText = "Emirates Airlines • Direct GDS";
-        document.getElementById('flightNo').innerText = "Flight EK 501";
-        document.getElementById('flightPrice').innerText = "$420 / pax";
-        switchComparison('dubai');
-      }
-
-      alert(`Searching live GDS connectors for ${src} → ${dst} departing ${dDate}... Rates updated in studio and right-hand comparison.`);
-    }
-
-    // Web Check-in Modal Functions
+    // Web Check-in Modal
     function openCheckInModal() {
       document.getElementById('checkinStep1').classList.remove('hidden');
       document.getElementById('checkinStep2').classList.add('hidden');
@@ -944,8 +1151,10 @@
       const airline = document.getElementById('checkinAirline').value;
       const pnr = document.getElementById('checkinPnr').value;
       const name = document.getElementById('checkinLastName').value;
+      const src = document.getElementById('flightSource').value;
+      const dst = document.getElementById('flightDest').value;
 
-      document.getElementById('passFlightNo').innerText = `${airline} • BOM → DXB (PNR: ${pnr})`;
+      document.getElementById('passFlightNo').innerText = `${airline} • ${src} → ${dst} (PNR: ${pnr})`;
       document.getElementById('passPassengerName').innerText = `${name} (Adult)`;
 
       document.getElementById('checkinStep1').classList.add('hidden');
@@ -982,122 +1191,25 @@
       document.getElementById('voucherModal').classList.add('hidden');
     }
 
-    // Dynamic Comparison Switcher (Right-side panel)
-    const comparisonDatasets = {
-      dubai: {
-        tbo: { price: "$2,910.88", margin: "Includes +$311.88 Agency Profit", flight: "Emirates Direct (Meals & 30kg)", hotel: "Amwaj Rotana 5★ (Breakfast Free)" },
-        goi: { price: "$3,290.00", flight: "Flight: $465/pax + seat fee", hotel: "Hotel: $260/night (Room-only)" },
-        indigo: { price: "$3,180.00", flight: "IndiGo Flight: Strict 15kg limit", hotel: "Hotel: Booked separately ($270/n)" },
-        agoda: { price: "$3,340.00", flight: "Flight: Dynamic currency conversion", hotel: "Hotel: Non-refundable rate" }
-      },
-      flight: {
-        tbo: { price: "$1,120.00", margin: "Includes +$120.00 Agency Markup", flight: "Emirates BOM-DXB (30kg Luggage)", hotel: "N/A (Flight Only Route)" },
-        goi: { price: "$1,310.00", flight: "Emirates + Seat + Convenience Fee", hotel: "N/A" },
-        indigo: { price: "$1,215.00", flight: "IndiGo 6E Direct (Baggage Add-on)", hotel: "N/A" },
-        agoda: { price: "$1,345.00", flight: "OTA Aggregator Markup", hotel: "N/A" }
-      },
-      maldives: {
-        tbo: { price: "$4,350.00", margin: "Includes +$480.00 Agency Profit", flight: "Direct Airline + Speedboat Included", hotel: "Sheraton Maldives Overwater Villa" },
-        goi: { price: "$4,890.00", flight: "Flight booked separately", hotel: "Villa: $940/night + local taxes" },
-        indigo: { price: "$4,650.00", flight: "IndiGo to Male (MLE)", hotel: "Hotel self-arranged on Agoda" },
-        agoda: { price: "$4,980.00", flight: "International OTA flight ticket", hotel: "Overwater bungalow with extra VAT" }
-      }
-    };
-
-    function switchComparison(type) {
-      document.querySelectorAll('.cmp-tab').forEach(b => {
-        b.classList.remove('active', 'bg-accentCyan/15', 'text-accentCyan', 'border-accentCyan/40');
-        b.classList.add('bg-cardBg', 'border-cardBorder', 'text-slate-300');
-      });
-
-      const activeBtn = document.getElementById('cmp-btn-' + type);
-      if (activeBtn) {
-        activeBtn.classList.add('active', 'bg-accentCyan/15', 'text-accentCyan', 'border-accentCyan/40');
-        activeBtn.classList.remove('bg-cardBg', 'border-cardBorder', 'text-slate-300');
-      }
-
-      const data = comparisonDatasets[type];
-      if (!data) return;
-
-      document.getElementById('cmpPriceTbo').innerText = data.tbo.price;
-      document.getElementById('cmpTboMargin').innerText = data.tbo.margin;
-      document.getElementById('cmpTboFlight').innerText = data.tbo.flight;
-      document.getElementById('cmpTboHotel').innerText = data.tbo.hotel;
-      document.getElementById('tablePriceTbo').innerText = data.tbo.price;
-      document.getElementById('tableMarginTbo').innerText = data.tbo.margin;
-
-      document.getElementById('cmpPriceGoi').innerText = data.goi.price;
-      document.getElementById('cmpGoiFlight').innerText = data.goi.flight;
-      document.getElementById('cmpGoiHotel').innerText = data.goi.hotel;
-      document.getElementById('tablePriceGoi').innerText = data.goi.price;
-
-      document.getElementById('cmpPriceIndigo').innerText = data.indigo.price;
-      document.getElementById('cmpIndigoFlight').innerText = data.indigo.flight;
-      document.getElementById('cmpIndigoHotel').innerText = data.indigo.hotel;
-      document.getElementById('tablePriceIndigo').innerText = data.indigo.price;
-
-      document.getElementById('cmpPriceAgoda').innerText = data.agoda.price;
-      document.getElementById('cmpAgodaFlight').innerText = data.agoda.flight;
-      document.getElementById('cmpAgodaHotel').innerText = data.agoda.hotel;
-    }
-
-    // Copilot & Margin Functions
-    function setPrompt(text) {
-      document.getElementById('agentInput').value = text;
-      runCopilot();
-    }
-
-    function runCopilot() {
-      const input = document.getElementById('agentInput');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const chat = document.getElementById('chatStream');
-      const userDiv = document.createElement('div');
-      userDiv.className = 'flex gap-2 items-start justify-end';
-      userDiv.innerHTML = `<div class="p-2.5 rounded-2xl rounded-tr-sm bg-accentCyan text-black font-medium leading-relaxed max-w-[85%]">${text}</div>`;
-      chat.appendChild(userDiv);
-      chat.scrollTop = chat.scrollHeight;
-
-      setTimeout(() => {
-        const agentDiv = document.createElement('div');
-        agentDiv.className = 'flex gap-2 items-start';
-        agentDiv.innerHTML = `
-          <div class="w-6 h-6 rounded-lg bg-accentCyan/20 text-accentCyan flex items-center justify-center font-bold shrink-0 mt-0.5"><i class="fa-solid fa-robot text-xs"></i></div>
-          <div class="p-3 rounded-2xl rounded-tl-sm bg-panelDark border border-cardBorder text-slate-200 leading-relaxed max-w-[90%] space-y-1.5">
-            <p><strong>Package Assembled:</strong> Direct flights on <strong>Emirates EK 501</strong> + 4 nights at <strong>Amwaj Rotana JBR</strong> with breakfast, Burj Khalifa & Desert Safari.</p>
-            <div class="p-2 rounded-lg bg-cardBg text-[10px] space-y-0.5 font-mono">
-              <div>• Net Supplier: $2,599.00</div>
-              <div>• Agency Profit (+12%): <span class="text-accentCyan">+$311.88</span></div>
-              <div>• Client Quote: <span class="text-accentMint font-bold">$2,910.88</span> (Under budget)</div>
-            </div>
-            <p class="text-[10px] text-slate-400">Live comparison updated on the right panel.</p>
-          </div>
-        `;
-        chat.appendChild(agentDiv);
-        chat.scrollTop = chat.scrollHeight;
-      }, 1000);
-    }
-
-    function updateMargin(val) {
-      const net = 2599.00;
-      const margin = (net * (val / 100.0));
-      const total = net + margin;
-      document.getElementById('calcMarginLabel').innerText = `${val}% Markup (+$${margin.toFixed(2)})`;
-      document.getElementById('calcGrossTotal').innerText = `$${total.toFixed(2)}`;
+    function triggerBookHold() {
+      const dst = document.getElementById('flightDest').value;
+      const dstData = destinationDB[dst] || destinationDB['DXB'];
+      const total = document.getElementById('calcGrossTotal').innerText;
+      openVoucherModal(`TBO-${dst}-98421`, 'Srivastava Family', `${dstData.city} Luxury Package`, total);
     }
 
     function simulateDisruption() {
       document.getElementById('disruptionFeed').classList.remove('hidden');
     }
 
-    function triggerBookHold() {
-      openVoucherModal('TBO-DXB-98421', 'Srivastava Family', 'Dubai 5-Day Luxury Family Package', '$2,910.88');
-    }
-
     function pingConnectors() {
       document.querySelectorAll('.gds-ping').forEach(el => el.innerText = `${Math.floor(Math.random()*40)+140} ms`);
     }
+
+    // Initial load setup
+    window.onload = function() {
+      executeFlightSearch();
+    };
   </script>
 </body>
 </html>
