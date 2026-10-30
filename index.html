@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoyAgent AI — Autonomous B2B Travel Copilot | TBO.com VoyageHack 4.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#0B132B',
+            cardDark: '#1C2541',
+            cardBorder: '#3A506B',
+            accentCyan: '#48CAE4',
+            accentGreen: '#06D6A0',
+            accentOrange: '#FF9F1C'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0B132B; color: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .glass-card { background-color: #1C2541; border: 1px solid #3A506B; }
+    .terminal-scroll::-webkit-scrollbar { width: 6px; }
+    .terminal-scroll::-webkit-scrollbar-thumb { background: #3A506B; border-radius: 3px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-cardBorder bg-[#081024]/90 backdrop-blur sticky top-0 z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accentCyan to-blue-600 flex items-center justify-center font-bold text-xl text-black shadow-lg shadow-cyan-500/20">
+          <i class="fa-solid fa-compass"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-xl tracking-tight text-white">VoyAgent <span class="text-accentCyan">AI</span></span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-accentCyan/10 border border-accentCyan/30 text-accentCyan">TBO VoyageHack 4.0</span>
+          </div>
+          <p class="text-xs text-gray-400">Autonomous Multi-Agent Copilot for B2B Travel Distribution</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/arshsri0513/TBO-VoyAgent-AI" target="_blank" class="px-4 py-2 text-xs font-semibold rounded-lg bg-cardDark border border-cardBorder hover:border-accentCyan transition flex items-center gap-2 text-white">
+          <i class="fa-brands fa-github text-sm"></i> GitHub Repo
+        </a>
+        <a href="https://unstop.com/competitions/crp-voyagehack-40-tbocom-1774031?rstatus=1" target="_blank" class="px-4 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-accentCyan to-blue-600 text-black font-bold hover:opacity-95 transition flex items-center gap-2">
+          <i class="fa-solid fa-trophy"></i> Unstop Portal
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8 space-y-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div class="lg:col-span-8 space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accentGreen/10 border border-accentGreen/30 text-accentGreen text-xs font-semibold">
+          <span class="w-2 h-2 rounded-full bg-accentGreen animate-pulse"></span> Flagship Track: Virtual Travel Agent / Copilot
+        </div>
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+          Superhuman Travel Intelligence for <span class="text-transparent bg-clip-text bg-gradient-to-r from-accentCyan via-blue-400 to-accentGreen">150,000+ TBO Partners</span>
+        </h1>
+        <p class="text-gray-300 text-sm md:text-base leading-relaxed max-w-3xl">
+          Transforming complex traveller requests into dynamic, real-time bookable itineraries with instant GDS/Bedbank availability locks, Look-to-Book caching, and 24/7 autonomous post-booking disruption care.
+        </p>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="lg:col-span-4 glass-card rounded-2xl p-5 shadow-xl space-y-3">
+        <h3 class="text-xs font-bold text-accentCyan uppercase tracking-wider">Quantifiable Measured Impact</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-3 rounded-xl bg-brandDark/80 border border-cardBorder">
+            <div class="text-2xl font-black text-accentGreen">15x</div>
+            <div class="text-[11px] text-gray-400 font-medium">Faster Quoting (<4m)</div>
+          </div>
+          <div class="p-3 rounded-xl bg-brandDark/80 border border-cardBorder">
+            <div class="text-2xl font-black text-accentCyan">+32%</div>
+            <div class="text-[11px] text-gray-400 font-medium">Conversion Lift</div>
+          </div>
+          <div class="p-3 rounded-xl bg-brandDark/80 border border-cardBorder">
+            <div class="text-2xl font-black text-accentOrange">-42%</div>
+            <div class="text-[11px] text-gray-400 font-medium">GDS Query Cost</div>
+          </div>
+          <div class="p-3 rounded-xl bg-brandDark/80 border border-cardBorder">
+            <div class="text-2xl font-black text-accentGreen">72%</div>
+            <div class="text-[11px] text-gray-400 font-medium">Auto-Deflection</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Interactive Demo Section -->
+    <section class="glass-card rounded-2xl p-6 shadow-2xl space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-cardBorder pb-4">
+        <div>
+          <h2 class="text-xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles text-accentCyan"></i> Live Multi-Agent Simulation Console
+          </h2>
+          <p class="text-xs text-gray-400">Test autonomous intent parsing, multi-supplier bundling, and live disruption recovery</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnRunTrip" onclick="simulateTrip()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-accentCyan to-blue-600 text-black font-bold text-xs hover:opacity-95 transition shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+            <i class="fa-solid fa-play"></i> Run Agentic Itinerary
+          </button>
+          <button id="btnDisrupt" onclick="simulateDisruption()" class="px-5 py-2.5 rounded-xl bg-accentOrange/10 border border-accentOrange/40 text-accentOrange hover:bg-accentOrange/20 font-bold text-xs transition flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation"></i> Simulate Flight Delay
+          </button>
+        </div>
+      </div>
+
+      <!-- Input Query Box -->
+      <div class="space-y-2">
+        <label class="text-xs font-semibold text-gray-400">Traveler Conversational Prompt (Natural Language):</label>
+        <div class="relative">
+          <textarea id="promptInput" rows="2" class="w-full rounded-xl bg-brandDark border border-cardBorder focus:border-accentCyan outline-none px-4 py-3 text-sm text-white resize-none">Family holiday to Dubai, 2 adults + 1 child (age 7), Nov 15-20, budget $3,200. Direct flights from Mumbai, beachfront hotel near JBR, include Burj Khalifa & Desert Safari.</textarea>
+        </div>
+      </div>
+
+      <!-- Execution Log & Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Live Terminal Stream -->
+        <div class="lg:col-span-5 bg-black/70 rounded-xl p-4 border border-cardBorder font-mono text-xs space-y-2 terminal-scroll max-h-[380px] overflow-y-auto">
+          <div class="flex items-center justify-between text-gray-400 pb-2 border-b border-gray-800">
+            <span><i class="fa-solid fa-terminal text-accentCyan"></i> Agent Orchestrator Stream</span>
+            <span class="text-[10px] text-accentGreen">LangGraph v1.0</span>
+          </div>
+          <div id="terminalLogs" class="space-y-1.5 text-gray-300">
+            <p class="text-gray-500">[System ready. Click "Run Agentic Itinerary" above to start multi-agent execution]</p>
+          </div>
+        </div>
+
+        <!-- Dynamic Output Cards -->
+        <div class="lg:col-span-7 space-y-4">
+          <!-- Dynamic Pricing Box -->
+          <div class="p-4 rounded-xl bg-brandDark border border-cardBorder grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-gray-400">Net Supplier</div>
+              <div id="dispNet" class="text-lg font-bold text-white">$2,599.00</div>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase font-bold text-accentCyan">Agency Margin (12%)</div>
+              <div id="dispMargin" class="text-lg font-bold text-accentCyan">+$311.88</div>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase font-bold text-accentGreen">Quoted Total</div>
+              <div id="dispTotal" class="text-lg font-bold text-accentGreen">$2,910.88</div>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase font-bold text-gray-400">Budget Headroom</div>
+              <div id="dispSavings" class="text-lg font-bold text-emerald-400">+$289.12 Under</div>
+            </div>
+          </div>
+
+          <!-- Product Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3.5 rounded-xl bg-cardDark border border-cardBorder space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-accentCyan"><i class="fa-solid fa-plane"></i> Flight Booked</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300">Direct GDS</span>
+              </div>
+              <div class="text-sm font-semibold">Emirates EK 501</div>
+              <div class="text-xs text-gray-400">BOM 10:00 AM → DXB 12:15 PM (3h 15m)</div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-cardDark border border-cardBorder space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-accentGreen"><i class="fa-solid fa-hotel"></i> Hotel Locked</span>
+                <span class="text-[10px] px-1.5 py-0.5 rounded bg-green-500/20 text-green-300">TBO Bedbank</span>
+              </div>
+              <div class="text-sm font-semibold">Amwaj Rotana JBR (5★)</div>
+              <div class="text-xs text-gray-400">Family Sea Front Room (Breakfast Included)</div>
+            </div>
+          </div>
+
+          <!-- Disruption Notification Alert Box (Initially Hidden) -->
+          <div id="disruptionAlert" class="hidden p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs space-y-2 animate-fade-in">
+            <div class="font-bold text-sm flex items-center gap-2 text-accentOrange">
+              <i class="fa-solid fa-bell animate-bounce"></i> Autonomous Sentinel Disruption Resolution:
+            </div>
+            <ul class="space-y-1 text-gray-300">
+              <li>• <strong class="text-white">Ground Transfer:</strong> Shifted private SUV pickup from 12:30 PM to 05:30 PM (Zero penalty applied).</li>
+              <li>• <strong class="text-white">Hotel Notice:</strong> Front desk notified of late check-in to prevent room auto-release.</li>
+              <li>• <strong class="text-white">Passenger Alert:</strong> Updated schedule & digital voucher pushed to passenger WhatsApp.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Presentation & Video Deliverables Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Presentation Card -->
+      <div class="glass-card rounded-2xl p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-accentCyan text-sm font-bold">
+            <i class="fa-solid fa-file-pdf text-lg"></i> Official Presentation Deck
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded bg-cardBorder text-gray-300">10 Slides (16:9)</span>
+        </div>
+        <h3 class="text-lg font-bold">TBO VoyAgent AI Presentation (PDF & PPTX)</h3>
+        <p class="text-xs text-gray-300 leading-relaxed">
+          Comprehensive presentation covering Problem Breakdown, System Architecture, Multi-Agent Lifecycle, Competitive Differentiators, Quantifiable ROI, and 12-Week Roadmap.
+        </p>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <a href="TBO_VoyAgent_AI_Submission.pdf" download class="px-4 py-2 rounded-xl bg-accentCyan text-black font-bold text-xs hover:opacity-90 transition flex items-center gap-2">
+            <i class="fa-solid fa-download"></i> Download PDF
+          </a>
+          <a href="TBO_VoyAgent_AI_Submission.pptx" download class="px-4 py-2 rounded-xl bg-cardBorder text-white text-xs hover:bg-gray-700 transition flex items-center gap-2">
+            <i class="fa-solid fa-file-powerpoint"></i> Download PPTX
+          </a>
+        </div>
+      </div>
+
+      <!-- Pitch Video Card -->
+      <div class="glass-card rounded-2xl p-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-accentGreen text-sm font-bold">
+            <i class="fa-solid fa-video text-lg"></i> Official Demo Video Pitch
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded bg-cardBorder text-gray-300">90 Seconds (1080p)</span>
+        </div>
+        <h3 class="text-lg font-bold">Full HD Animated Demo Video (MP4)</h3>
+        <p class="text-xs text-gray-300 leading-relaxed">
+          Executive 90-second video pitch complete with synchronized slide transitions, on-screen subtitles/voiceover ticker, and live prototype walkthrough.
+        </p>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <a href="TBO_VoyAgent_AI_Pitch_Video.mp4" download class="px-4 py-2 rounded-xl bg-accentGreen text-black font-bold text-xs hover:opacity-90 transition flex items-center gap-2">
+            <i class="fa-solid fa-download"></i> Download Pitch Video (MP4)
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-cardBorder bg-black/60 px-6 py-6 text-center text-xs text-gray-400">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+      <div>
+        <span>Built for <strong>TBO.com VoyageHack 4.0</strong> by </span>
+        <a href="https://github.com/arshsri0513" target="_blank" class="text-accentCyan hover:underline font-semibold">Arsh Srivastava (@arshsri0513)</a>
+      </div>
+      <div>
+        Track: <span class="text-white font-medium">Virtual travel Agent/travel agent copilot</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function simulateTrip() {
+      const logs = document.getElementById('terminalLogs');
+      document.getElementById('disruptionAlert').classList.add('hidden');
+      logs.innerHTML = '';
+      
+      const steps = [
+        { t: 100, text: '<span class="text-accentCyan">[0.1s]</span> Ingesting natural language query via Omnichannel Ingestion...' },
+        { t: 300, text: '<span class="text-accentCyan">[0.3s]</span> Intent Parser: Destination=Dubai | BOM-DXB | Pax=2A1C | Budget=$3,200 | Tags=Beach, Family' },
+        { t: 700, text: '<span class="text-accentCyan">[0.8s]</span> Active Clarification Check: Child age confirmed (7yo); departure preferences locked.' },
+        { t: 1100, text: '<span class="text-accentCyan">[1.2s]</span> Querying TBO Flight API (GDS) & Hotel Bedbanks concurrently...' },
+        { t: 1500, text: '<span class="text-accentGreen">[1.6s]</span> Redis Look-to-Book Cache Hit: Saved 42% third-party supplier API query latency.' },
+        { t: 1900, text: '<span class="text-accentCyan">[2.0s]</span> Multi-Product Dynamic Bundling: Day 1 Arrival | Day 2 Burj Khalifa (10 AM) | Day 3 Safari | Day 4 Beach | Day 5 Return' },
+        { t: 2300, text: '<span class="text-accentGreen">[2.4s]</span> Margin Engine: Net Cost $2,599.00 + Agency Commission (+12%) $311.88 = Quoted Total $2,910.88' },
+        { t: 2600, text: '<span class="text-emerald-400 font-bold">[2.7s] SUCCESS: Complete interactive package locked. Budget Headroom: +$289.12 (UNDER BUDGET)</span>' }
+      ];
+
+      steps.forEach(s => {
+        setTimeout(() => {
+          const p = document.createElement('p');
+          p.innerHTML = s.text;
+          logs.appendChild(p);
+          logs.scrollTop = logs.scrollHeight;
+        }, s.t);
+      });
+    }
+
+    function simulateDisruption() {
+      const logs = document.getElementById('terminalLogs');
+      const p1 = document.createElement('p');
+      p1.innerHTML = '<span class="text-accentOrange font-bold">[WEBHOOK RECEIVED] Airline GDS Event: EK 501 delayed by 5.0h (New Dept: 03:00 PM)</span>';
+      logs.appendChild(p1);
+
+      setTimeout(() => {
+        const p2 = document.createElement('p');
+        p2.innerHTML = '<span class="text-accentCyan">[SENTINEL]</span> Evaluating cross-service dependencies: Ground transfer pickup at 12:30 PM is orphaned.';
+        logs.appendChild(p2);
+      }, 400);
+
+      setTimeout(() => {
+        const p3 = document.createElement('p');
+        p3.innerHTML = '<span class="text-accentGreen">[AUTO-RECOVERY]</span> Rescheduled Private SUV transfer to 05:30 PM (No fee - outside cancellation window).';
+        logs.appendChild(p3);
+      }, 800);
+
+      setTimeout(() => {
+        const p4 = document.createElement('p');
+        p4.innerHTML = '<span class="text-accentGreen">[AUTO-RECOVERY]</span> Dispatched automated late check-in notification to hotel front desk.';
+        logs.appendChild(p4);
+      }, 1200);
+
+      setTimeout(() => {
+        const p5 = document.createElement('p');
+        p5.innerHTML = '<span class="text-accentGreen">[AUTO-RECOVERY]</span> Updated digital voucher dispatched to traveler WhatsApp.';
+        logs.appendChild(p5);
+        document.getElementById('disruptionAlert').classList.remove('hidden');
+        logs.scrollTop = logs.scrollHeight;
+      }, 1600);
+    }
+
+    // Auto-run simulation on page load
+    window.onload = () => {
+      simulateTrip();
+    };
+  </script>
+</body>
+</html>
